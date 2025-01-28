@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { title } from "process";
 import React from "react";
 
 function OurProgram() {

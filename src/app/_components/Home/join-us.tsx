@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { title } from "process";
 import React from "react";
 
 function JoinUs() {
