@@ -4,30 +4,12 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
-function Header() {
-  return (
-    <div className="max-w-screen-2xl px-16 py-4 w-full bg-background flex justify-between mx-auto items-center">
-      {/* logo */}
-      <Image src="/next.svg" alt="logo" width={84} height={36} />
-      {/* navs */}
-      <div>
-        <Navigation />
-      </div>
-      {/* buttons */}
-      <div>
-        <Button>Join</Button>
-      </div>
-    </div>
-  );
-}
-
-export default Header;
 
 const LINKS = [
   {
@@ -46,10 +28,49 @@ const LINKS = [
 
 const MORE_LINKS = [
   {
-    label: "Link 1",
-    href: "/link-1",
+    label: "Ministries",
+    href: "/ministries",
   },
 ];
+
+function Header() {
+  return (
+    <div className="max-w-screen-2xl px-4 md:px-8 py-4 w-full bg-background flex justify-between mx-auto items-center">
+      {/* logo */}
+      <Image src="/next.svg" alt="logo" width={84} height={36} />
+      {/* navs */}
+      <div className="hidden md:block">
+        <Navigation />
+      </div>
+      {/* buttons */}
+      <div className="hidden md:block">
+        <Button>Join</Button>
+      </div>
+      <MobileNavigation />
+    </div>
+  );
+}
+
+function MobileNavigation() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="md:hidden">
+        <MenuIcon />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="md:hidden w-full">
+        {LINKS.concat(MORE_LINKS).map((link) => (
+          <Link href={link.href} key={link.href}>
+            <DropdownMenuItem key={link.href}>{link.label}</DropdownMenuItem>
+          </Link>
+        ))}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Button className="w-full">Join</Button>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 function Navigation() {
   return (
@@ -74,9 +95,13 @@ function MoreLinks() {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {MORE_LINKS.map((link) => (
-          <DropdownMenuItem key={link.href}>{link.label}</DropdownMenuItem>
+          <Link href={link.href} key={link.href}>
+            <DropdownMenuItem key={link.href}>{link.label}</DropdownMenuItem>
+          </Link>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
+
+export default Header;
