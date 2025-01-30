@@ -31,6 +31,14 @@ const MORE_LINKS = [
     label: "Ministries",
     href: "/ministries",
   },
+  {
+    label: "Sermons",
+    href: "/sermons",
+  },
+  {
+    label: "Gallery",
+    href: "/gallery",
+  },
 ];
 
 function Header() {
