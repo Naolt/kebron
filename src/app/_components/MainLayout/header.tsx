@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const LINKS = [
+export const LINKS = [
   {
     label: "Home",
     href: "/",
@@ -26,7 +26,7 @@ const LINKS = [
   },
 ];
 
-const MORE_LINKS = [
+export const MORE_LINKS = [
   {
     label: "Ministries",
     href: "/ministries",
@@ -38,6 +38,10 @@ const MORE_LINKS = [
   {
     label: "Gallery",
     href: "/gallery",
+  },
+  {
+    label: "Donate",
+    href: "/donate",
   },
 ];
 

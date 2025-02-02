@@ -3,49 +3,9 @@ import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { LINKS, MORE_LINKS } from "./header";
 
-const FOOTER_LINKS = [
-  {
-    title: "Home",
-    link: "/",
-  },
-  {
-    title: "About",
-    link: "/about",
-  },
-  {
-    title: "Our Program",
-    link: "/our-program",
-  },
-  {
-    title: "Our Impact",
-    link: "/our-impact",
-  },
-  {
-    title: "Join Community",
-    link: "/join-community",
-  },
-  {
-    title: "Join Us",
-    link: "/join-us",
-  },
-  {
-    title: "Events",
-    link: "/events",
-  },
-  {
-    title: "Sermons",
-    link: "/sermons",
-  },
-  {
-    title: "Contact",
-    link: "/contact",
-  },
-  {
-    title: "Donate",
-    link: "/donate",
-  },
-];
+const FOOTER_LINKS = [...LINKS, ...MORE_LINKS];
 
 function Footer() {
   return (
@@ -84,20 +44,20 @@ function Footer() {
           <div className="grid grid-cols-2 gap-x-12">
             {FOOTER_LINKS.slice(0, 5).map((link) => (
               <Link
-                key={link.title}
-                href={link.link}
+                key={link.label}
+                href={link.href}
                 className="text-sm font-semibold py-2"
               >
-                {link.title}
+                {link.label}
               </Link>
             ))}
             {FOOTER_LINKS.slice(5).map((link) => (
               <Link
-                key={link.title}
-                href={link.link}
+                key={link.label}
+                href={link.href}
                 className="text-sm font-semibold py-2"
               >
-                {link.title}
+                {link.label}
               </Link>
             ))}
           </div>

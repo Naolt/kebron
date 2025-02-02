@@ -1,6 +1,6 @@
 import React from "react";
-import GalleryHero from "../_components/Gallery/gallery-hero";
-import PhotoGallery from "../_components/Gallery/photo-gallery";
+import GalleryHero from "../../_components/Gallery/gallery-hero";
+import PhotoGallery from "../../_components/Gallery/photo-gallery";
 
 const GalleryPage = () => {
   return (
