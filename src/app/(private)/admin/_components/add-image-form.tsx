@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import {
   Drawer,
   DrawerContent,
@@ -33,10 +34,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
   alt: z.string().min(2, "Alt text must be at least 2 characters"),
-  image: z.instanceof(File, { message: "Image is required" }),
+  image: z
+    .instanceof(File, { message: "Image is required" })
+    .refine(
+      (file) => file.size <= MAX_FILE_SIZE,
+      "File size must be less than 5MB"
+    )
+    .refine(
+      (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+      "Only .jpg, .png and .webp formats are supported"
+    ),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -49,13 +61,47 @@ const AddImageTriggerButton = (
   </button>
 );
 
-function FormContent() {
+function FormContent({ onSuccess }: { onSuccess: () => void }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      alt: "",
+    },
   });
 
-  function onSubmit(data: FormValues) {
-    console.log(data);
+  async function onSubmit(data: FormValues) {
+    try {
+      setIsLoading(true);
+      setUploadError(null);
+
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("alt", data.alt);
+      formData.append("image", data.image);
+
+      const response = await fetch("/api/gallery", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to upload");
+      }
+
+      toast.success("Image uploaded successfully");
+      form.reset();
+      onSuccess();
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -92,21 +138,19 @@ function FormContent() {
         <FormField
           control={form.control}
           name="image"
-          render={({
-            field: {
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              value,
-              onChange,
-              ...field
-            },
-          }) => (
+          render={({ field: { value, onChange, ...field } }) => (
             <FormItem>
               <FormLabel>Image</FormLabel>
               <FormControl>
                 <Input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => onChange(e.target.files?.[0])}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      onChange(file);
+                    }
+                  }}
                   {...field}
                 />
               </FormControl>
@@ -115,15 +159,19 @@ function FormContent() {
           )}
         />
 
-        <Button type="submit" className="w-full">
-          Upload Image
+        {uploadError && (
+          <div className="text-red-500 text-sm">{uploadError}</div>
+        )}
+
+        <Button type="submit" className="w-full" isLoading={isLoading}>
+          {isLoading ? "Uploading..." : "Upload Image"}
         </Button>
       </form>
     </Form>
   );
 }
 
-export function AddImageForm() {
+export function AddImageForm({ onSuccess }: { onSuccess: () => void }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
@@ -137,7 +185,7 @@ export function AddImageForm() {
               Upload a new image to the gallery
             </DialogDescription>
           </DialogHeader>
-          <FormContent />
+          <FormContent onSuccess={onSuccess} />
         </DialogContent>
       </Dialog>
     );
@@ -154,7 +202,7 @@ export function AddImageForm() {
           </DrawerDescription>
         </DrawerHeader>
         <div className="p-4">
-          <FormContent />
+          <FormContent onSuccess={onSuccess} />
         </div>
       </DrawerContent>
     </Drawer>
