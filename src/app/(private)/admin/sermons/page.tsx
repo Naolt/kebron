@@ -1,55 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
-import Image from "next/image";
 import React from "react";
-import { format } from "date-fns";
 import { AddSermonForm } from "./_components/add-sermon-form";
-import { SermonCard } from "./_components/sermon-card";
 import { SermonsList } from "./_components/sermons-list";
-
-type SermonItemType = {
-  id: string;
-  title: string;
-  thumbnail: string;
-  duration: string;
-  videoUrl: string;
-  date: string;
-};
-
-const sermonItems: SermonItemType[] = [
-  {
-    id: "1",
-    title: "Understanding Faith in Modern Times",
-    thumbnail: "https://picsum.photos/1920/1080?random=1",
-    duration: "45:30",
-    videoUrl: "https://youtube.com/watch?v=123",
-    date: "2024-03-20",
-  },
-  {
-    id: "2",
-    title: "Understanding Faith in Modern Times",
-    thumbnail: "https://picsum.photos/1920/1080?random=1",
-    duration: "45:30",
-    videoUrl: "https://youtube.com/watch?v=123",
-    date: "2024-03-20",
-  },
-  {
-    id: "3",
-    title: "Understanding Faith in Modern Times",
-    thumbnail: "https://picsum.photos/1920/1080?random=1",
-    duration: "45:30",
-    videoUrl: "https://youtube.com/watch?v=123",
-    date: "2024-03-20",
-  },
-  {
-    id: "4",
-    title: "Understanding Faith in Modern Times",
-    thumbnail: "https://picsum.photos/1920/1080?random=1",
-    duration: "45:30",
-    videoUrl: "https://youtube.com/watch?v=123",
-    date: "2024-03-20",
-  },
-];
 
 //function SermonCard({ item }: { item: SermonItemType }) {
 //  const formattedDate = format(new Date(item.date), "MMMM d, yyyy");

@@ -124,9 +124,11 @@ function FormContent({ onSuccess }: { onSuccess: () => void }) {
         <FormField
           control={form.control}
           name="image"
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           render={({ field: { value, onChange, ...field } }) => (
             <FormItem>
               <FormLabel>Image</FormLabel>
+
               <FormControl>
                 <Input
                   type="file"

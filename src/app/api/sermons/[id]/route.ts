@@ -5,17 +5,17 @@ import { getVideoInfo } from "@/lib/video-utils"; // We'll create this utility
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
     const data = await request.json();
-
     // Get new embed URL from video URL
     const videoInfo = getVideoInfo(data.videoUrl);
+    const { id } = await params;
 
     const sermon = await Sermon.findByIdAndUpdate(
-      params.id,
+      id,
       {
         title: data.title,
         videoUrl: data.videoUrl,

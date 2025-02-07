@@ -12,16 +12,17 @@ cloudinary.config({
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
     const formData = await request.formData();
     const title = formData.get("title") as string;
     const imageFile = formData.get("image") as File | null;
+    const { id } = await params;
 
     // Find the existing gallery item
-    const galleryItem = await Gallery.findById(params.id);
+    const galleryItem = await Gallery.findById(id);
     if (!galleryItem) {
       return NextResponse.json({ error: "Image not found" }, { status: 404 });
     }
@@ -53,12 +54,13 @@ export async function PATCH(
 
     // Update the gallery item
     const updatedGalleryItem = await Gallery.findByIdAndUpdate(
-      params.id,
+      id,
       {
         title,
         image: imageUrl,
         publicId,
       },
+
       { new: true }
     );
 
