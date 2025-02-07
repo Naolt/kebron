@@ -14,5 +14,4 @@ function SermonsPage() {
     </div>
   );
 }
-
 export default SermonsPage;

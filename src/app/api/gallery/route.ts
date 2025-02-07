@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import { Gallery } from "@/models/gallery";
 import { v2 as cloudinary } from "cloudinary";
+import { revalidateTag } from "next/cache";
 
 // Configure body size limit for the route
 export const config = {
@@ -17,12 +18,16 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+type CloudinaryResponse = {
+  secure_url: string;
+  public_id: string;
+};
+
 export async function POST(req: Request) {
   try {
     await connectDB();
     const data = await req.formData();
     const title = data.get("title") as string;
-    const alt = data.get("alt") as string;
     const file = data.get("image") as File;
 
     if (!file) {
@@ -37,9 +42,9 @@ export async function POST(req: Request) {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
           resource_type: "image",
-          transformation: [
-            { width: 800, height: 1067, crop: "fill", quality: "auto" },
-          ],
+          //transformation: [
+          //  { width: 800, height: 1067, crop: "fill", quality: "auto" },
+          //],
           format: "jpg",
           folder: "gallery",
           timeout: 60000, // 60 second timeout
@@ -69,18 +74,14 @@ export async function POST(req: Request) {
       uploadStream.end();
     });
 
-    // log the secure_url and public_id
-    console.log("secure_url", (uploadResponse as any).secure_url);
-    console.log("public_id", (uploadResponse as any).public_id);
-
     // Create gallery item in MongoDB
     const galleryItem = await Gallery.create({
       title,
-      alt,
-      image: (uploadResponse as any).secure_url,
-      publicId: (uploadResponse as any).public_id,
+      image: (uploadResponse as CloudinaryResponse).secure_url,
+      publicId: (uploadResponse as CloudinaryResponse).public_id,
     });
 
+    revalidateTag("gallery");
     return NextResponse.json(galleryItem);
   } catch (error) {
     console.error("Error in POST /api/gallery:", error);
@@ -98,11 +99,16 @@ export async function GET() {
   try {
     await connectDB();
     const galleryItems = await Gallery.find().sort({ createdAt: -1 });
-    return NextResponse.json(galleryItems);
+
+    return NextResponse.json(galleryItems, {
+      headers: {
+        "Cache-Control": "s-maxage=60, stale-while-revalidate",
+      },
+    });
   } catch (error) {
-    console.error("Error in GET /api/gallery:", error);
+    console.error("Error fetching gallery items:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Failed to fetch gallery items" },
       { status: 500 }
     );
   }
@@ -122,6 +128,8 @@ export async function DELETE(req: Request) {
       );
     }
 
+    console.log("galleryItem", galleryItem);
+
     // Delete from Cloudinary
     try {
       await cloudinary.uploader.destroy(galleryItem.publicId);
@@ -133,7 +141,8 @@ export async function DELETE(req: Request) {
     // Delete from MongoDB
     await Gallery.findByIdAndDelete(id);
 
-    return NextResponse.json({ message: "Item deleted successfully" });
+    revalidateTag("gallery");
+    return NextResponse.json({ message: "Gallery item deleted successfully" });
   } catch (error) {
     console.error("Error in DELETE /api/gallery:", error);
     return NextResponse.json(

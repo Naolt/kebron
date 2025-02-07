@@ -38,7 +38,6 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 const formSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
-  alt: z.string().min(2, "Alt text must be at least 2 characters"),
   image: z
     .instanceof(File, { message: "Image is required" })
     .refine(
@@ -69,7 +68,6 @@ function FormContent({ onSuccess }: { onSuccess: () => void }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      alt: "",
     },
   });
 
@@ -80,7 +78,6 @@ function FormContent({ onSuccess }: { onSuccess: () => void }) {
 
       const formData = new FormData();
       formData.append("title", data.title);
-      formData.append("alt", data.alt);
       formData.append("image", data.image);
 
       const response = await fetch("/api/gallery", {
@@ -114,21 +111,10 @@ function FormContent({ onSuccess }: { onSuccess: () => void }) {
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Image title" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="alt"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Alt Text</FormLabel>
-              <FormControl>
-                <Input placeholder="Image description" {...field} />
+                <Input
+                  placeholder="Image title (will also be used as description)"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

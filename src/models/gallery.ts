@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
 
+const MIGRATE_GALLERY = false;
+
 const gallerySchema = new mongoose.Schema({
   title: {
-    type: String,
-    required: true,
-  },
-  alt: {
     type: String,
     required: true,
   },
