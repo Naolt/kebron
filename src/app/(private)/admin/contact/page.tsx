@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -16,12 +16,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { X, Upload } from "lucide-react";
 
 const formSchema = z.object({
   contactPersonName: z.string().min(2, "Name must be at least 2 characters"),
-  contactPersonImage: z
-    .instanceof(File, { message: "Image is required" })
-    .optional(),
+  contactPersonImage: z.instanceof(File).optional(),
+  contactPersonImageUrl: z.string().optional(),
   phoneNumber: z.string().min(10, "Please enter a valid phone number"),
   email: z.string().email("Please enter a valid email address"),
   address: z.string().min(10, "Address must be at least 10 characters"),
@@ -53,27 +56,211 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+function ImageUpload({
+  value,
+  onChange,
+  defaultImage,
+}: {
+  value?: File;
+  onChange: (file?: File) => void;
+  defaultImage?: string;
+}) {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  return (
+    <div className="flex flex-col items-left gap-4 mb-8">
+      <div
+        onClick={() => inputRef.current?.click()}
+        className="relative w-40 h-40 rounded-full group cursor-pointer"
+      >
+        {value || defaultImage ? (
+          <>
+            <Image
+              src={value ? URL.createObjectURL(value as Blob) : defaultImage!}
+              alt="Contact person"
+              fill
+              className="object-cover rounded-full"
+            />
+            <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <Upload className="h-8 w-8 text-white" />
+            </div>
+          </>
+        ) : (
+          <div className="w-full h-full rounded-full border-4 border-dashed border-muted-foreground/25 flex items-center justify-center">
+            <Upload className="h-8 w-8 text-muted-foreground/25" />
+          </div>
+        )}
+
+        {(value || defaultImage) && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onChange(undefined);
+            }}
+            className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file && file.size <= 5 * 1024 * 1024) {
+            onChange(file);
+          } else {
+            toast.error("Image must be less than 5MB");
+          }
+          e.target.value = "";
+        }}
+      />
+      <p className="text-sm text-muted-foreground">
+        Click to upload (JPEG, PNG, WebP • Max 5MB)
+      </p>
+    </div>
+  );
+}
+
 export default function ContactPage() {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState<FormValues | null>(null);
+
+  useEffect(() => {
+    const fetchContactData = async () => {
+      try {
+        const response = await fetch("/api/contact");
+        const data = await response.json();
+        setFormData({
+          contactPersonName: data.contactPersonName,
+          contactPersonImage: undefined,
+          contactPersonImageUrl: data.contactPersonImage,
+          phoneNumber: data.phoneNumber,
+          email: data.email,
+          address: data.address,
+          mapEmbedLink: data.mapEmbedLink,
+          facebookUrl: data.socialLinks.facebook,
+          youtubeUrl: data.socialLinks.youtube,
+          linkedinUrl: data.socialLinks.linkedin,
+          twitterUrl: data.socialLinks.twitter,
+        });
+      } catch (error) {
+        console.error("Error fetching contact data:", error);
+      }
+    };
+
+    fetchContactData();
+  }, []);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      contactPersonName: "",
+      phoneNumber: "",
+      email: "",
+      address: "",
+      mapEmbedLink: "",
+      facebookUrl: "",
+      youtubeUrl: "",
+      linkedinUrl: "",
+      twitterUrl: "",
+    },
+    values: formData || undefined,
   });
 
-  function onSubmit(data: FormValues) {
-    console.log(data);
+  const handleReset = () => {
+    form.reset(formData || undefined);
+  };
+
+  async function onSubmit(data: FormValues) {
+    try {
+      setIsSubmitting(true);
+      const formData = new FormData();
+
+      // Append all form fields to FormData
+      formData.append("contactPersonName", data.contactPersonName);
+      if (data.contactPersonImage) {
+        formData.append("contactPersonImage", data.contactPersonImage);
+      }
+      formData.append("phoneNumber", data.phoneNumber);
+      formData.append("email", data.email);
+      formData.append("address", data.address);
+      formData.append("mapEmbedLink", data.mapEmbedLink);
+      formData.append("facebookUrl", data.facebookUrl || "");
+      formData.append("youtubeUrl", data.youtubeUrl || "");
+      formData.append("linkedinUrl", data.linkedinUrl || "");
+      formData.append("twitterUrl", data.twitterUrl || "");
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update contact information");
+      }
+
+      toast.success("Contact information updated successfully");
+      router.refresh();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Failed to update contact information");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
+
+  useEffect(() => {
+    return () => {
+      const file = form.getValues("contactPersonImage");
+      if (file) {
+        URL.revokeObjectURL(URL.createObjectURL(file as Blob));
+      }
+    };
+  }, [form]);
 
   return (
     <div className="p-6">
       <Card className="max-w-[1400px] rounded-none">
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Contact Information</CardTitle>
+          {form.formState.isDirty && (
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={handleReset}>
+                Reset Changes
+              </Button>
+              <Button type="submit" form="contact-form" disabled={isSubmitting}>
+                {isSubmitting ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form
+              id="contact-form"
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-8"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Left Column */}
                 <div className="space-y-6">
+                  <ImageUpload
+                    value={form.watch("contactPersonImage")}
+                    onChange={(file) =>
+                      form.setValue("contactPersonImage", file, {
+                        shouldDirty: true,
+                        shouldTouch: true,
+                        shouldValidate: true,
+                      })
+                    }
+                    defaultImage={formData?.contactPersonImageUrl}
+                  />
                   <FormField
                     control={form.control}
                     name="contactPersonName"
@@ -83,35 +270,6 @@ export default function ContactPage() {
                         <FormControl>
                           <Input placeholder="John Doe" {...field} />
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="contactPersonImage"
-                    render={({
-                      field: {
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        value,
-                        onChange,
-                        ...field
-                      },
-                    }) => (
-                      <FormItem>
-                        <FormLabel>Contact Person Image</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => onChange(e.target.files?.[0])}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Upload a professional photo of the contact person
-                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -269,11 +427,6 @@ export default function ContactPage() {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex justify-end">
-                <Button type="submit" className="mt-8 ">
-                  Save Contact Information
-                </Button>
               </div>
             </form>
           </Form>
