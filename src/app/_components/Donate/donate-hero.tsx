@@ -30,7 +30,7 @@ const CARD_DATA = [
 
 function DonateHero() {
   return (
-    <div className="max-w-screen-2xl mx-auto px-8 py-28 grid grid-cols-3 gap-20">
+    <div className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 grid grid-cols-3 gap-20">
       {/* Left */}
       <div className="flex flex-col lg:col-span-1 col-span-3">
         <span className="font-semibold">Engage</span>

@@ -47,9 +47,9 @@ export const MORE_LINKS = [
 
 function Header() {
   return (
-    <div className="max-w-screen-2xl px-4 md:px-8 py-4 w-full bg-background flex justify-between mx-auto items-center">
+    <div className="max-w-screen-3xl px-4 md:px-16 py-4 w-full bg-background flex justify-between mx-auto items-center">
       {/* logo */}
-      <Image src="/next.svg" alt="logo" width={84} height={36} />
+      <Image src="/logo.svg" alt="logo" width={84} height={36} />
       {/* navs */}
       <div className="hidden md:block">
         <Navigation />

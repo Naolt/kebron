@@ -1,11 +1,10 @@
 import React from "react";
-import DonateHero from "../../_components/Donate/donate-hero";
 import Assist from "../../_components/Donate/assist";
-
+import DonateHeroTwo from "../../_components/Donate/donate-hero-two";
 function Donate() {
   return (
     <div>
-      <DonateHero />
+      <DonateHeroTwo />
       <Assist />
     </div>
   );

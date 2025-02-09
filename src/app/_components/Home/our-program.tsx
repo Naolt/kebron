@@ -6,12 +6,12 @@ import React from "react";
 
 function OurProgram() {
   return (
-    <section className="max-w-screen-2xl mx-auto px-8 py-28">
+    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
       {/* heading section */}
       <div className="flex flex-col">
         <span className="font-semibold">Welcome</span>
         <h1 className="mt-4 max-w-[850px]">
-          Experience Our Thriving Church Family
+          Here is our weekly schedule of services and programs
         </h1>
         <p className="max-w-[800px] mt-6">
           {`At our church, we offer a variety of activities designed to foster
@@ -33,36 +33,39 @@ function OurProgram() {
   );
 }
 
-const PROGRAMS = [
+const PROGRAMS: {
+  title: string;
+  description: string;
+  image: string;
+}[] = [
   {
-    title: "Worship Services",
-    description:
-      "JLorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
-    image: "https://picsum.photos/400/300?random=1",
+    title: "Sunday Service",
+    description: `Sunday Worship Service Time: 9:00 AM – 11:00 AM Join us for a powerful time of worship, prayer, and a message from the Word of God.`,
+    image: "/home/sunday.jpg",
   },
   {
-    title: "Community Events",
+    title: "Youth Engagement Program",
+    description: `Our youth program is currently being planned. Stay tuned to our Facebook page for upcoming announcements.`,
+    image: "/home/youth.JPG",
+  },
+
+  {
+    title: "Children's Ministry",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
-    image: "https://picsum.photos/400/300?random=2",
+      "Every Sunday during the main service, we offer engaging children's programs that teach Biblical truths through fun and interactive activities.",
+    image: "/home/children.JPG",
+  },
+  {
+    title: "Virtual Prayer",
+    description:
+      "Join us every Friday from 6:00 PM to 7:00 PM as we gather together in prayer, lifting up personal needs, our church family, and global concerns to the Lord.",
+    image: "/home/prayer.JPG",
   },
   {
     title: "Outreach Programs",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
-    image: "https://picsum.photos/400/300?random=3",
-  },
-  {
-    title: "Youth Programs",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
-    image: "https://picsum.photos/400/300?random=4",
-  },
-  {
-    title: "Women's Worship",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
-    image: "https://picsum.photos/400/300?random=5",
+      "Keep an eye on our Facebook Page for upcoming events, conferences, and community outreach programs.",
+    image: "/home/outreach.JPG",
   },
 ];
 
@@ -144,10 +147,11 @@ function HorizontalProgramsList() {
 function VerticalProgramsList() {
   return (
     <div className="w-full mt-20 hidden md:block lg:hidden">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto px-16">
         {PROGRAMS.map((program, index) => (
           <div key={index} className="flex gap-8 items-start mb-16 h-[180px]">
             {/* Content */}
+
             <div className="flex flex-col md:flex-row gap-8 flex-1 hfu">
               {/* Image */}
               <div

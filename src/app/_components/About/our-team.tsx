@@ -183,30 +183,33 @@ const TEAM_MEMBERS: TeamMemberType[] = [
 
 function OurTeam() {
   return (
-    <section className="max-w-screen-2xl mx-auto px-8 py-28 flex flex-col gap-20">
+    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-8 sm:py-12 lg:py-20">
       {/* heading section */}
-      <div className="flex flex-col mx-auto items-center max-w-[768px]">
-        <span className="font-semibold">Together</span>
-        <h1 className="text-center mt-4">Our Team</h1>
-        <p className="max-w-[800px] text-center mt-4">
-          {`Meet the dedicated individuals behind our community.`}
+      <div className="flex flex-col items-center max-w-2xl mx-auto">
+        <span className="font-semibold text-sm sm:text-base">Together</span>
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl text-center mt-2 sm:mt-4">
+          Our Team
+        </h1>
+        <p className="text-center mt-3 sm:mt-4 text-sm sm:text-base">
+          Meet the dedicated individuals behind our community.
         </p>
       </div>
 
       {/* team members list */}
-      <div className="flex flex-wrap gap-12 justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mt-12 sm:mt-16">
         {TEAM_MEMBERS.map((member) => (
           <TeamMember key={member.fullName} member={member} />
         ))}
       </div>
 
-      {/*  join our team */}
-
-      <div className="flex flex-col items-center justify-center">
-        <h1>Join Our Team!</h1>
-        <p className="mt-4">{`Join our team and make a difference today!`}</p>
-        <Button variant={"outline"} className="mt-6">
-          Keep in Touch
+      {/* join our team */}
+      <div className="flex flex-col items-center mt-12 sm:mt-16 lg:mt-20">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl">Join Our Team!</h2>
+        <p className="mt-3 sm:mt-4 text-center text-sm sm:text-base">
+          Join our team and make a difference today!
+        </p>
+        <Button variant="outline" className="mt-4 sm:mt-6">
+          Get in Touch
         </Button>
       </div>
     </section>
@@ -215,27 +218,36 @@ function OurTeam() {
 
 function TeamMember({ member }: { member: TeamMemberType }) {
   return (
-    <div className="flex flex-col w-[304px] gap-4 items-center justify-center">
-      <Image
-        src={member.picture}
-        alt={member.fullName}
-        width={1920}
-        height={1080}
-        className="w-[304px] h-[296px] object-cover"
-      />
-      <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
+      <div className="aspect-square relative overflow-hidden">
+        <Image
+          src={member.picture}
+          alt={member.fullName}
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"
+        />
+      </div>
+      <div className="flex flex-col gap-2">
         <div>
-          <p className="text-center font-semibold text-[20px]">
+          <p className="font-semibold text-lg sm:text-xl text-center">
             {member.fullName}
           </p>
-          <p className="text-center">{member.role}</p>
+          <p className="text-sm sm:text-base text-center text-muted-foreground">
+            {member.role}
+          </p>
         </div>
-        <p className="text-center">{member.description}</p>
       </div>
       {/* socials */}
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex gap-4 justify-center">
         {member.socials.map((social) => (
-          <a href={social.href} key={social.href}>
+          <a
+            href={social.href}
+            key={social.href}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {social.icon}
           </a>
         ))}

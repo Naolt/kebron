@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const sermonSchema = new mongoose.Schema({
   title: {
@@ -30,3 +30,5 @@ const sermonSchema = new mongoose.Schema({
 
 export const Sermon =
   mongoose.models.Sermon || mongoose.model("Sermon", sermonSchema);
+
+export type Sermon = InferSchemaType<typeof sermonSchema>;

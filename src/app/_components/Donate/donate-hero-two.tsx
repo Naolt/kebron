@@ -1,0 +1,47 @@
+import Image from "next/image";
+import React from "react";
+
+function DonateHeroTwo() {
+  return (
+    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 flex justify-between items-center gap-8 flex-wrap">
+      {/* header */}
+
+      <div className="flex flex-col gap-6 w-full max-w-[616px]">
+        <h1>{`Why Give?`}</h1>
+        <div className="flex flex-col gap-6 mt-8">
+          <p>
+            At Kebron International Church, giving is an act of worship, faith,
+            and obedience. Your generosity enables us to spread the Gospel,
+            serve those in need, and make a lasting impact in our community and
+            beyond.
+          </p>
+          <p>
+            Support the Church’s Mission – Your giving helps us share the
+            Gospel, disciple believers, and expand God’s Kingdom.
+          </p>
+          <p>
+            Make a Difference in Lives – Through your generosity, we provide
+            essential support such as food, clothing, and outreach programs for
+            those in need. Empower the Next Generation – Invest in youth and
+            children’s ministries, equipping them with faith and leadership for
+            the future.
+          </p>
+          <p>
+            Enhance Worship & Ministry Efforts – Your donations help us improve
+            church facilities, media outreach, and worship experiences.
+          </p>
+        </div>
+      </div>
+      {/* right */}
+      <Image
+        src={"/donate/community.JPG"}
+        alt="Contact Us"
+        width={616}
+        height={640}
+        className="w-full max-w-[616px] h-[640px] object-cover"
+      />
+    </section>
+  );
+}
+
+export default DonateHeroTwo;

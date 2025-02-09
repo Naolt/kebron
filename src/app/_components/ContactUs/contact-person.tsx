@@ -1,31 +1,46 @@
 import Image from "next/image";
 import React from "react";
 
-function ContactPerson() {
+async function getContactInfo() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`
+    );
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching contact person:", error);
+    return null;
+  }
+}
+
+async function ContactPerson() {
+  const contactPerson = await getContactInfo();
+
   return (
-    <section className="max-w-screen-2xl mx-auto px-8 py-28 flex justify-between items-center gap-8 flex-wrap">
+    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 flex justify-between items-center gap-8 flex-wrap">
       {/* header */}
       <div className="flex flex-col gap-6 w-full max-w-[616px]">
-        <h2>
-          {`Get in Touch with Our Welcoming Community: We're Here to Listen,
-          Support, and Connect.`}
-        </h2>
+        <h2>{`Welcome to Kebron International Church!`}</h2>
+        <p>Dear Beloved,</p>
         <p>
-          {` We warmly invite you to reach out and share your thoughts, questions,
-          or prayer requests with our welcoming community. Your connection is
-          deeply important to us, and we believe in fostering meaningful
-          relationships through open communication. Whether you're seeking
-          spiritual guidance, have questions about our services, or simply want
-          to connect with like-minded individuals, we're here to listen and
-          respond with care and understanding. Our dedicated team is committed
-          to creating a supportive environment where everyone feels heard and
-          valued. We look forward to hearing from you and beginning this journey
-          of connection together!`}
+          Welcome to Kebron International Church, a place where faith, love, and
+          family come together. We are more than a church—we are a community
+          walking in the power of God, growing in His Word, and standing in His
+          grace. Whether you are visiting for the first time or seeking a
+          spiritual home, we invite you to worship, grow, and serve with us. May
+          you experience God’s presence, love, and transformation in your life.
+          in your life. We look forward to welcoming you in person. You belong
+          here! Blessings,
+        </p>
+        <p>
+          [Pastor’s Name]
+          <br />
+          Kebron International Church
         </p>
       </div>
       {/* right */}
       <Image
-        src="https://picsum.photos/1920/1080?random=1"
+        src={contactPerson?.contactPersonImage || ""}
         alt="Contact Us"
         width={616}
         height={640}

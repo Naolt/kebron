@@ -1,7 +1,7 @@
 import React from "react";
 import AboutHero from "../../_components/About/about-hero";
 import OurStory from "../../_components/About/our-story";
-import OurStoryTwo from "../../_components/About/our-story-two";
+import OurCoreValues from "../../_components/About/our-core-values";
 import OurTeam from "../../_components/About/our-team";
 
 function AboutPage() {
@@ -9,7 +9,7 @@ function AboutPage() {
     <div className="w-full">
       <AboutHero />
       <OurStory />
-      <OurStoryTwo />
+      <OurCoreValues />
       <OurTeam />
     </div>
   );

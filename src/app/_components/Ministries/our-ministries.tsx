@@ -1,76 +1,43 @@
 import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 function OurMinistries() {
   return (
-    <section className="max-w-screen-2xl mx-auto px-8 py-28">
-      {/* heading section */}
-      <div className="flex flex-col mx-auto items-center">
-        <span className="font-semibold">Connect</span>
-        <h1 className="text-center">Discover Our Dynamic Church Ministries</h1>
-        <p className="max-w-[800px] text-center mt-4">
-          {`Our ministries are designed to foster community and spiritual growth. Join us as we serve, learn, and connect with one another.`}
-        </p>
-      </div>
-      {/*// cards*/}
-      <Cards />
-      {/*//  link*/}
-      <div className="w-full flex justify-center ">
-        <Link href="/join-us" className="">
-          <Button variant={"outline"}>Learn More</Button>
-        </Link>
-        <Link href="/join-us" className="">
-          <Button variant={"ghost"}>
-            Join <ChevronRight />
+    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-2 justify-between">
+        <div className="flex flex-col gap-6 lg:gap-8">
+          <h2 className="text-2xl sm:text-3xl font-bold">Our Ministry</h2>
+          <div className="text-gray-600 space-y-4 text-base sm:text-lg max-w-[600px]">
+            <p>
+              Our ministry is dedicated to preaching the Good News, transforming
+              lives, and guiding individuals to fulfill God’s purpose. Through
+              our efforts, lives have been changed, marriages restored, broken
+              hearts mended, and families healed. With a deep passion, we seize
+              every opportunity and open door God provides to spread the Gospel
+              across major cities in Germany, including Frankfurt, Mainz,
+              Rüsselsheim, Darmstadt, Duisburg, and Düsseldorf. As proud
+              partners of the United Gospel Campaign, we host healing events
+              each quarter. Our energetic, youthful preachers bring fresh,
+              creative approaches to teaching the timeless message of the
+              Gospel, while our dynamic media team reaches thousands through
+              social media platforms, engaging and inspiring the next
+              generation.
+            </p>
+          </div>
+          <Button variant="outline" className="w-fit">
+            Join Us
           </Button>
-        </Link>
+        </div>
+        <Image
+          src="/ministry/our-ministry.jpg"
+          alt="Our Story"
+          width={1920}
+          height={1080}
+          className="w-[600px] h-[400px] sm:h-[500px] lg:h-[640px] object-cover "
+        />
       </div>
     </section>
-  );
-}
-
-const CARDS = [
-  {
-    image: "https://picsum.photos/400/300",
-    title: "Engaging Worship Services Every Week",
-    description: "Experience uplifting worship that inspires and connects.",
-  },
-  {
-    image: "https://picsum.photos/400/300",
-    title: "Exciting Community Events for Everyone",
-    description: "Join us for events that build lasting friendships.",
-  },
-  {
-    image: "https://picsum.photos/400/300",
-    title: "Volunteer Opportunities to Make a Difference",
-    description:
-      "Join us in serving our community and making a positive impact.",
-  },
-];
-
-function Cards() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full my-20">
-      {CARDS.map((card, index) => (
-        <div
-          className="flex flex-col col-auto max-w-[400px] mx-auto"
-          key={index}
-        >
-          <Image
-            src={card.image}
-            alt={card.title}
-            width={400}
-            height={240}
-            className="object-cover"
-          />
-          <h3 className="text-3xl text-center mt-8">{card.title}</h3>
-          <p className="text-center mt-4">{card.description}</p>
-        </div>
-      ))}
-    </div>
   );
 }
 

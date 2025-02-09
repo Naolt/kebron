@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const contactSchema = new mongoose.Schema(
   {
@@ -41,3 +41,5 @@ const contactSchema = new mongoose.Schema(
 
 export const Contact =
   mongoose.models.Contact || mongoose.model("Contact", contactSchema);
+
+export type Contact = InferSchemaType<typeof contactSchema>;

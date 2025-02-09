@@ -52,7 +52,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader className="p-6">
-        <Image src="/next.svg" alt="Logo" width={100} height={100} />
+        <Image src="/logo.svg" alt="Logo" width={100} height={100} />
       </SidebarHeader>
       <SidebarContent className="flex flex-col gap-2 p-6 pt-2 pl-4">
         {data.navMain.map((item) => (

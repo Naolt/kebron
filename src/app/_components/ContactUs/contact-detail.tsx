@@ -1,35 +1,48 @@
+import { Contact } from "@/models/contact";
 import { Map, Mail, Phone, ChevronRight } from "lucide-react";
 import React from "react";
+import Location from "./location";
 
-const CONTACT_DETAIL = [
-  {
-    icon: <Mail />,
-    label: "Email",
-    value: <span className="underline">hello@relume.io</span>,
-    description: "Reach as any time at",
-  },
-  {
-    icon: <Phone />,
-    label: "Phone",
-    value: <span className="underline">+123 456 7890</span>,
-    description: "Reach as any time at",
-  },
-  {
-    icon: <Map />,
-    label: "Address",
-    value: (
-      <span className="flex items-center gap-2">
-        Get Directions <ChevronRight />
-      </span>
-    ),
-    description: "123 Sample St, Sydney NSW 2000 AU",
-  },
-];
+async function getContactInfo() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`
+    );
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching contact person:", error);
+    return null;
+  }
+}
 
-function ContactDetail() {
+async function ContactDetail() {
+  const contactInfo: Contact = await getContactInfo();
+
+  const CONTACT_DETAIL = [
+    {
+      icon: <Mail />,
+      label: "Email",
+      value: <span className="underline">{contactInfo?.email}</span>,
+      description: "Reach as any time at",
+    },
+    {
+      icon: <Phone />,
+      label: "Phone",
+      value: <span className="underline">{contactInfo?.phoneNumber}</span>,
+      description: "Reach as any time at",
+    },
+    {
+      icon: <Map />,
+      label: "Address",
+      value: <></>,
+      description: contactInfo?.address,
+    },
+  ];
+
   return (
-    <section className="max-w-screen-2xl mx-auto px-8 py-28 flex flex-col gap-20">
+    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 flex flex-col gap-20">
       {/* header */}
+
       <div className="flex flex-col">
         <span className="font-semibold">Connect</span>
         <h1 className="mt-4">Contact Us</h1>
@@ -51,16 +64,7 @@ function ContactDetail() {
           ))}
         </div>
         {/* map embed */}
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3312.8773118760357!2d151.20544851521253!3d-33.86882728065282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ae401e8b983f%3A0x5017d681632ccc0!2s123%20Sample%20St%2C%20Sydney%20NSW%202000%2C%20Australia!5e0!3m2!1sen!2sus!4v1635774838459!5m2!1sen!2sus"
-          width="100%"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen={true}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          className="max-w-[832px] rounded-lg"
-        ></iframe>
+        <Location mapEmbedLink={contactInfo?.mapEmbedLink} />
       </div>
     </section>
   );

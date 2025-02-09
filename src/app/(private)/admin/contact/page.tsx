@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { X, Upload } from "lucide-react";
+import { extractSrcFromIframe } from "@/lib/map-utils";
 
 const formSchema = z.object({
   contactPersonName: z.string().min(2, "Name must be at least 2 characters"),
@@ -128,6 +129,7 @@ function ImageUpload({
 
 export default function ContactPage() {
   const router = useRouter();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
 
@@ -424,6 +426,19 @@ export default function ContactPage() {
                           </FormItem>
                         )}
                       />
+                      {/* render the map embed link if it exists extracting the src from the iframe */}
+                      {form.watch("mapEmbedLink") && (
+                        <iframe
+                          src={extractSrcFromIframe(form.watch("mapEmbedLink"))}
+                          width="100%"
+                          height="450"
+                          style={{ border: 0 }}
+                          allowFullScreen={true}
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          className="max-w-[832px] rounded-lg"
+                        ></iframe>
+                      )}
                     </div>
                   </div>
                 </div>

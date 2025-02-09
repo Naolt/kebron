@@ -1,20 +1,34 @@
 import { Separator } from "@/components/ui/separator";
-import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
+import { Facebook, Linkedin, Twitter, Youtube } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { LINKS, MORE_LINKS } from "./header";
+import { Contact } from "@/models/contact";
 
 const FOOTER_LINKS = [...LINKS, ...MORE_LINKS];
 
-function Footer() {
+async function getContactInfo() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`
+    );
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching contact person:", error);
+    return null;
+  }
+}
+
+async function Footer() {
+  const contactInfo: Contact = await getContactInfo();
   return (
-    <footer className=" py-28 px-8 bg-[rgba(240,242,251,1)]">
-      <div className="max-w-screen-2xl mx-auto flex flex-wrap justify-between gap-6">
+    <footer className=" py-28 px-16 bg-[rgba(240,242,251,1)]">
+      <div className="max-w-screen-3xl mx-auto flex flex-wrap justify-between gap-6">
         {/* left */}
         <div className="flex flex-col gap-6">
           <Image
-            src={"./next.svg"}
+            src={"./logo.svg"}
             width={100}
             height={100}
             alt="logo"
@@ -23,20 +37,20 @@ function Footer() {
 
           <div>
             <p className="text-sm font-semibold">Address:</p>
-            <p className="text-sm">Level 1, 12 Sample St, Sydney NSW 2000</p>
+            <p className="text-sm">{contactInfo?.address}</p>
           </div>
           <div>
-            <p className="text-sm underline">1800 123 4567</p>
-            <p className="text-sm underline">info@ourchurch.org</p>
+            <p className="text-sm underline">{contactInfo?.phoneNumber}</p>
+
+            <p className="text-sm underline">{contactInfo?.email}</p>
           </div>
 
           {/* social links */}
           <div className="flex gap-3 mt-2">
-            <Facebook />
-            <Instagram />
-            <Twitter />
-            <Linkedin />
-            <Youtube />
+            {contactInfo?.socialLinks?.facebook && <Facebook />}
+            {contactInfo?.socialLinks?.youtube && <Youtube />}
+            {contactInfo?.socialLinks?.twitter && <Twitter />}
+            {contactInfo?.socialLinks?.linkedin && <Linkedin />}
           </div>
         </div>
         {/* Right */}

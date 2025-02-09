@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const gallerySchema = new mongoose.Schema({
   title: {
@@ -21,3 +21,5 @@ const gallerySchema = new mongoose.Schema({
 
 export const Gallery =
   mongoose.models.Gallery || mongoose.model("Gallery", gallerySchema);
+
+export type Gallery = InferSchemaType<typeof gallerySchema>;

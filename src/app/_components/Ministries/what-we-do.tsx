@@ -20,7 +20,7 @@ const IMPACTS = [
 
 function WhatWeDo() {
   return (
-    <section className="max-w-screen-2xl mx-auto px-8 py-28">
+    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 border">
       {/* heading section */}
       <div className="flex flex-col lg:flex-row gap-20 justify-between items-center">
         <div className="flex flex-col mx-auto">
