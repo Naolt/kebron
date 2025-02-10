@@ -1,5 +1,11 @@
 import React from "react";
 import Image from "next/image";
+import {
+  FadeInView,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations/motion-wrapper";
+import { Gallery } from "@/models/gallery";
 
 // Define the pattern for grid items
 type GridPattern = {
@@ -17,12 +23,6 @@ const gridPatterns: GridPattern[] = [
   { rowSpan: 2, colSpan: 1 }, // tall
   { rowSpan: 1, colSpan: 1 }, // normal
 ];
-
-type GalleryItem = {
-  _id: string;
-  title: string;
-  image: string;
-};
 
 //function GallerySkeleton() {
 //  return (
@@ -42,25 +42,25 @@ type GalleryItem = {
 //  );
 //}
 
-function PhotoGallery({ galleryItems }: { galleryItems: GalleryItem[] }) {
+function PhotoGallery({ galleryItems }: { galleryItems: Gallery[] }) {
   return (
     <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
       {/* heading section */}
-      <div className="flex flex-col mx-auto items-center max-w-[768px]">
+      <FadeInView className="flex flex-col mx-auto items-center max-w-[768px]">
         <h1 className="text-center">Photo Gallery</h1>
         <p className="text-center mt-6">
           {`Explore our collection of photos that capture the spirit of our community.`}
         </p>
-      </div>
+      </FadeInView>
       {/* gallery section */}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full mt-20">
+      <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full mt-20">
         {galleryItems.map((photo, index) => {
           const pattern = gridPatterns[index % gridPatterns.length];
 
           return (
-            <div
-              key={photo._id}
+            <StaggerItem
+              key={photo.publicId}
               className="relative overflow-hidden rounded-lg transition-transform hover:scale-[1.02] ease-in-out duration-300"
               style={{
                 gridRow: `span ${pattern.rowSpan}`,
@@ -75,10 +75,10 @@ function PhotoGallery({ galleryItems }: { galleryItems: GalleryItem[] }) {
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
-            </div>
+            </StaggerItem>
           );
         })}
-      </div>
+      </StaggerContainer>
     </section>
   );
 }

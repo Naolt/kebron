@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { EyeIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -48,9 +49,11 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
             </BreadcrumbList>
           </Breadcrumb>
 
-          <Button variant="default" className="ml-auto">
-            <EyeIcon /> View Site
-          </Button>
+          <Link href="/" className="ml-auto">
+            <Button variant="default" className="ml-auto">
+              <EyeIcon /> View Site
+            </Button>
+          </Link>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
       </SidebarInset>

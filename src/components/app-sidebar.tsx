@@ -20,6 +20,7 @@ import {
   VideotapeIcon,
 } from "lucide-react";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 // This is sample data.
 const data = {
@@ -37,8 +38,8 @@ const data = {
     },
     {
       icon: <VideotapeIcon />,
-      title: "Webinars",
-      url: "/admin/webinars",
+      title: "Live-streams",
+      url: "/admin/livestreams",
     },
     {
       icon: <ContactIcon />,
@@ -70,9 +71,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarRail />
       <SidebarFooter>
-        <Button>
-          <EyeIcon /> View Site
-        </Button>
+        <Link href="/" className="w-full">
+          <Button className="w-full">
+            <EyeIcon /> View Site
+          </Button>
+        </Link>
         <Button variant="ghost">
           <LogOut /> Log out
         </Button>

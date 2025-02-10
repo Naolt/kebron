@@ -1,8 +1,9 @@
+import { FadeInView } from "@/components/animations/motion-wrapper";
 import React from "react";
 
 function GalleryHero() {
   return (
-    <div className="max-w-screen-3xl mx-auto h-[369px] flex flex-col justify-center px-16 md:px-16 py-12 relative">
+    <FadeInView className="max-w-screen-3xl mx-auto h-[369px] flex flex-col justify-center px-16 md:px-16 py-12 relative">
       {/*<div className="absolute inset-0 bg-black/50"></div>*/}
       <span className="font-semibold  z-10">Gallery</span>
       <h1 className="text-5xl  relative z-10 max-w-[700px] mt-4 ">
@@ -12,7 +13,7 @@ function GalleryHero() {
         Discover powerful messages that strengthen our faith and unite our
         church community every week.
       </p>
-    </div>
+    </FadeInView>
   );
 }
 

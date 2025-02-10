@@ -1,10 +1,12 @@
+import { FadeInView } from "@/components/animations/motion-wrapper";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 function OurMinistries() {
   return (
-    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
+    <FadeInView className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
       <div className="flex flex-col lg:flex-row gap-8 lg:gap-2 justify-between">
         <div className="flex flex-col gap-6 lg:gap-8">
           <h2 className="text-2xl sm:text-3xl font-bold">Our Ministry</h2>
@@ -25,9 +27,11 @@ function OurMinistries() {
               generation.
             </p>
           </div>
-          <Button variant="outline" className="w-fit">
-            Join Us
-          </Button>
+          <Link href={"/donate"}>
+            <Button variant="outline" className="w-fit">
+              Join Us
+            </Button>
+          </Link>
         </div>
         <Image
           src="/ministry/our-ministry.jpg"
@@ -37,7 +41,7 @@ function OurMinistries() {
           className="w-[600px] h-[400px] sm:h-[500px] lg:h-[640px] object-cover "
         />
       </div>
-    </section>
+    </FadeInView>
   );
 }
 

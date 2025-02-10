@@ -1,23 +1,11 @@
 import Image from "next/image";
 import React from "react";
+import { FadeInView } from "@/components/animations/motion-wrapper";
+import { Contact } from "@/models/contact";
 
-async function getContactInfo() {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`
-    );
-    return response.json();
-  } catch (error) {
-    console.error("Error fetching contact person:", error);
-    return null;
-  }
-}
-
-async function ContactPerson() {
-  const contactPerson = await getContactInfo();
-
+function ContactPerson({ contact }: { contact: Contact }) {
   return (
-    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 flex justify-between items-center gap-8 flex-wrap">
+    <FadeInView className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 flex justify-between items-center gap-8 flex-wrap">
       {/* header */}
       <div className="flex flex-col gap-6 w-full max-w-[616px]">
         <h2>{`Welcome to Kebron International Church!`}</h2>
@@ -40,13 +28,13 @@ async function ContactPerson() {
       </div>
       {/* right */}
       <Image
-        src={contactPerson?.contactPersonImage || ""}
+        src={contact?.contactPersonImage || ""}
         alt="Contact Us"
         width={616}
         height={640}
         className="w-full max-w-[616px] h-[640px] object-cover"
       />
-    </section>
+    </FadeInView>
   );
 }
 

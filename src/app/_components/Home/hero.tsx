@@ -15,7 +15,7 @@ function Hero() {
     }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(timer);
-  }, []);
+  }, [IMAGES.length]);
 
   return (
     <div className="max-w-screen-3xl mx-auto relative h-[710px] overflow-hidden">

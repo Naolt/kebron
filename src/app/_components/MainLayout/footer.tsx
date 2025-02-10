@@ -5,23 +5,17 @@ import Link from "next/link";
 import React from "react";
 import { LINKS, MORE_LINKS } from "./header";
 import { Contact } from "@/models/contact";
+import {
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations/motion-wrapper";
+import { getContactPerson } from "@/actions/action";
 
 const FOOTER_LINKS = [...LINKS, ...MORE_LINKS];
 
-async function getContactInfo() {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`
-    );
-    return response.json();
-  } catch (error) {
-    console.error("Error fetching contact person:", error);
-    return null;
-  }
-}
-
 async function Footer() {
-  const contactInfo: Contact = await getContactInfo();
+  const contactInfo: Contact = await getContactPerson();
+
   return (
     <footer className=" py-28 px-16 bg-[rgba(240,242,251,1)]">
       <div className="max-w-screen-3xl mx-auto flex flex-wrap justify-between gap-6">
@@ -55,26 +49,22 @@ async function Footer() {
         </div>
         {/* Right */}
         <div className="flex flex-col-reverse ">
-          <div className="grid grid-cols-2 gap-x-12">
+          <StaggerContainer className="grid grid-cols-2 gap-x-12">
             {FOOTER_LINKS.slice(0, 5).map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="text-sm font-semibold py-2"
-              >
-                {link.label}
-              </Link>
+              <StaggerItem key={link.label}>
+                <Link href={link.href} className="text-sm font-semibold py-2">
+                  {link.label}
+                </Link>
+              </StaggerItem>
             ))}
             {FOOTER_LINKS.slice(5).map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="text-sm font-semibold py-2"
-              >
-                {link.label}
-              </Link>
+              <StaggerItem key={link.label}>
+                <Link href={link.href} className="text-sm font-semibold py-2">
+                  {link.label}
+                </Link>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </div>
       <Separator className="mt-20 mb-8" />

@@ -62,7 +62,11 @@ const AddSermonTriggerButton = (
   </div>
 );
 
-function FormContent() {
+interface FormContentProps {
+  onSuccess: () => void;
+}
+
+function FormContent({ onSuccess }: FormContentProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<FormValues>({
@@ -107,9 +111,7 @@ function FormContent() {
       toast.success("Sermon added successfully");
       form.reset();
       setPreviewUrl(null);
-
-      // Optionally trigger a refresh of the sermons list
-      // onSuccess?.();
+      onSuccess();
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Failed to add sermon");
@@ -176,7 +178,11 @@ function FormContent() {
   );
 }
 
-export function AddSermonForm() {
+interface AddSermonFormProps {
+  onSuccess: () => void;
+}
+
+export function AddSermonForm({ onSuccess }: AddSermonFormProps) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
@@ -190,7 +196,7 @@ export function AddSermonForm() {
               Add a new sermon video from YouTube or Facebook
             </DialogDescription>
           </DialogHeader>
-          <FormContent />
+          <FormContent onSuccess={onSuccess} />
         </DialogContent>
       </Dialog>
     );
@@ -207,7 +213,7 @@ export function AddSermonForm() {
           </DrawerDescription>
         </DrawerHeader>
         <div className="p-4">
-          <FormContent />
+          <FormContent onSuccess={onSuccess} />
         </div>
       </DrawerContent>
     </Drawer>

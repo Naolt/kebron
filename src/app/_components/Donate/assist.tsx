@@ -1,9 +1,14 @@
+import {
+  FadeInView,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations/motion-wrapper";
 import Image from "next/image";
 import React from "react";
 
 function Assist() {
   return (
-    <section className="max-w-screen-3xl mx-auto px-16 py-20">
+    <FadeInView className="max-w-screen-3xl mx-auto px-16 py-20">
       <div className="flex flex-col mx-auto items-center">
         <span className="font-semibold">Engage</span>
         <h1 className="text-center">Ways to Give</h1>
@@ -14,7 +19,7 @@ function Assist() {
 
       {/* cards */}
       <Cards />
-    </section>
+    </FadeInView>
   );
 }
 
@@ -57,9 +62,12 @@ const CARD_DATA = [
 
 function Cards() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+    <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
       {CARD_DATA.map((card, index) => (
-        <div key={index} className="flex flex-col gap-4 border border-gray-900">
+        <StaggerItem
+          key={index}
+          className="flex flex-col gap-4 border border-gray-900"
+        >
           {card.image && (
             <Image
               src={card.image}
@@ -81,9 +89,9 @@ function Cards() {
               <span>→</span>
             </a>
           </div>
-        </div>
+        </StaggerItem>
       ))}
-    </div>
+    </StaggerContainer>
   );
 }
 

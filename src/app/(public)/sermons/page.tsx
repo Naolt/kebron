@@ -1,15 +1,19 @@
 import React from "react";
 import SermonsHero from "../../_components/Sermons/sermons-hero";
 import OurSermons from "../../_components/Sermons/our-sermons";
-import OurWebinars from "../../_components/Sermons/our-webinars";
 import JoinUs from "../../_components/Sermons/join-us";
+import { Contact } from "@/models/contact";
+import OurLiveStream from "../../_components/Sermons/our-livestreams";
+import { getContactPerson } from "@/actions/action";
 
-function SermonsPage() {
+async function SermonsPage() {
+  const contactInfo: Contact = await getContactPerson();
+
   return (
     <div className="w-full">
       <SermonsHero />
-      <OurSermons />
-      <OurWebinars />
+      <OurSermons contactInfo={contactInfo} />
+      <OurLiveStream contactInfo={contactInfo} />
       <JoinUs />
     </div>
   );

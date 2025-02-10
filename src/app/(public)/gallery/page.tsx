@@ -1,27 +1,15 @@
 import React from "react";
 import GalleryHero from "../../_components/Gallery/gallery-hero";
 import PhotoGallery from "../../_components/Gallery/photo-gallery";
-
-async function getGalleryItems() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL}/api/gallery`,
-    {
-      next: {
-        tags: ["gallery"],
-        revalidate: 60, // Cache for 60 seconds
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch gallery items");
-  }
-
-  return response.json();
-}
+import { getGallery } from "@/actions/action";
+import { Gallery } from "@/models/gallery";
 
 export default async function PublicGalleryPage() {
-  const galleryItems = await getGalleryItems();
+  const galleryItems: Gallery[] | null = await getGallery();
+
+  if (!galleryItems) {
+    return <div>No gallery items found</div>;
+  }
 
   return (
     <div className="w-full">

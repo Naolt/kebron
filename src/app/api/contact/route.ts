@@ -19,12 +19,15 @@ export async function POST(request: Request) {
     let imageUrl = "";
     let publicId = "";
     const imageFile = data.get("contactPersonImage") as File;
-    
+
     if (imageFile) {
       const bytes = await imageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      
-      const uploadResponse = await new Promise((resolve, reject) => {
+
+      const uploadResponse: {
+        secure_url: string;
+        public_id: string;
+      } = await new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
             resource_type: "image",
@@ -33,13 +36,20 @@ export async function POST(request: Request) {
           },
           (error, result) => {
             if (error) reject(error);
-            else resolve(result);
+            else if (result) {
+              resolve({
+                secure_url: result.secure_url,
+                public_id: result.public_id,
+              });
+            } else {
+              reject(new Error("Upload failed"));
+            }
           }
         );
 
         uploadStream.write(buffer);
         uploadStream.end();
-      }) as any;
+      });
 
       imageUrl = uploadResponse.secure_url;
       publicId = uploadResponse.public_id;
@@ -89,4 +99,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}

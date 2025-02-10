@@ -1,8 +1,14 @@
+import {
+  FadeInView,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations/motion-wrapper";
 import { Button } from "@/components/ui/button";
 import { Facebook } from "lucide-react";
 import { Linkedin } from "lucide-react";
 import { Twitter } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 type TeamMemberType = {
@@ -185,40 +191,47 @@ function OurTeam() {
   return (
     <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-8 sm:py-12 lg:py-20">
       {/* heading section */}
-      <div className="flex flex-col items-center max-w-2xl mx-auto">
-        <span className="font-semibold text-sm sm:text-base">Together</span>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl text-center mt-2 sm:mt-4">
-          Our Team
-        </h1>
-        <p className="text-center mt-3 sm:mt-4 text-sm sm:text-base">
-          Meet the dedicated individuals behind our community.
-        </p>
-      </div>
+
+      <FadeInView>
+        <div className="flex flex-col items-center max-w-2xl mx-auto">
+          <span className="font-semibold text-sm sm:text-base">Together</span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl text-center mt-2 sm:mt-4">
+            Our Team
+          </h1>
+          <p className="text-center mt-3 sm:mt-4 text-sm sm:text-base">
+            Meet the dedicated individuals behind our community.
+          </p>
+        </div>
+      </FadeInView>
 
       {/* team members list */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mt-12 sm:mt-16">
+      <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mt-12 sm:mt-16">
         {TEAM_MEMBERS.map((member) => (
           <TeamMember key={member.fullName} member={member} />
         ))}
-      </div>
+      </StaggerContainer>
 
       {/* join our team */}
-      <div className="flex flex-col items-center mt-12 sm:mt-16 lg:mt-20">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl">Join Our Team!</h2>
-        <p className="mt-3 sm:mt-4 text-center text-sm sm:text-base">
-          Join our team and make a difference today!
-        </p>
-        <Button variant="outline" className="mt-4 sm:mt-6">
-          Get in Touch
-        </Button>
-      </div>
+      <FadeInView>
+        <div className="flex flex-col items-center mt-12 sm:mt-16 lg:mt-20">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl">Join Our Team!</h2>
+          <p className="mt-3 sm:mt-4 text-center text-sm sm:text-base">
+            Join our team and make a difference today!
+          </p>
+          <Link href={"/contact"}>
+            <Button variant="outline" className="mt-4 sm:mt-6">
+              Get in Touch
+            </Button>
+          </Link>
+        </div>
+      </FadeInView>
     </section>
   );
 }
 
 function TeamMember({ member }: { member: TeamMemberType }) {
   return (
-    <div className="flex flex-col gap-4">
+    <StaggerItem className="flex flex-col gap-4">
       <div className="aspect-square relative overflow-hidden">
         <Image
           src={member.picture}
@@ -252,7 +265,7 @@ function TeamMember({ member }: { member: TeamMemberType }) {
           </a>
         ))}
       </div>
-    </div>
+    </StaggerItem>
   );
 }
 

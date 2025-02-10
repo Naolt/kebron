@@ -1,34 +1,50 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
+import {
+  FadeInView,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations/motion-wrapper";
 
 function OurProgram() {
   return (
     <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
       {/* heading section */}
-      <div className="flex flex-col">
-        <span className="font-semibold">Welcome</span>
-        <h1 className="mt-4 max-w-[850px]">
-          Here is our weekly schedule of services and programs
-        </h1>
-        <p className="max-w-[800px] mt-6">
-          {`At our church, we offer a variety of activities designed to foster
-          spiritual growth and community connection. From worship services to
-          outreach programs, there's something for everyone.how`}
-        </p>
-        <div className="flex gap-4 mt-8">
-          <Button variant={"outline"}>Learn More</Button>
-          <Button variant={"ghost"}>
-            Join Us
-            <ChevronRight />
-          </Button>
+      <FadeInView>
+        <div className="flex flex-col">
+          <span className="font-semibold">Welcome</span>
+          <h1 className="mt-4 max-w-[850px]">
+            Here is our weekly schedule of services and programs
+          </h1>
+          <p className="max-w-[800px] mt-6">
+            {`At our church, we offer a variety of activities designed to foster
+            spiritual growth and community connection. From worship services to
+            outreach programs, there's something for everyone.`}
+          </p>
+          <div className="flex gap-4 mt-8">
+            <Link href="/about">
+              <Button variant={"outline"}>Learn More</Button>
+            </Link>
+            <Link href="/donate">
+              <Button variant={"ghost"}>
+                Join Us
+                <ChevronRight />
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
-      {/* Program list */}
-      <HorizontalProgramsList />
-      <VerticalProgramsList />
+      </FadeInView>
+
+      {/* Program lists */}
+      <StaggerContainer>
+        <HorizontalProgramsList />
+        <VerticalProgramsList />
+      </StaggerContainer>
     </section>
   );
 }
@@ -40,7 +56,7 @@ const PROGRAMS: {
 }[] = [
   {
     title: "Sunday Service",
-    description: `Sunday Worship Service Time: 9:00 AM – 11:00 AM Join us for a powerful time of worship, prayer, and a message from the Word of God.`,
+    description: `Sunday Worship ServiceTime: 9:00 AM – 11:00 AMJoin us for a powerful time of worship, prayer, and a message from the Word of God.`,
     image: "/home/sunday.jpg",
   },
   {
@@ -75,7 +91,7 @@ function HorizontalProgramsList() {
       {/* Desktop view */}
       <div className="relative hidden md:flex justify-between gap-2 items-center">
         {PROGRAMS.map((program, index) => (
-          <div key={index} className="flex flex-col w-1/5">
+          <StaggerItem key={index} className="flex flex-col w-1/5">
             {/* Image */}
             <div
               className={`relative h-[180px] flex ${
@@ -111,14 +127,17 @@ function HorizontalProgramsList() {
                 {program.description}
               </p>
             </div>
-          </div>
+          </StaggerItem>
         ))}
       </div>
 
       {/* Mobile view */}
       <div className="md:hidden flex flex-col gap-8">
         {PROGRAMS.map((program, index) => (
-          <div key={index} className="flex flex-col border border-black">
+          <StaggerItem
+            key={index}
+            className="flex flex-col border border-black"
+          >
             {/* Image */}
             <div className="relative h-[200px]">
               <Image
@@ -137,7 +156,7 @@ function HorizontalProgramsList() {
                 {program.description}
               </p>
             </div>
-          </div>
+          </StaggerItem>
         ))}
       </div>
     </div>
@@ -149,7 +168,10 @@ function VerticalProgramsList() {
     <div className="w-full mt-20 hidden md:block lg:hidden">
       <div className="max-w-4xl mx-auto px-16">
         {PROGRAMS.map((program, index) => (
-          <div key={index} className="flex gap-8 items-start mb-16 h-[180px]">
+          <StaggerItem
+            key={index}
+            className="flex gap-8 items-start mb-16 h-[180px]"
+          >
             {/* Content */}
 
             <div className="flex flex-col md:flex-row gap-8 flex-1 hfu">
@@ -190,7 +212,7 @@ function VerticalProgramsList() {
                 </p>
               </div>
             </div>
-          </div>
+          </StaggerItem>
         ))}
       </div>
     </div>

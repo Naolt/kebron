@@ -49,14 +49,18 @@ function Header() {
   return (
     <div className="max-w-screen-3xl px-4 md:px-16 py-4 w-full bg-background flex justify-between mx-auto items-center">
       {/* logo */}
-      <Image src="/logo.svg" alt="logo" width={84} height={36} />
+      <Link href="/">
+        <Image src="/logo.svg" alt="logo" width={84} height={36} />
+      </Link>
       {/* navs */}
       <div className="hidden md:block">
         <Navigation />
       </div>
       {/* buttons */}
       <div className="hidden md:block">
-        <Button>Join</Button>
+        <Link href="/donate">
+          <Button>Donate</Button>
+        </Link>
       </div>
       <MobileNavigation />
     </div>

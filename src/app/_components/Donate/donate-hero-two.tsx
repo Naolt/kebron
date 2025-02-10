@@ -1,9 +1,10 @@
+import { FadeInView } from "@/components/animations/motion-wrapper";
 import Image from "next/image";
 import React from "react";
 
 function DonateHeroTwo() {
   return (
-    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 flex justify-between items-center gap-8 flex-wrap">
+    <FadeInView className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 flex justify-between items-center gap-8 flex-wrap">
       {/* header */}
 
       <div className="flex flex-col gap-6 w-full max-w-[616px]">
@@ -40,7 +41,7 @@ function DonateHeroTwo() {
         height={640}
         className="w-full max-w-[616px] h-[640px] object-cover"
       />
-    </section>
+    </FadeInView>
   );
 }
 

@@ -1,23 +1,34 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import {
+  FadeInView,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations/motion-wrapper";
 
 function JoinUs() {
   return (
     <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
       {/* heading section */}
-      <div className="flex flex-col mx-auto items-center max-w-[800px]">
-        <span className="font-semibold">Connect</span>
-        <h1 className="text-center mt-4">
-          Experience Faith, Worship & Community
-        </h1>
-        <p className="max-w-[800px] text-center mt-4">
-          {`A place of worship, transformation, and community.`}
-        </p>
-      </div>
-      <Cards />
+      <FadeInView>
+        <div className="flex flex-col mx-auto items-center max-w-[800px]">
+          <span className="font-semibold">Connect</span>
+          <h1 className="text-center mt-4">
+            Experience Faith, Worship & Community
+          </h1>
+          <p className="max-w-[800px] text-center mt-4">
+            {`A place of worship, transformation, and community.`}
+          </p>
+        </div>
+      </FadeInView>
+
+      <StaggerContainer>
+        <Cards />
+      </StaggerContainer>
     </section>
   );
 }
@@ -62,7 +73,10 @@ function Cards() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full my-20">
       {CARDS.map((card, index) => (
-        <div className="flex flex-col  overflow-hidden border" key={index}>
+        <StaggerItem
+          className="flex flex-col  overflow-hidden border"
+          key={index}
+        >
           <div className="relative w-full h-[250px]">
             <Image
               src={card.image}
@@ -87,7 +101,7 @@ function Cards() {
               </Link>
             </div>
           </div>
-        </div>
+        </StaggerItem>
       ))}
     </div>
   );
