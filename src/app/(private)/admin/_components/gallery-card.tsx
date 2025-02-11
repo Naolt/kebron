@@ -13,6 +13,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { EditGalleryForm } from "./edit-gallery-form";
+import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 
 interface GalleryCardProps {
   item: {
@@ -22,9 +24,17 @@ interface GalleryCardProps {
   };
   onDelete: () => Promise<void>;
   onUpdate: () => Promise<void>;
+  isSelected: boolean;
+  onSelect: () => void;
 }
 
-export function GalleryCard({ item, onDelete, onUpdate }: GalleryCardProps) {
+export function GalleryCard({
+  item,
+  onDelete,
+  onUpdate,
+  isSelected,
+  onSelect,
+}: GalleryCardProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -80,7 +90,13 @@ export function GalleryCard({ item, onDelete, onUpdate }: GalleryCardProps) {
 
   return (
     <>
-      <div className="group relative aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 shadow-sm hover:shadow-md transition-all">
+      <div
+        className={cn(
+          "group relative aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 shadow-sm hover:shadow-md transition-all",
+          isSelected ? "ring-2 ring-primary ring-offset-2" : ""
+        )}
+        onClick={() => onSelect()}
+      >
         {!imageError ? (
           <Image
             src={item.image}
@@ -96,14 +112,29 @@ export function GalleryCard({ item, onDelete, onUpdate }: GalleryCardProps) {
           </div>
         )}
 
-        {/* Overlay with actions */}
+        {/* Selection overlay - always visible */}
+        {isSelected && (
+          <div className="absolute top-2 left-2 z-20">
+            <Checkbox
+              id={item._id}
+              checked={isSelected}
+              onCheckedChange={onSelect}
+              className="h-5 w-5 border-2 bg-white data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground hover:bg-white/90"
+            />
+          </div>
+        )}
+
+        {/* Actions overlay - visible on hover */}
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-4">
           <div className="flex justify-end gap-2">
             <Button
               variant="outline"
               size="icon"
               className="bg-white/10 text-white hover:bg-white/20 rounded-full"
-              onClick={() => setShowEditDialog(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowEditDialog(true);
+              }}
             >
               <Pencil className="text-white w-5 h-5" />
             </Button>
@@ -111,7 +142,10 @@ export function GalleryCard({ item, onDelete, onUpdate }: GalleryCardProps) {
               variant="outline"
               size="icon"
               className="bg-white/10 text-white hover:bg-white/20 rounded-full"
-              onClick={() => setShowDeleteDialog(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowDeleteDialog(true);
+              }}
             >
               <Trash2 className="text-white w-5 h-5" />
             </Button>

@@ -30,6 +30,8 @@ export async function POST(req: Request) {
     const title = data.get("title") as string;
     const file = data.get("image") as File;
 
+    console.log(file);
+
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
