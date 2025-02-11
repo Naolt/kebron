@@ -47,23 +47,31 @@ export const MORE_LINKS = [
 
 function Header() {
   return (
-    <div className="max-w-screen-3xl px-4 md:px-16 py-4 w-full bg-background flex justify-between mx-auto items-center">
-      {/* logo */}
-      <Link href="/">
-        <Image src="/logo.svg" alt="logo" width={84} height={36} />
-      </Link>
-      {/* navs */}
-      <div className="hidden md:block">
-        <Navigation />
-      </div>
-      {/* buttons */}
-      <div className="hidden md:block">
-        <Link href="/donate">
-          <Button>Donate</Button>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="max-w-screen-3xl px-4 md:px-16  w-full flex justify-between mx-auto items-center">
+        {/* logo */}
+        <Link href="/">
+          <Image
+            src="/logo.svg"
+            alt="logo"
+            width={1920}
+            height={1080}
+            className="w-16 h-16"
+          />
         </Link>
+        {/* navs */}
+        <div className="hidden md:block">
+          <Navigation />
+        </div>
+        {/* buttons */}
+        <div className="hidden md:block">
+          <Link href="/donate">
+            <Button>Donate</Button>
+          </Link>
+        </div>
+        <MobileNavigation />
       </div>
-      <MobileNavigation />
-    </div>
+    </header>
   );
 }
 
@@ -73,10 +81,15 @@ function MobileNavigation() {
       <DropdownMenuTrigger className="md:hidden">
         <MenuIcon />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="md:hidden w-full">
+      <DropdownMenuContent className="md:hidden w-[200px]">
         {LINKS.concat(MORE_LINKS).map((link) => (
           <Link href={link.href} key={link.href}>
-            <DropdownMenuItem key={link.href}>{link.label}</DropdownMenuItem>
+            <DropdownMenuItem
+              key={link.href}
+              className="flex justify-center items-center"
+            >
+              {link.label}
+            </DropdownMenuItem>
           </Link>
         ))}
         <DropdownMenuSeparator />

@@ -14,6 +14,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { BulkUploadDialog } from "./_components/bulk-upload-dialog";
+import { Loader2 } from "lucide-react";
 
 type GalleryItemType = {
   _id: string;
@@ -28,6 +29,10 @@ export default function GalleryPage() {
   const [selected, setSelected] = useState<GalleryItemType[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   // when the user clicks on a card, add it to the selected array, if it is already in the array, remove it
   const toggleSelection = (item: GalleryItemType) => {
     setSelected((prev) =>
@@ -47,23 +52,44 @@ export default function GalleryPage() {
 
   const fetchGalleryItems = async () => {
     try {
-      const response = await fetch("/api/gallery", {
-        next: {
-          tags: ["gallery"],
-          revalidate: 0, // Opt out of caching for admin page
-        },
-      });
+      const response = await fetch(
+        `/api/gallery?page=${currentPage}&limit=${itemsPerPage}`
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch gallery items");
       }
 
       const data = await response.json();
-      setGalleryItems(data);
+      setGalleryItems(data.items);
+      setHasMore(data.items.length === itemsPerPage);
     } catch (error) {
       console.error("Error fetching gallery items:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadMoreItems = async () => {
+    if (!hasMore) return;
+    try {
+      setIsLoadingMore(true);
+      const response = await fetch(
+        `/api/gallery?page=${currentPage + 1}&limit=${itemsPerPage}`
+      );
+
+      const data = await response.json();
+      setGalleryItems((prev) => [...prev, ...data.items]);
+      setCurrentPage(currentPage + 1);
+      setHasMore(data.items.length === itemsPerPage);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch more gallery items");
+      }
+    } catch (error) {
+      console.error("Error fetching more gallery items:", error);
+    } finally {
+      setIsLoadingMore(false);
     }
   };
 
@@ -145,6 +171,25 @@ export default function GalleryPage() {
           ))
         )}
       </div>
+      {hasMore && (
+        <div className="flex justify-center mt-4">
+          <Button
+            onClick={loadMoreItems}
+            disabled={loading || isLoadingMore}
+            variant={"outline"}
+            size={"sm"}
+          >
+            {isLoadingMore ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "Load More"
+            )}
+          </Button>
+        </div>
+      )}
       {/* delete dialog */}
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <DialogContent>

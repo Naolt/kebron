@@ -1,5 +1,8 @@
+"use client";
 import * as React from "react";
 
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -50,6 +53,13 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    router.push("/login");
+  };
+
   return (
     <Sidebar {...props}>
       <SidebarHeader className="p-6">
@@ -76,7 +86,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <EyeIcon /> View Site
           </Button>
         </Link>
-        <Button variant="ghost">
+        <Button variant="ghost" onClick={handleLogout}>
           <LogOut /> Log out
         </Button>
       </SidebarFooter>

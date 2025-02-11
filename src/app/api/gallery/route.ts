@@ -97,16 +97,40 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    await connectDB();
-    const galleryItems = await Gallery.find().sort({ createdAt: -1 });
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "2");
+    const skip = (page - 1) * limit;
 
-    return NextResponse.json(galleryItems, {
-      headers: {
-        "Cache-Control": "s-maxage=60, stale-while-revalidate",
+    await connectDB();
+
+    // Get total count for pagination
+    const total = await Gallery.countDocuments();
+
+    // Get paginated items
+    const galleryItems = await Gallery.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalPages = Math.ceil(total / limit);
+
+    return NextResponse.json(
+      {
+        items: galleryItems,
+        total,
+        currentPage: page,
+        totalPages,
+        hasMore: totalPages > page,
       },
-    });
+      {
+        headers: {
+          "Cache-Control": "s-maxage=60, stale-while-revalidate",
+        },
+      }
+    );
   } catch (error) {
     console.error("Error fetching gallery items:", error);
     return NextResponse.json(

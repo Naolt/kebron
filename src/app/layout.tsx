@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Metadata } from "next";
+import { BackToTop } from "@/components/back-to-top";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -22,7 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.className} antialiased light`}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <BackToTop />
+        </AuthProvider>
         <Toaster />
       </body>
     </html>

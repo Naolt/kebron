@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   FadeInView,
@@ -6,6 +7,8 @@ import {
   StaggerItem,
 } from "@/components/animations/motion-wrapper";
 import { Gallery } from "@/models/gallery";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 // Define the pattern for grid items
 type GridPattern = {
@@ -42,7 +45,42 @@ const gridPatterns: GridPattern[] = [
 //  );
 //}
 
-function PhotoGallery({ galleryItems }: { galleryItems: Gallery[] }) {
+function PhotoGallery({
+  initialItems,
+  totalItems,
+  itemsPerPage,
+}: {
+  initialItems: Gallery[];
+  totalItems: number;
+  itemsPerPage: number;
+}) {
+  const [items, setItems] = useState<Gallery[]>(initialItems);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(totalItems > items.length);
+
+  const loadMore = async () => {
+    if (loading) return;
+
+    try {
+      setLoading(true);
+      const nextPage = page + 1;
+      const response = await fetch(
+        `/api/gallery?page=${nextPage}&limit=${itemsPerPage}`
+      );
+      const data = await response.json();
+
+      console.log("data", data);
+      setItems((prev) => [...prev, ...data.items]);
+      setPage(nextPage);
+      setHasMore(data.items.length === itemsPerPage);
+    } catch (error) {
+      console.error("Error loading more items:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
       {/* heading section */}
@@ -55,7 +93,7 @@ function PhotoGallery({ galleryItems }: { galleryItems: Gallery[] }) {
       {/* gallery section */}
 
       <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full mt-20">
-        {galleryItems.map((photo, index) => {
+        {items.map((photo, index) => {
           const pattern = gridPatterns[index % gridPatterns.length];
 
           return (
@@ -79,6 +117,25 @@ function PhotoGallery({ galleryItems }: { galleryItems: Gallery[] }) {
           );
         })}
       </StaggerContainer>
+      {hasMore && (
+        <div className="flex justify-center mt-8">
+          <Button
+            onClick={loadMore}
+            disabled={loading}
+            variant="outline"
+            size="lg"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "Load More"
+            )}
+          </Button>
+        </div>
+      )}
     </section>
   );
 }
