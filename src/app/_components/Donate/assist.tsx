@@ -8,7 +8,7 @@ import React from "react";
 
 function Assist() {
   return (
-    <FadeInView className="max-w-screen-3xl mx-auto px-16 py-20">
+    <FadeInView className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
       <div className="flex flex-col mx-auto items-center">
         <span className="font-semibold">Engage</span>
         <h1 className="text-center">Ways to Give</h1>

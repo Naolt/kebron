@@ -1,14 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import {
-  FadeInView,
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/animations/motion-wrapper";
+import { FadeInView } from "@/components/animations/motion-wrapper";
 import { Gallery } from "@/models/gallery";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 
 // Define the pattern for grid items
 type GridPattern = {
@@ -27,23 +21,36 @@ const gridPatterns: GridPattern[] = [
   { rowSpan: 1, colSpan: 1 }, // normal
 ];
 
-//function GallerySkeleton() {
-//  return (
-//    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full mt-20">
-//      {gridPatterns.map((pattern, index) => (
-//        <div
-//          key={index}
-//          className="relative overflow-hidden rounded-lg bg-gray-200 animate-pulse"
-//          style={{
-//            gridRow: `span ${pattern.rowSpan}`,
-//            gridColumn: `span ${pattern.colSpan}`,
-//            minHeight: pattern.rowSpan === 2 ? "500px" : "250px",
-//          }}
-//        />
-//      ))}
-//    </div>
-//  );
-//}
+// First, let's uncomment and modify the GallerySkeleton component
+function GallerySkeleton({
+  currentLoaded,
+  skeletons,
+}: {
+  currentLoaded: number;
+  skeletons: number;
+}) {
+  return (
+    <>
+      {Array.from({ length: skeletons }).map((_, index) => {
+        const pattern =
+          gridPatterns[(index + currentLoaded) % gridPatterns.length];
+        return (
+          <div
+            key={index}
+            className="relative overflow-hidden bg-gray-400 rounded-lg border"
+            style={{
+              gridRow: `span ${pattern.rowSpan}`,
+              gridColumn: `span ${pattern.colSpan}`,
+              minHeight: pattern.rowSpan === 2 ? "500px" : "250px",
+            }}
+          >
+            <div className="w-full h-full animate-pulse bg-muted"></div>
+          </div>
+        );
+      })}
+    </>
+  );
+}
 
 function PhotoGallery({
   initialItems,
@@ -58,21 +65,21 @@ function PhotoGallery({
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(totalItems > items.length);
+  const loaderRef = useRef<HTMLDivElement>(null);
 
   const loadMore = async () => {
-    if (loading) return;
+    if (loading) return; // Prevent multiple calls
 
     try {
       setLoading(true);
       const nextPage = page + 1;
-      const response = await fetch(
-        `/api/gallery?page=${nextPage}&limit=${itemsPerPage}`
-      );
+
+      const url = `/api/gallery?page=${nextPage}&limit=${itemsPerPage}`;
+      const response = await fetch(url);
       const data = await response.json();
 
-      console.log("data", data);
       setItems((prev) => [...prev, ...data.items]);
-      setPage(nextPage);
+      setPage((prev) => prev + 1);
       setHasMore(data.items.length === itemsPerPage);
     } catch (error) {
       console.error("Error loading more items:", error);
@@ -80,6 +87,29 @@ function PhotoGallery({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting && hasMore && !loading) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentLoaderRef = loaderRef.current;
+    if (currentLoaderRef) {
+      observer.observe(currentLoaderRef);
+    }
+
+    return () => {
+      if (currentLoaderRef) {
+        observer.unobserve(currentLoaderRef);
+      }
+    };
+  }, [hasMore, loading]); // Re-run effect when hasMore or loading changes
 
   return (
     <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
@@ -90,52 +120,49 @@ function PhotoGallery({
           {`Explore our collection of photos that capture the spirit of our community.`}
         </p>
       </FadeInView>
+
       {/* gallery section */}
+      <div className="mt-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full border">
+          {items.map((photo, index) => {
+            const pattern = gridPatterns[index % gridPatterns.length];
+            return (
+              <div
+                key={photo.publicId}
+                className="group relative overflow-hidden rounded-lg transition-transform hover:scale-[1.02] ease-in-out duration-300 border "
+                style={{
+                  gridRow: `span ${pattern.rowSpan}`,
+                  gridColumn: `span ${pattern.colSpan}`,
+                  minHeight: pattern.rowSpan === 2 ? "500px" : "250px",
+                }}
+              >
+                <div className="absolute z-10 inset-0 bg-gradient-to-t from-black via-transparent to-transparent bg-opacity-50 p-4 flex-col justify-end gap-2 hidden group-hover:flex ease-in-out duration-300">
+                  <h4 className="text-white font-light text-ellipsis">
+                    {photo.title}
+                  </h4>
+                </div>
+                <Image
+                  src={photo.image}
+                  alt={photo.title}
+                  fill
+                  className="object-cover bg-slate-400"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
+            );
+          })}
 
-      <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full mt-20">
-        {items.map((photo, index) => {
-          const pattern = gridPatterns[index % gridPatterns.length];
-
-          return (
-            <StaggerItem
-              key={photo.publicId}
-              className="relative overflow-hidden rounded-lg transition-transform hover:scale-[1.02] ease-in-out duration-300"
-              style={{
-                gridRow: `span ${pattern.rowSpan}`,
-                gridColumn: `span ${pattern.colSpan}`,
-                minHeight: pattern.rowSpan === 2 ? "500px" : "250px",
-              }}
-            >
-              <Image
-                src={photo.image}
-                alt={photo.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            </StaggerItem>
-          );
-        })}
-      </StaggerContainer>
-      {hasMore && (
-        <div className="flex justify-center mt-8">
-          <Button
-            onClick={loadMore}
-            disabled={loading}
-            variant="outline"
-            size="lg"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Loading...
-              </>
-            ) : (
-              "Load More"
-            )}
-          </Button>
+          {loading && hasMore && (
+            <GallerySkeleton
+              currentLoaded={items.length}
+              skeletons={itemsPerPage}
+            />
+          )}
         </div>
-      )}
+
+        {/* Intersection Observer target */}
+        {hasMore && <div ref={loaderRef} className="h-4 w-full" />}
+      </div>
     </section>
   );
 }

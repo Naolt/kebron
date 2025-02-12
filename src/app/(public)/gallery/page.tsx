@@ -18,7 +18,7 @@ const getGalleryItems = async ({ itemsPerPage }: { itemsPerPage: number }) => {
   };
 };
 export default async function PublicGalleryPage() {
-  const itemsPerPage = 15;
+  const itemsPerPage = 4;
   const { initialItems, total } = await getGalleryItems({ itemsPerPage });
   if (!initialItems) {
     return <div>No gallery items found</div>;

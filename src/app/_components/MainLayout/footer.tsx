@@ -3,7 +3,7 @@ import { Facebook, Linkedin, Twitter, Youtube } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { LINKS, MORE_LINKS } from "./header";
+import { MAIN_LINKS, RESOURCE_LINKS } from "./header";
 import { Contact } from "@/models/contact";
 import {
   StaggerContainer,
@@ -11,13 +11,13 @@ import {
 } from "@/components/animations/motion-wrapper";
 import { getContactPerson } from "@/actions/action";
 
-const FOOTER_LINKS = [...LINKS, ...MORE_LINKS];
+const FOOTER_LINKS = [...MAIN_LINKS, ...RESOURCE_LINKS];
 
 async function Footer() {
   const contactInfo: Contact = await getContactPerson();
 
   return (
-    <footer className=" py-28 px-16 bg-[rgba(240,242,251,1)]">
+    <footer className=" px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 bg-[rgba(240,242,251,1)]">
       <div className="max-w-screen-3xl mx-auto flex flex-wrap justify-between gap-6">
         {/* left */}
         <div className="flex flex-col gap-6">

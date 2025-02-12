@@ -4,9 +4,6 @@ import {
   StaggerItem,
 } from "@/components/animations/motion-wrapper";
 import { Button } from "@/components/ui/button";
-import { Facebook } from "lucide-react";
-import { Linkedin } from "lucide-react";
-import { Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -16,10 +13,6 @@ type TeamMemberType = {
   fullName: string;
   role: string;
   description: string;
-  socials: {
-    icon: React.ReactNode;
-    href: string;
-  }[];
 };
 
 const TEAM_MEMBERS: TeamMemberType[] = [
@@ -28,20 +21,6 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     fullName: "John Doe",
     role: "CEO",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    socials: [
-      {
-        icon: <Facebook />,
-        href: "https://facebook.com",
-      },
-      {
-        icon: <Twitter />,
-        href: "https://twitter.com",
-      },
-      {
-        icon: <Linkedin />,
-        href: "https://linkedin.com",
-      },
-    ],
   },
   {
     picture: "https://picsum.photos/200/200",
@@ -49,60 +28,18 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     role: "Lead Pastor",
     description:
       "Dedicated to serving our community through faith and leadership.",
-    socials: [
-      {
-        icon: <Facebook />,
-        href: "https://facebook.com",
-      },
-      {
-        icon: <Twitter />,
-        href: "https://twitter.com",
-      },
-      {
-        icon: <Linkedin />,
-        href: "https://linkedin.com",
-      },
-    ],
   },
   {
     picture: "https://picsum.photos/200/200",
     fullName: "Michael Johnson",
     role: "Youth Minister",
     description: "Passionate about guiding and mentoring our young members.",
-    socials: [
-      {
-        icon: <Facebook />,
-        href: "https://facebook.com",
-      },
-      {
-        icon: <Twitter />,
-        href: "https://twitter.com",
-      },
-      {
-        icon: <Linkedin />,
-        href: "https://linkedin.com",
-      },
-    ],
   },
   {
     picture: "https://picsum.photos/200/200",
     fullName: "Sarah Williams",
     role: "Music Director",
     description: "Leading our worship through the power of music and song.",
-    socials: [
-      {
-        icon: <Facebook />,
-        href: "https://facebook.com",
-      },
-      {
-        icon: <Twitter />,
-        href: "https://twitter.com",
-      },
-      {
-        icon: <Linkedin />,
-        href: "https://linkedin.com",
-      },
-    ],
   },
   {
     picture: "https://picsum.photos/200/200",
@@ -110,80 +47,24 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     role: "Community Outreach",
     description:
       "Coordinating our efforts to serve and support our local community.",
-    socials: [
-      {
-        icon: <Facebook />,
-        href: "https://facebook.com",
-      },
-      {
-        icon: <Twitter />,
-        href: "https://twitter.com",
-      },
-      {
-        icon: <Linkedin />,
-        href: "https://linkedin.com",
-      },
-    ],
   },
   {
     picture: "https://picsum.photos/200/200",
     fullName: "Emily Davis",
     role: "Children's Ministry",
     description: "Creating engaging programs for our youngest church members.",
-    socials: [
-      {
-        icon: <Facebook />,
-        href: "https://facebook.com",
-      },
-      {
-        icon: <Twitter />,
-        href: "https://twitter.com",
-      },
-      {
-        icon: <Linkedin />,
-        href: "https://linkedin.com",
-      },
-    ],
   },
   {
     picture: "https://picsum.photos/200/200",
     fullName: "David Wilson",
     role: "Administrative Director",
     description: "Ensuring smooth operations of our church's daily activities.",
-    socials: [
-      {
-        icon: <Facebook />,
-        href: "https://facebook.com",
-      },
-      {
-        icon: <Twitter />,
-        href: "https://twitter.com",
-      },
-      {
-        icon: <Linkedin />,
-        href: "https://linkedin.com",
-      },
-    ],
   },
   {
     picture: "https://picsum.photos/200/200",
     fullName: "Lisa Anderson",
     role: "Care Ministry",
     description: "Providing pastoral care and support to our congregation.",
-    socials: [
-      {
-        icon: <Facebook />,
-        href: "https://facebook.com",
-      },
-      {
-        icon: <Twitter />,
-        href: "https://twitter.com",
-      },
-      {
-        icon: <Linkedin />,
-        href: "https://linkedin.com",
-      },
-    ],
   },
 ];
 
@@ -250,20 +131,6 @@ function TeamMember({ member }: { member: TeamMemberType }) {
             {member.role}
           </p>
         </div>
-      </div>
-      {/* socials */}
-      <div className="flex gap-4 justify-center">
-        {member.socials.map((social) => (
-          <a
-            href={social.href}
-            key={social.href}
-            className="text-muted-foreground hover:text-foreground transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {social.icon}
-          </a>
-        ))}
       </div>
     </StaggerItem>
   );

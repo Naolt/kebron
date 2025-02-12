@@ -1,56 +1,70 @@
 import { Button } from "@/components/ui/button";
+
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown, MenuIcon } from "lucide-react";
+  Users,
+  BookOpen,
+  Image as ImageIcon,
+  Heart,
+  Home,
+  Info,
+  Mail,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { MobileNavigation, Navigation } from "./navigation";
 
-export const LINKS = [
+export const MAIN_LINKS = [
   {
     label: "Home",
     href: "/",
+    icon: <Home className="w-4 h-4 mr-2" />,
   },
   {
     label: "About Us",
     href: "/about",
+    icon: <Info className="w-4 h-4 mr-2" />,
   },
   {
     label: "Contact Us",
     href: "/contact",
+    icon: <Mail className="w-4 h-4 mr-2" />,
   },
 ];
 
-export const MORE_LINKS = [
+export const RESOURCE_LINKS = [
   {
     label: "Ministries",
     href: "/ministries",
+    icon: <Users className="w-4 h-4 mr-2" />,
+    description: "Join our various ministries and activities",
   },
   {
     label: "Sermons",
     href: "/sermons",
+    icon: <BookOpen className="w-4 h-4 mr-2" />,
+    description: "Listen to our sermons and teachings",
   },
   {
     label: "Gallery",
     href: "/gallery",
+    icon: <ImageIcon className="w-4 h-4 mr-2" />,
+    description: "View our various events and activities",
   },
   {
     label: "Donate",
     href: "/donate",
+    icon: <Heart className="w-4 h-4 mr-2" />,
+    description: "Support our various activities and ministries",
   },
 ];
 
 function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="max-w-screen-3xl px-4 md:px-16  w-full flex justify-between mx-auto items-center">
+      <div className="max-w-screen-3xl px-4 sm:px-8 lg:px-16 w-full flex justify-between mx-auto items-center">
         {/* logo */}
-        <Link href="/">
+        <Link href="/" className="">
           <Image
             src="/logo.svg"
             alt="logo"
@@ -63,73 +77,18 @@ function Header() {
         <div className="hidden md:block">
           <Navigation />
         </div>
-        {/* buttons */}
+        {/* donate button */}
         <div className="hidden md:block">
           <Link href="/donate">
-            <Button>Donate</Button>
+            <Button className="gap-2">
+              <Heart className="w-4 h-4" />
+              Donate
+            </Button>
           </Link>
         </div>
         <MobileNavigation />
       </div>
     </header>
-  );
-}
-
-function MobileNavigation() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="md:hidden">
-        <MenuIcon />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="md:hidden w-[200px]">
-        {LINKS.concat(MORE_LINKS).map((link) => (
-          <Link href={link.href} key={link.href}>
-            <DropdownMenuItem
-              key={link.href}
-              className="flex justify-center items-center"
-            >
-              {link.label}
-            </DropdownMenuItem>
-          </Link>
-        ))}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Button className="w-full">Join</Button>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
-
-function Navigation() {
-  return (
-    <div className="flex gap-8">
-      {LINKS.map((link) => (
-        <Link key={link.href} href={link.href}>
-          {link.label}
-        </Link>
-      ))}
-      <MoreLinks />
-    </div>
-  );
-}
-
-function MoreLinks() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <span className="flex items-center gap-2">
-          More Links <ChevronDown />
-        </span>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {MORE_LINKS.map((link) => (
-          <Link href={link.href} key={link.href}>
-            <DropdownMenuItem key={link.href}>{link.label}</DropdownMenuItem>
-          </Link>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 }
 
