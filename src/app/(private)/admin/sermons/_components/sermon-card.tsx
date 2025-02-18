@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import {  useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { EditSermonForm, EditSermonFormValues } from "./edit-sermon-form";
+import { Sermon } from "@/models/sermon";
 
 interface SermonCardProps {
   id: string;
@@ -20,6 +21,7 @@ interface SermonCardProps {
   embedUrl: string;
   onDelete: () => Promise<void>;
   onUpdate: () => Promise<void>;
+  setSermons: React.Dispatch<React.SetStateAction<Sermon[]>>;
 }
 
 export function SermonCard({
@@ -29,6 +31,7 @@ export function SermonCard({
   embedUrl,
   onDelete,
   onUpdate,
+  setSermons,
 }: SermonCardProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -73,6 +76,18 @@ export function SermonCard({
       if (!response.ok) {
         throw new Error("Failed to update sermon");
       }
+
+      setSermons((prev: Sermon[]) =>
+        prev.map((item: Sermon) => {
+          if (item._id == id) {
+            return {
+              ...item,
+              ...data,
+            };
+          }
+          return item;
+        })
+      );
 
       toast.success("Sermon updated successfully");
       setShowEditDialog(false);

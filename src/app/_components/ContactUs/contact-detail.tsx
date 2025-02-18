@@ -7,19 +7,28 @@ import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/animations/motion-wrapper";
+import Link from "next/link";
 
 function ContactDetail({ contact }: { contact: Contact }) {
   const CONTACT_DETAIL = [
     {
       icon: <Mail />,
       label: "Email",
-      value: <span className="underline">{contact?.email}</span>,
+      value: (
+        <Link href={`mailto:${contact?.email}`} className="underline">
+          {contact?.email}
+        </Link>
+      ),
       description: "Reach as any time at",
     },
     {
       icon: <Phone />,
       label: "Phone",
-      value: <span className="underline">{contact?.phoneNumber}</span>,
+      value: (
+        <Link href={`tel:${contact?.phoneNumber}`} className="underline">
+          {contact?.phoneNumber}
+        </Link>
+      ),
       description: "Reach as any time at",
     },
     {

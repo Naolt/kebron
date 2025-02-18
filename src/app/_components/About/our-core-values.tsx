@@ -63,7 +63,7 @@ function OurCoreValues() {
         </div>
 
         {/* image section */}
-        <div className="relative aspect-[3/4] w-full lg:w-[45%] max-w-xl">
+        <div className="relative aspect-square w-full lg:w-[45%] max-w-xl">
           <Image
             src="/about/girl_praying.jpg"
             fill

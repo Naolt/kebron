@@ -1,19 +1,15 @@
 "use client";
+import { Sermon } from "@/models/sermon";
 import { SermonCard } from "./sermon-card";
 import { SermonCardSkeleton } from "./sermon-card-skeleton";
-
-interface Sermon {
-  _id: string;
-  title: string;
-  videoUrl: string;
-  embedUrl: string;
-}
 
 interface SermonsListProps {
   sermons: Sermon[];
   isLoading: boolean;
   error: string | null;
   onRefresh: () => Promise<void>;
+  itemsPerPage: number;
+  setSermons: React.Dispatch<React.SetStateAction<Sermon[]>>;
 }
 
 export function SermonsList({
@@ -21,20 +17,17 @@ export function SermonsList({
   isLoading,
   error,
   onRefresh,
+  itemsPerPage,
+  setSermons,
 }: SermonsListProps) {
-  if (isLoading) {
-    return (
-      <>
-        {Array.from({ length: 6 }).map((_, index) => (
-          <SermonCardSkeleton key={index} />
-        ))}
-      </>
-    );
-  }
-
   if (error) {
     return <div>Error: {error}</div>;
   }
+
+  const deleteFromState = async (id:string) => {
+    setSermons(sermons.filter((item) => item._id != id));
+    await onRefresh();
+  };
 
   return (
     <>
@@ -45,10 +38,15 @@ export function SermonsList({
           embedUrl={sermon.embedUrl}
           videoUrl={sermon.videoUrl}
           id={sermon._id}
-          onDelete={onRefresh}
+          onDelete={() => deleteFromState(sermon._id)}
           onUpdate={onRefresh}
+          setSermons={setSermons}
         />
       ))}
+      {isLoading &&
+        Array.from({ length: itemsPerPage }).map((_, index) => (
+          <SermonCardSkeleton key={index} />
+        ))}
     </>
   );
 }

@@ -9,12 +9,12 @@ import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/animations/motion-wrapper";
-import { getContactPerson } from "@/actions/action";
+import { getContactServer } from "@/actions/action";
 
 const FOOTER_LINKS = [...MAIN_LINKS, ...RESOURCE_LINKS];
 
 async function Footer() {
-  const contactInfo: Contact = await getContactPerson();
+  const contactInfo: Contact = await getContactServer();
 
   return (
     <footer className=" px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 bg-[rgba(240,242,251,1)]">
@@ -33,18 +33,44 @@ async function Footer() {
             <p className="text-sm font-semibold">Address:</p>
             <p className="text-sm">{contactInfo?.address}</p>
           </div>
-          <div>
-            <p className="text-sm underline">{contactInfo?.phoneNumber}</p>
+          <div className="flex flex-col">
+            <Link
+              href={`tel:${contactInfo?.phoneNumber}`}
+              className="text-sm underline "
+            >
+              {contactInfo?.phoneNumber}
+            </Link>
 
-            <p className="text-sm underline">{contactInfo?.email}</p>
+            <Link
+              href={`mailto:${contactInfo?.email}`}
+              className="text-sm underline"
+            >
+              {contactInfo?.email}
+            </Link>
           </div>
 
           {/* social links */}
           <div className="flex gap-3 mt-2">
-            {contactInfo?.socialLinks?.facebook && <Facebook />}
-            {contactInfo?.socialLinks?.youtube && <Youtube />}
-            {contactInfo?.socialLinks?.twitter && <Twitter />}
-            {contactInfo?.socialLinks?.linkedin && <Linkedin />}
+            {contactInfo?.socialLinks?.facebook && (
+              <Link href={contactInfo.socialLinks.facebook}>
+                <Facebook />
+              </Link>
+            )}
+            {contactInfo?.socialLinks?.youtube && (
+              <Link href={contactInfo.socialLinks.youtube}>
+                <Youtube />
+              </Link>
+            )}
+            {contactInfo?.socialLinks?.twitter && (
+              <Link href={contactInfo.socialLinks.twitter}>
+                <Twitter />
+              </Link>
+            )}
+            {contactInfo?.socialLinks?.linkedin && (
+              <Link href={contactInfo.socialLinks.linkedin}>
+                <Linkedin />
+              </Link>
+            )}
           </div>
         </div>
         {/* Right */}

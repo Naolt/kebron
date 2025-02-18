@@ -1,20 +1,19 @@
-import { getSermons } from "@/actions/action";
-import {
-  FadeInView,
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/animations/motion-wrapper";
+import { getSermonsServer } from "@/actions/action";
+import { FadeInView } from "@/components/animations/motion-wrapper";
 import { Button } from "@/components/ui/button";
 import { Contact } from "@/models/contact";
+import { SermonResponse } from "@/types";
 import Link from "next/link";
 import React from "react";
+import SermonList from "./sermon-list";
+
+const itemsPerPage = 2;
 
 async function OurSermons({ contactInfo }: { contactInfo: Contact }) {
-  let sermons: Sermon[] | null = await getSermons();
-
-  if (!sermons) {
-    sermons = [];
-  }
+  const sermons: SermonResponse = await getSermonsServer({
+    page: 1,
+    limit: itemsPerPage,
+  });
 
   return (
     <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
@@ -29,7 +28,12 @@ async function OurSermons({ contactInfo }: { contactInfo: Contact }) {
         </p>
       </FadeInView>
       {/*// cards*/}
-      <Cards sermons={sermons} />
+      <SermonList
+        initialItems={sermons.items}
+        totalItems={sermons.total}
+        itemsPerPage={itemsPerPage}
+        currentPage={sermons.currentPage}
+      />
       {/*//  link*/}
       <div className="w-full flex justify-center ">
         <Link href={contactInfo.socialLinks?.youtube || "#"} className="">
@@ -37,37 +41,6 @@ async function OurSermons({ contactInfo }: { contactInfo: Contact }) {
         </Link>
       </div>
     </section>
-  );
-}
-
-type Sermon = {
-  _id: string;
-  title: string;
-  videoUrl: string;
-  embedUrl: string;
-};
-
-function Cards({ sermons }: { sermons: Sermon[] }) {
-  return (
-    <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full my-20">
-      {sermons.map((sermon, index) => (
-        <StaggerItem
-          className="flex flex-col col-auto mx-auto border-2 w-full"
-          key={index}
-        >
-          {/* Video Player */}
-
-          <div className="aspect-video ">
-            <iframe
-              src={sermon.embedUrl}
-              className="w-full h-full "
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </StaggerItem>
-      ))}
-    </StaggerContainer>
   );
 }
 

@@ -4,10 +4,10 @@ import OurSermons from "../../_components/Sermons/our-sermons";
 import JoinUs from "../../_components/Sermons/join-us";
 import { Contact } from "@/models/contact";
 import OurLiveStream from "../../_components/Sermons/our-livestreams";
-import { getContactPerson } from "@/actions/action";
+import { getContactServer } from "@/actions/action";
 
 async function SermonsPage() {
-  const contactInfo: Contact = await getContactPerson();
+  const contactInfo: Contact = await getContactServer();
 
   return (
     <div className="w-full">

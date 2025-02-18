@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -12,24 +12,32 @@ interface BulkUploadFormProps {
 
 export function BulkUploadForm({ onSuccess }: BulkUploadFormProps) {
   const [files, setFiles] = useState<FileWithPath[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
   const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
-    setFiles([...acceptedFiles]);
+    // Limit the number of files if needed
+    const maxFiles = 20; // For example
+    const filesToAdd = acceptedFiles.slice(0, maxFiles);
+
+    setFiles((prev) => [...prev, ...filesToAdd]);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      "image/jpeg": [],
-      "image/png": [],
-      "image/webp": [],
-    },
-    maxSize: 5 * 1024 * 1024, // 5MB
-  });
+  // Create and manage preview URLs
+  useEffect(() => {
+    // Create new preview URLs only for files that don't have them
+    const newUrls = files.map((file) => URL.createObjectURL(file));
+    setPreviewUrls(newUrls);
+
+    // Cleanup function to revoke URLs
+    return () => {
+      newUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [files]);
 
   const removeFile = (index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
+    // Preview URLs will be updated by the useEffect
   };
 
   const handleUpload = async () => {
@@ -75,6 +83,19 @@ export function BulkUploadForm({ onSuccess }: BulkUploadFormProps) {
     }
   };
 
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: true,
+
+    accept: {
+      "image/jpeg": [],
+      "image/png": [],
+      "image/webp": [],
+    },
+    maxSize: 5 * 1024 * 1024, // 5MB
+    maxFiles: 20,
+  });
+
   return (
     <div className="space-y-4">
       <div
@@ -97,13 +118,13 @@ export function BulkUploadForm({ onSuccess }: BulkUploadFormProps) {
       </div>
 
       {files.length > 0 && (
-        <div className="space-y-4 ">
+        <div className="space-y-4">
           <div className="grid grid-cols-3 md:grid-cols-6 gap-4 max-h-[300px] overflow-y-auto overflow-x-hidden py-4 px-4">
             {files.map((file, index) => (
               <div key={index} className="relative group">
                 <div className="aspect-square relative">
                   <Image
-                    src={URL.createObjectURL(file)}
+                    src={previewUrls[index] || URL.createObjectURL(file)}
                     alt={file.name}
                     fill
                     className="object-cover rounded-lg"
@@ -122,13 +143,21 @@ export function BulkUploadForm({ onSuccess }: BulkUploadFormProps) {
             ))}
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-between">
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-gray-500">
+                {files.length} {files.length > 1 ? "images" : "image"} selected
+              </p>
+              <Button
+                variant={"outline"}
+                size={"sm"}
+                onClick={() => setFiles([])}
+              >
+                Clear
+              </Button>
+            </div>
             <Button onClick={handleUpload} disabled={isUploading}>
-              {isUploading
-                ? `Uploading ${files.length} images...`
-                : `Upload ${files.length} ${
-                    files.length > 1 ? "images" : "image"
-                  }`}
+              {isUploading ? `Uploading` : `Upload`}
             </Button>
           </div>
         </div>

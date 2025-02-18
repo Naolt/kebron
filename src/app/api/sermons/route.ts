@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import { Sermon } from "@/models/sermon";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: Request) {
   try {
@@ -14,7 +15,7 @@ export async function POST(request: Request) {
       videoId: data.get("videoId"),
       embedUrl: data.get("embedUrl"),
     });
-
+    revalidateTag("sermons");
     return NextResponse.json(sermon);
   } catch (error) {
     console.error("Error creating sermon:", error);
@@ -25,11 +26,24 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "8");
   try {
     await connectDB();
-    const sermons = await Sermon.find().sort({ createdAt: -1 });
-    return NextResponse.json(sermons);
+    const sermons = await Sermon.find()
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    console.log("From Server", sermons);
+    return NextResponse.json({
+      items: sermons,
+      total: await Sermon.countDocuments(),
+      currentPage: page,
+      hasMore: (await Sermon.countDocuments()) > page * limit,
+    });
   } catch (error) {
     console.error("Error fetching sermons:", error);
     return NextResponse.json(
@@ -48,6 +62,8 @@ export async function DELETE(request: Request) {
     if (!sermon) {
       return NextResponse.json({ error: "Sermon not found" }, { status: 404 });
     }
+
+    revalidateTag("sermons");
 
     return NextResponse.json({ message: "Sermon deleted successfully" });
   } catch (error) {

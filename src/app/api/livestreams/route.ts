@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import { Livestream } from "@/models/livestream";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: Request) {
   try {
@@ -15,6 +16,7 @@ export async function POST(request: Request) {
       embedUrl: data.get("embedUrl"),
     });
 
+    revalidateTag("livestreams");
     return NextResponse.json(livestream);
   } catch (error) {
     console.error("Error creating livestream:", error);
@@ -25,11 +27,26 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "6");
+
   try {
     await connectDB();
-    const livestreams = await Livestream.find().sort({ createdAt: -1 });
-    return NextResponse.json(livestreams);
+    const livestreams = await Livestream.find()
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const total = await Livestream.countDocuments();
+
+    return NextResponse.json({
+      items: livestreams,
+      total,
+      currentPage: page,
+      itemsPerPage: limit,
+    });
   } catch (error) {
     console.error("Error fetching livestreams:", error);
     return NextResponse.json(
@@ -52,6 +69,7 @@ export async function DELETE(request: Request) {
       );
     }
 
+    revalidateTag("livestreams");
     return NextResponse.json({ message: "Livestream deleted successfully" });
   } catch (error) {
     console.error("Error deleting livestream:", error);

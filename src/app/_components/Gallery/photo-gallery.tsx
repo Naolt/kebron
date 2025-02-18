@@ -56,13 +56,15 @@ function PhotoGallery({
   initialItems,
   totalItems,
   itemsPerPage,
+  currentPage,
 }: {
   initialItems: Gallery[];
   totalItems: number;
   itemsPerPage: number;
+  currentPage: number;
 }) {
   const [items, setItems] = useState<Gallery[]>(initialItems);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(currentPage);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(totalItems > items.length);
   const loaderRef = useRef<HTMLDivElement>(null);
@@ -142,7 +144,7 @@ function PhotoGallery({
                   </h4>
                 </div>
                 <Image
-                  src={photo.image}
+                  src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_1080,q_auto,f_auto/${photo.publicId}`}
                   alt={photo.title}
                   fill
                   className="object-cover bg-slate-400"

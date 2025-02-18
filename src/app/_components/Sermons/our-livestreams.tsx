@@ -1,20 +1,23 @@
-import { getLiveStream } from "@/actions/action";
+import { getLiveStreamServer } from "@/actions/action";
 import {
   FadeInView,
-  StaggerContainer,
-  StaggerItem,
 } from "@/components/animations/motion-wrapper";
 import { Button } from "@/components/ui/button";
 import { Contact } from "@/models/contact";
 import Link from "next/link";
 import React from "react";
+import { LiveStreamResponse } from "@/types";
+import LivestreamList from "./livestream-list";
+
+const itemsPerPage = 6;
 
 async function OurLiveStream({ contactInfo }: { contactInfo: Contact }) {
-  let livestreams: Livestream[] | null = await getLiveStream();
+  const livestreams: LiveStreamResponse = await getLiveStreamServer({
+    page: 1,
+    limit: itemsPerPage,
+  });
 
-  if (!livestreams) {
-    livestreams = [];
-  }
+
 
   return (
     <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
@@ -34,39 +37,13 @@ async function OurLiveStream({ contactInfo }: { contactInfo: Contact }) {
           </Link>
         </FadeInView>
       </div>
-      <Cards livestreams={livestreams} />
+      <LivestreamList
+        initialItems={livestreams.items}
+        totalItems={livestreams.total}
+        itemsPerPage={itemsPerPage}
+        currentPage={livestreams.currentPage}
+      />
     </section>
-  );
-}
-
-type Livestream = {
-  _id: string;
-  title: string;
-  videoUrl: string;
-  embedUrl: string;
-};
-
-function Cards({ livestreams }: { livestreams: Livestream[] }) {
-  return (
-    <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full my-20">
-      {livestreams.map((livestream, index) => (
-        <StaggerItem
-          className="flex flex-col col-auto mx-auto border-2 w-full"
-          key={index}
-        >
-          {/* Video Player */}
-
-          <div className="aspect-video ">
-            <iframe
-              src={livestream.embedUrl}
-              className="w-full h-full "
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </StaggerItem>
-      ))}
-    </StaggerContainer>
   );
 }
 

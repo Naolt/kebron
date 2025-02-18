@@ -116,21 +116,13 @@ export async function GET(req: Request) {
       .limit(limit);
 
     const totalPages = Math.ceil(total / limit);
-
-    return NextResponse.json(
-      {
-        items: galleryItems,
-        total,
-        currentPage: page,
-        totalPages,
-        hasMore: totalPages > page,
-      },
-      {
-        headers: {
-          "Cache-Control": "s-maxage=60, stale-while-revalidate",
-        },
-      }
-    );
+    return NextResponse.json({
+      items: galleryItems,
+      total,
+      currentPage: page,
+      totalPages,
+      hasMore: totalPages > page,
+    });
   } catch (error) {
     console.error("Error fetching gallery items:", error);
     return NextResponse.json(

@@ -15,18 +15,14 @@ import {
 } from "@/components/ui/dialog";
 import { BulkUploadDialog } from "./_components/bulk-upload-dialog";
 import { Loader2 } from "lucide-react";
+import { Gallery } from "@/models/gallery";
 
-type GalleryItemType = {
-  _id: string;
-  title: string;
-  alt: string;
-  image: string;
-};
+
 
 export default function GalleryPage() {
-  const [galleryItems, setGalleryItems] = useState<GalleryItemType[]>([]);
+  const [galleryItems, setGalleryItems] = useState<Gallery[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState<GalleryItemType[]>([]);
+  const [selected, setSelected] = useState<Gallery[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,7 +30,7 @@ export default function GalleryPage() {
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   // when the user clicks on a card, add it to the selected array, if it is already in the array, remove it
-  const toggleSelection = (item: GalleryItemType) => {
+  const toggleSelection = (item: Gallery) => {
     setSelected((prev) =>
       prev.includes(item)
         ? prev.filter((i) => i._id !== item._id)
@@ -109,6 +105,7 @@ export default function GalleryPage() {
       }
 
       toast.success("Selected images deleted successfully");
+      setShowDeleteDialog(false);
       setSelected([]);
       await fetchGalleryItems();
     } catch (error) {

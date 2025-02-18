@@ -27,10 +27,10 @@ function Ministries() {
 const CARDS = [
   {
     image: "/home/live.JPG",
-    title: "🎥 Livestream Ministry",
+    title: "Livestream Ministry",
     description:
       "Join us from anywhere in the world through our high-quality livestream services.",
-
+    icon: "🎥",
     link: {
       text: "Learn More",
       href: "/ministries",
@@ -38,10 +38,11 @@ const CARDS = [
   },
 
   {
-    image: "/home/hero3.JPG",
-    title: "Kids’ Ministry",
+    image: "/ministry/kids.jpg",
+    title: "Children's Ministry",
     description:
       "We are passionate about raising the next generation in Christ.",
+    icon: "👶",
     link: {
       text: "Watch Now",
       href: "/sermons",
@@ -52,7 +53,8 @@ const CARDS = [
     image: "/home/wedding.JPG",
     title: "Outreach Programs",
     description:
-      "As a church, we are dedicated to making a lasting impact by providing essential support, sharing God’s love, and spreading the Gospel through outreach, evangelism, and missions across Germany and beyond.",
+      "As a church, we are dedicated to making a lasting impact by providing essential support, sharing God's love, and spreading the Gospel through outreach, evangelism, and missions across Germany and beyond.",
+    icon: "🌍",
     link: {
       text: "View Gallery",
       href: "/gallery",
@@ -77,7 +79,8 @@ function Cards() {
             />
           </div>
           <div className="flex flex-col flex-1 p-6">
-            <h3 className="text-2xl font-semibold text-center mb-4">
+            <h3 className="text-2xl font-semibold text-center mb-4 flex items-center justify-center gap-2">
+              {card.icon}
               {card.title}
             </h3>
             <p className="text-center text-gray-600 flex-1 mb-6">

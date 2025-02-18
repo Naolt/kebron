@@ -31,4 +31,8 @@ const sermonSchema = new mongoose.Schema({
 export const Sermon =
   mongoose.models.Sermon || mongoose.model("Sermon", sermonSchema);
 
-export type Sermon = InferSchemaType<typeof sermonSchema>;
+type InitialSermon = InferSchemaType<typeof sermonSchema>;
+
+export type Sermon = InitialSermon & {
+  _id: string;
+};

@@ -15,13 +15,10 @@ import {
 import { EditGalleryForm } from "./edit-gallery-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
+import { Gallery } from "@/models/gallery";
 
 interface GalleryCardProps {
-  item: {
-    _id: string;
-    title: string;
-    image: string;
-  };
+  item: Gallery;
   onDelete: () => Promise<void>;
   onUpdate: () => Promise<void>;
   isSelected: boolean;
@@ -99,7 +96,7 @@ export function GalleryCard({
       >
         {!imageError ? (
           <Image
-            src={item.image}
+            src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_1080,q_auto,f_auto/${item.publicId}`}
             alt={item.title}
             fill
             className="object-cover"

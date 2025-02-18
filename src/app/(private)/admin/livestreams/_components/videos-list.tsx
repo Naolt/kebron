@@ -1,19 +1,15 @@
 "use client";
+import { Livestream } from "@/models/livestream";
 import { VideoCard } from "./video-card";
 import { VideoCardSkeleton } from "./video-card-skeleton";
 
-interface Video {
-  _id: string;
-  title: string;
-  videoUrl: string;
-  embedUrl: string;
-}
-
 interface VideosListProps {
-  videos: Video[];
+  videos: Livestream[];
   isLoading: boolean;
   error: string | null;
   onRefresh: () => Promise<void>;
+  itemsPerPage: number;
+  setVideos: React.Dispatch<React.SetStateAction<Livestream[]>>
 }
 
 export function VideosList({
@@ -21,19 +17,17 @@ export function VideosList({
   isLoading,
   error,
   onRefresh,
+  setVideos,
+  itemsPerPage = 8,
 }: VideosListProps) {
-  if (isLoading) {
-    return (
-      <>
-        {Array.from({ length: 6 }).map((_, index) => (
-          <VideoCardSkeleton key={index} />
-        ))}
-      </>
-    );
-  }
-
   if (error) {
     return <div>Error: {error}</div>;
+  }
+
+  const handleStateDelete = async (id: string) => {
+    const newVideos = videos.filter((video) => video._id !== id);
+    setVideos(newVideos);
+    await onRefresh();
   }
 
   return (
@@ -41,14 +35,17 @@ export function VideosList({
       {videos.map((video) => (
         <VideoCard
           key={video._id}
-          title={video.title}
-          embedUrl={video.embedUrl}
-          videoUrl={video.videoUrl}
-          id={video._id}
-          onDelete={onRefresh}
+          video={video}
+          onDelete={() => handleStateDelete(video._id)}
           onUpdate={onRefresh}
+          setVideos={setVideos}
+
         />
       ))}
+      {isLoading &&
+        Array.from({ length: itemsPerPage }).map((_, index) => (
+          <VideoCardSkeleton key={index} />
+        ))}
     </>
   );
 }

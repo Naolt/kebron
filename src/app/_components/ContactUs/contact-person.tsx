@@ -37,7 +37,7 @@ function ContactPerson({ contact }: { contact: Contact }) {
             alt="Contact Us"
             width={616}
             height={640}
-            className="w-full h-[400px] lg:h-[640px] object-cover rounded-lg"
+            className="w-full h-[400px] lg:h-[640px] object-cover"
           />
         </div>
       </div>

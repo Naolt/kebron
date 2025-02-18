@@ -12,23 +12,20 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { EditVideoForm, EditVideoFormValues } from "./edit-video-form";
+import { Livestream } from "@/models/livestream";
 
 interface VideoCardProps {
-  id: string;
-  title: string;
-  videoUrl: string;
-  embedUrl: string;
+  video: Livestream;
   onDelete: () => Promise<void>;
   onUpdate: () => Promise<void>;
+  setVideos: React.Dispatch<React.SetStateAction<Livestream[]>>
 }
 
 export function VideoCard({
-  id,
-  title,
-  videoUrl,
-  embedUrl,
+  video: { title, embedUrl, videoUrl, _id: id },
   onDelete,
   onUpdate,
+  setVideos,
 }: VideoCardProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -73,6 +70,13 @@ export function VideoCard({
       if (!response.ok) {
         throw new Error("Failed to update video");
       }
+
+      // update state
+      setVideos((videos: Livestream[]) => {
+        return videos.map((video: Livestream) => 
+          video._id === id ? { ...video, ...data } : video
+        )}
+      );  
 
       toast.success("Video updated successfully");
       setShowEditDialog(false);
@@ -135,7 +139,7 @@ export function VideoCard({
             </DialogDescription>
           </DialogHeader>
           <EditVideoForm
-            title={title}
+            title={title || ""}
             videoUrl={videoUrl}
             isUpdating={isUpdating}
             onSubmit={handleUpdate}

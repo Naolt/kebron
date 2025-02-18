@@ -10,11 +10,11 @@ function OurStory() {
           {/* left image */}
           <div className="w-full lg:w-1/2">
             <Image
-              src="/about/birthday.JPG"
+              src="/about/ourstory2.JPG"
               alt="Our Story"
               width={1920}
               height={1080}
-              className="w-full h-[400px] sm:h-[500px] lg:h-[640px] object-cover"
+              className="w-full h-[400px] sm:h-[500px] lg:h-[640px] object-cover object-right"
             />
           </div>
 

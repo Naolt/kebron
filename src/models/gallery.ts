@@ -22,4 +22,4 @@ const gallerySchema = new mongoose.Schema({
 export const Gallery =
   mongoose.models.Gallery || mongoose.model("Gallery", gallerySchema);
 
-export type Gallery = InferSchemaType<typeof gallerySchema>;
+export type Gallery = InferSchemaType<typeof gallerySchema> & { _id: string };

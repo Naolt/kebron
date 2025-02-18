@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const livestreamSchema = new mongoose.Schema(
   {
@@ -30,3 +30,8 @@ const livestreamSchema = new mongoose.Schema(
 
 export const Livestream =
   mongoose.models.Livestream || mongoose.model("Livestream", livestreamSchema);
+
+export type Livestream = InferSchemaType<typeof livestreamSchema> & {
+  _id: string;
+};
+

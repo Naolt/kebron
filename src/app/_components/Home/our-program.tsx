@@ -57,7 +57,7 @@ const PROGRAMS: {
   {
     title: "Sunday Service",
     description: `Sunday Worship ServiceTime: 9:00 AM – 11:00 AMJoin us for a powerful time of worship, prayer, and a message from the Word of God.`,
-    image: "/home/sunday.jpg",
+    image: "/home/preaching.webp",
   },
   {
     title: "Youth Engagement Program",
@@ -69,7 +69,7 @@ const PROGRAMS: {
     title: "Children's Ministry",
     description:
       "Every Sunday during the main service, we offer engaging children's programs that teach Biblical truths through fun and interactive activities.",
-    image: "/home/children.JPG",
+    image: "/ministry/kids.jpg",
   },
   {
     title: "Virtual Prayer",
@@ -103,7 +103,7 @@ function HorizontalProgramsList() {
                 alt={program.title}
                 width={180}
                 height={180}
-                className="object-cover"
+                className="object-cover w-[80%] h-[80%]"
               />
             </div>
 

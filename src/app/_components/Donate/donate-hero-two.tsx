@@ -38,10 +38,10 @@ function DonateHeroTwo() {
         {/* Image section */}
         <div className="w-full lg:w-1/2 max-w-[616px]">
           <Image
-            src={"/donate/community.JPG"}
+            src={"/donate/community.jpg"}
             alt="Contact Us"
-            width={616}
-            height={640}
+            width={1920}
+            height={1080}
             className="w-full h-[400px] lg:h-[640px] object-cover rounded-lg"
           />
         </div>
