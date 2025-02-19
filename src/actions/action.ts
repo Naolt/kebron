@@ -4,7 +4,6 @@ import { Gallery } from "@/models/gallery";
 import { Livestream } from "@/models/livestream";
 import { Sermon } from "@/models/sermon";
 import { SermonResponse, GalleryResponse, LiveStreamResponse } from "@/types";
-import { revalidatePath } from "next/cache";
 // Remove direct DB access and use API routes instead
 async function getGallery({ page = 1, limit = 12 }) {
   try {
@@ -102,10 +101,7 @@ async function getGalleryServer({
     createdAt: item.createdAt,
   }));
 
-  // Add revalidation
-  revalidatePath("/gallery");
-  revalidatePath("/admin");
-
+  // Remove revalidatePath calls
   return {
     items: items,
     total: await Gallery.countDocuments(),

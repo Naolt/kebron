@@ -6,6 +6,9 @@ import { getGalleryServer } from "@/actions/action";
 // Add revalidation tag
 export const revalidate = 0; // Make the page dynamic
 
+// Add dynamic rendering option
+export const dynamic = "force-dynamic";
+
 export type GalleryResponse = {
   items: Gallery[];
   total: number;
