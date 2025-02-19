@@ -4,6 +4,7 @@ import { Gallery } from "@/models/gallery";
 import { Livestream } from "@/models/livestream";
 import { Sermon } from "@/models/sermon";
 import { SermonResponse, GalleryResponse, LiveStreamResponse } from "@/types";
+import { revalidatePath } from "next/cache";
 // Remove direct DB access and use API routes instead
 async function getGallery({ page = 1, limit = 12 }) {
   try {
@@ -93,17 +94,17 @@ async function getGalleryServer({
     .skip(skip)
     .limit(limit);
 
-  const items: Gallery[] = gallery.map((item) => {
-    return {
-      _id:
- item._id,
-      title: item.title,
-      image: item.image,
-      publicId: item.publicId,
-      createdAt: item.createdAt,
+  const items: Gallery[] = gallery.map((item) => ({
+    _id: item._id,
+    title: item.title,
+    image: item.image,
+    publicId: item.publicId,
+    createdAt: item.createdAt,
+  }));
 
-    };
-  });
+  // Add revalidation
+  revalidatePath("/gallery");
+  revalidatePath("/admin");
 
   return {
     items: items,
@@ -142,7 +143,7 @@ async function getSermonsServer({
   const sermons = await Sermon.find()
     .sort({ createdAt: -1 })
     .skip(skip)
-    .limit(limit)
+    .limit(limit);
 
   const items: Sermon[] = sermons.map((item) => {
     return {
@@ -153,7 +154,6 @@ async function getSermonsServer({
       platform: item.platform,
       videoId: item.videoId,
       embedUrl: item.embedUrl,
-
     };
   });
   return {

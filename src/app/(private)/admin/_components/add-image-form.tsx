@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -76,13 +77,23 @@ function FormContent({ onSuccess }: { onSuccess: () => void }) {
       setIsLoading(true);
       setUploadError(null);
 
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("image", data.image);
+      // Upload to Cloudinary first
+      const cloudinaryResponse = await uploadToCloudinary(
+        data.image,
+        "gallery"
+      );
 
+      // Then send data to our API
       const response = await fetch("/api/gallery", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: data.title,
+          imageUrl: cloudinaryResponse.url,
+          publicId: cloudinaryResponse.publicId,
+        }),
       });
 
       if (!response.ok) {
@@ -92,9 +103,13 @@ function FormContent({ onSuccess }: { onSuccess: () => void }) {
 
       toast.success("Image uploaded successfully");
       form.reset();
+
       onSuccess();
     } catch (error) {
       console.error("Error uploading image:", error);
+      setUploadError(
+        error instanceof Error ? error.message : "Failed to upload image"
+      );
       toast.error("Failed to upload image");
     } finally {
       setIsLoading(false);

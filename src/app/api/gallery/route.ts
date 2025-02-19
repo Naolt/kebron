@@ -4,83 +4,42 @@ import { Gallery } from "@/models/gallery";
 import { v2 as cloudinary } from "cloudinary";
 import { revalidateTag } from "next/cache";
 
-// Configure body size limit for the route
+// Remove unused config since we're not handling files anymore
 export const config = {
   api: {
-    bodyParser: false, // Disable the default body parser
     responseLimit: false,
   },
 };
 
+// Remove unused cloudinary config and CloudinaryResponse type
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-type CloudinaryResponse = {
-  secure_url: string;
-  public_id: string;
-};
-
 export async function POST(req: Request) {
   try {
     await connectDB();
-    const data = await req.formData();
-    const title = data.get("title") as string;
-    const file = data.get("image") as File;
+    const data = await req.json();
+    const title = data.title;
+    const imageUrl = data.imageUrl;
+    const publicId = data.publicId;
 
-    console.log(file);
+    console.log(imageUrl);
 
-    if (!file) {
-      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
-    }
-
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    // Add timeout and chunking for large files
-    const uploadResponse = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          resource_type: "image",
-          //transformation: [
-          //  { width: 800, height: 1067, crop: "fill", quality: "auto" },
-          //],
-          format: "jpg",
-          folder: "gallery",
-          timeout: 60000, // 60 second timeout
-        },
-        (error, result) => {
-          if (error) {
-            console.error("Cloudinary upload error:", error);
-            reject(error);
-          } else {
-            resolve(result);
-          }
-        }
+    if (!imageUrl) {
+      return NextResponse.json(
+        { error: "No image URL provided" },
+        { status: 400 }
       );
-
-      // Handle upload stream errors
-      uploadStream.on("error", (error) => {
-        console.error("Upload stream error:", error);
-        reject(error);
-      });
-
-      // Upload in chunks
-      const chunkSize = 64 * 1024; // 64KB chunks
-      for (let i = 0; i < buffer.length; i += chunkSize) {
-        const chunk = buffer.slice(i, i + chunkSize);
-        uploadStream.write(chunk);
-      }
-      uploadStream.end();
-    });
+    }
 
     // Create gallery item in MongoDB
     const galleryItem = await Gallery.create({
       title,
-      image: (uploadResponse as CloudinaryResponse).secure_url,
-      publicId: (uploadResponse as CloudinaryResponse).public_id,
+      image: imageUrl,
+      publicId,
     });
 
     revalidateTag("gallery");
@@ -89,8 +48,7 @@ export async function POST(req: Request) {
     console.error("Error in POST /api/gallery:", error);
     return NextResponse.json(
       {
-        error:
-          "Upload failed. Please try again with a smaller file or better connection.",
+        error: "Upload failed. Please try again with a valid image URL.",
       },
       { status: 500 }
     );

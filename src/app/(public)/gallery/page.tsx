@@ -3,6 +3,9 @@ import GalleryHero from "../../_components/Gallery/gallery-hero";
 import PhotoGallery from "../../_components/Gallery/photo-gallery";
 import { getGalleryServer } from "@/actions/action";
 
+// Add revalidation tag
+export const revalidate = 0; // Make the page dynamic
+
 export type GalleryResponse = {
   items: Gallery[];
   total: number;

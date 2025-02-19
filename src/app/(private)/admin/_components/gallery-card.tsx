@@ -61,12 +61,17 @@ export function GalleryCard({
     }
   };
 
-  const handleUpdate = async (formData: FormData) => {
+  const handleUpdate = async (body: {
+    id: string;
+    title: string;
+    imageUrl?: string;
+    publicId?: string;
+  }) => {
     try {
       setIsUpdating(true);
       const response = await fetch(`/api/gallery/${item._id}`, {
         method: "PATCH",
-        body: formData,
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) {
@@ -194,6 +199,7 @@ export function GalleryCard({
           </DialogHeader>
           <EditGalleryForm
             id={item._id}
+            publicId={item.publicId}
             title={item.title}
             image={item.image}
             isUpdating={isUpdating}

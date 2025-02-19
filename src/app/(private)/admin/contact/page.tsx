@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { X, Upload } from "lucide-react";
 import { extractSrcFromIframe } from "@/lib/map-utils";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 const formSchema = z.object({
   contactPersonName: z.string().min(2, "Name must be at least 2 characters"),
@@ -108,7 +109,7 @@ function ImageUpload({
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept="image/*"
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];
@@ -141,7 +142,7 @@ export default function ContactPage() {
         setFormData({
           contactPersonName: data.contactPersonName,
           contactPersonImage: undefined,
-          contactPersonImageUrl: data.contactPersonImage,
+          contactPersonImageUrl: `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_1080,q_auto,f_auto/${data.publicId}`,
           phoneNumber: data.phoneNumber,
           email: data.email,
           address: data.address,
@@ -182,25 +183,41 @@ export default function ContactPage() {
   async function onSubmit(data: FormValues) {
     try {
       setIsSubmitting(true);
-      const formData = new FormData();
 
-      // Append all form fields to FormData
-      formData.append("contactPersonName", data.contactPersonName);
+      // Handle image upload first if there's a new image
+      let imageUrl = undefined;
+      let publicId = undefined;
+
       if (data.contactPersonImage) {
-        formData.append("contactPersonImage", data.contactPersonImage);
+        const cloudinaryResponse = await uploadToCloudinary(
+          data.contactPersonImage,
+          "contact"
+        );
+        imageUrl = cloudinaryResponse.url;
+        publicId = cloudinaryResponse.publicId;
       }
-      formData.append("phoneNumber", data.phoneNumber);
-      formData.append("email", data.email);
-      formData.append("address", data.address);
-      formData.append("mapEmbedLink", data.mapEmbedLink);
-      formData.append("facebookUrl", data.facebookUrl || "");
-      formData.append("youtubeUrl", data.youtubeUrl || "");
-      formData.append("linkedinUrl", data.linkedinUrl || "");
-      formData.append("twitterUrl", data.twitterUrl || "");
 
+      // Send data to API
       const response = await fetch("/api/contact", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contactPersonName: data.contactPersonName,
+          contactPersonImage: imageUrl,
+          publicId,
+          phoneNumber: data.phoneNumber,
+          email: data.email,
+          address: data.address,
+          mapEmbedLink: data.mapEmbedLink,
+          socialLinks: {
+            facebook: data.facebookUrl || "",
+            youtube: data.youtubeUrl || "",
+            linkedin: data.linkedinUrl || "",
+            twitter: data.twitterUrl || "",
+          },
+        }),
       });
 
       if (!response.ok) {

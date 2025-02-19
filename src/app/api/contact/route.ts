@@ -1,82 +1,35 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import { Contact } from "@/models/contact";
-import { v2 as cloudinary } from "cloudinary";
 import { revalidateTag } from "next/cache";
-
-cloudinary.config({
-  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+import { revalidatePath } from "next/cache";
 
 export async function POST(request: Request) {
   try {
     await connectDB();
-    const data = await request.formData();
-
-    // Upload image to Cloudinary if provided
-    let imageUrl = "";
-    let publicId = "";
-    const imageFile = data.get("contactPersonImage") as File;
-
-    if (imageFile) {
-      const bytes = await imageFile.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      const uploadResponse: {
-        secure_url: string;
-        public_id: string;
-      } = await new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-          {
-            resource_type: "image",
-            folder: "contact",
-            timeout: 60000,
-          },
-          (error, result) => {
-            if (error) reject(error);
-            else if (result) {
-              resolve({
-                secure_url: result.secure_url,
-                public_id: result.public_id,
-              });
-            } else {
-              reject(new Error("Upload failed"));
-            }
-          }
-        );
-
-        uploadStream.write(buffer);
-        uploadStream.end();
-      });
-
-      imageUrl = uploadResponse.secure_url;
-      publicId = uploadResponse.public_id;
-    }
+    const data = await request.json();
 
     // Create or update contact information
     const contact = await Contact.findOneAndUpdate(
       {}, // Empty filter to match any document
       {
-        contactPersonName: data.get("contactPersonName"),
-        contactPersonImage: imageUrl,
-        phoneNumber: data.get("phoneNumber"),
-        email: data.get("email"),
-        address: data.get("address"),
-        mapEmbedLink: data.get("mapEmbedLink"),
-        socialLinks: {
-          facebook: data.get("facebookUrl"),
-          youtube: data.get("youtubeUrl"),
-          linkedin: data.get("linkedinUrl"),
-          twitter: data.get("twitterUrl"),
-        },
-        publicId,
+        contactPersonName: data.contactPersonName,
+        contactPersonImage: data.contactPersonImage,
+        phoneNumber: data.phoneNumber,
+        email: data.email,
+        address: data.address,
+        mapEmbedLink: data.mapEmbedLink,
+        socialLinks: data.socialLinks,
+        publicId: data.publicId,
       },
       { upsert: true, new: true }
     );
 
+    // Revalidate both contact pages
     revalidateTag("contact");
+    revalidatePath("/contact");
+    revalidatePath("/admin/contact");
+
     return NextResponse.json(contact);
   } catch (error) {
     console.error("Error in POST /api/contact:", error);

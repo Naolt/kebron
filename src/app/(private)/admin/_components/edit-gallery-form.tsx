@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import Image from "next/image";
+import { uploadToCloudinary } from "@/lib/cloudinary";
+import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -40,8 +42,9 @@ interface EditGalleryFormProps {
   id: string;
   title: string;
   image: string;
+  publicId: string;
   isUpdating: boolean;
-  onSubmit: (data: FormData) => Promise<void>;
+  onSubmit: (data: any) => Promise<void>;
   onCancel: () => void;
 }
 
@@ -49,12 +52,17 @@ export function EditGalleryForm({
   id,
   title,
   image,
+  publicId,
   isUpdating,
   onSubmit,
   onCancel,
 }: EditGalleryFormProps) {
-  const [previewUrl, setPreviewUrl] = useState<string>(image);
+  const [previewUrl, setPreviewUrl] = useState<string>(
+    `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_scale,w_1080,q_auto,f_auto/${publicId}`
+  );
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<EditGalleryFormValues>({
     resolver: zodResolver(editFormSchema),
@@ -65,17 +73,35 @@ export function EditGalleryForm({
 
   const handleSubmit = async (values: EditGalleryFormValues) => {
     try {
+      setIsLoading(true);
       setUploadError(null);
-      const formData = new FormData();
-      formData.append("id", id);
-      formData.append("title", values.title);
+
+      let imageUrl = undefined;
+      let publicId = undefined;
+
+      // Only upload to Cloudinary if a new image is provided
       if (values.image) {
-        formData.append("image", values.image);
+        const cloudinaryResponse = await uploadToCloudinary(
+          values.image,
+          "gallery"
+        );
+        imageUrl = cloudinaryResponse.url;
+        publicId = cloudinaryResponse.publicId;
       }
-      await onSubmit(formData);
+
+      // Send data to API
+      await onSubmit({
+        id,
+        title: values.title,
+        ...(imageUrl && { imageUrl, publicId }),
+      });
     } catch (error) {
       console.error("Error submitting form:", error);
-      setUploadError("Failed to update image");
+      setUploadError(
+        error instanceof Error ? error.message : "Failed to update image"
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -102,11 +128,11 @@ export function EditGalleryForm({
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           render={({ field: { value, onChange, ...field } }) => (
             <FormItem>
-              <FormLabel>Image (Optional)</FormLabel>
+              <FormLabel>New Image (Optional)</FormLabel>
               <FormControl>
                 <Input
                   type="file"
-                  accept="image/jpeg,image/png,image/webp"
+                  accept="image/*"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
@@ -147,8 +173,8 @@ export function EditGalleryForm({
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={isUpdating}>
-            {isUpdating ? "Saving..." : "Save changes"}
+          <Button type="submit" disabled={isUpdating} isLoading={isLoading}>
+            {isUpdating ? "Updating..." : "Update Image"}
           </Button>
         </DialogFooter>
       </form>

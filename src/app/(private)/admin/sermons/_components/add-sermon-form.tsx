@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -139,6 +140,12 @@ function FormContent({ onSuccess }: FormContentProps) {
                   }}
                 />
               </FormControl>
+              <FormDescription>
+                For YouTube use the video URL (e.g.
+                https://www.youtube.com/watch?v=dQw4w9WgXcQ) or for Facebook use
+                the share link (e.g.
+                https://www.facebook.com/watch/?v=1234567890)
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

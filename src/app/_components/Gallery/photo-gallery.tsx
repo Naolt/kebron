@@ -125,7 +125,7 @@ function PhotoGallery({
 
       {/* gallery section */}
       <div className="mt-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
           {items.map((photo, index) => {
             const pattern = gridPatterns[index % gridPatterns.length];
             return (

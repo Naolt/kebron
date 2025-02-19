@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 interface BulkUploadFormProps {
   onSuccess: () => Promise<void>;
@@ -45,19 +46,31 @@ export function BulkUploadForm({ onSuccess }: BulkUploadFormProps) {
 
     try {
       setIsUploading(true);
-      const formData = new FormData();
 
-      files.forEach((file) => {
-        formData.append("images", file);
+      // Upload each file to Cloudinary and collect results
+      const uploadPromises = files.map(async (file) => {
         const fileName =
           file.path?.split("/")?.pop()?.split("\\")?.pop()?.split(".")[0] ||
           file.name.split(".")[0];
-        formData.append(`titles`, fileName);
+
+        const cloudinaryResponse = await uploadToCloudinary(file, "gallery");
+
+        return {
+          title: fileName,
+          imageUrl: cloudinaryResponse.url,
+          publicId: cloudinaryResponse.publicId,
+        };
       });
 
+      const uploadedFiles = await Promise.all(uploadPromises);
+
+      // Send all data to our API
       const response = await fetch("/api/gallery/bulk-upload", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ images: uploadedFiles }),
       });
 
       if (!response.ok) throw new Error("Upload failed");
@@ -156,8 +169,12 @@ export function BulkUploadForm({ onSuccess }: BulkUploadFormProps) {
                 Clear
               </Button>
             </div>
-            <Button onClick={handleUpload} disabled={isUploading}>
-              {isUploading ? `Uploading` : `Upload`}
+            <Button
+              onClick={handleUpload}
+              disabled={isUploading}
+              isLoading={isUploading}
+            >
+              {isUploading ? `Uploading...` : `Upload`}
             </Button>
           </div>
         </div>
