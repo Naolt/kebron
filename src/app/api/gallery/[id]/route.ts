@@ -18,6 +18,7 @@ export async function PATCH(
   try {
     await connectDB();
     const { id } = await params;
+
     const { title, imageUrl, publicId } = await request.json();
 
     // Find the existing gallery item

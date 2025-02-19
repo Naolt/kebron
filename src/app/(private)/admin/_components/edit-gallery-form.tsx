@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import Image from "next/image";
 import { uploadToCloudinary } from "@/lib/cloudinary";
-import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -44,14 +43,19 @@ interface EditGalleryFormProps {
   image: string;
   publicId: string;
   isUpdating: boolean;
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (data: {
+    id: string;
+    title: string;
+    imageUrl?: string;
+    publicId?: string;
+  }) => Promise<void>;
   onCancel: () => void;
 }
 
 export function EditGalleryForm({
   id,
   title,
-  image,
+  //image,
   publicId,
   isUpdating,
   onSubmit,
@@ -62,7 +66,6 @@ export function EditGalleryForm({
   );
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const form = useForm<EditGalleryFormValues>({
     resolver: zodResolver(editFormSchema),
