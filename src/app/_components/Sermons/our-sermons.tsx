@@ -9,6 +9,12 @@ import SermonList from "./sermon-list";
 
 const itemsPerPage = 2;
 
+// Add revalidation tag
+export const revalidate = 0; // Make the page dynamic
+
+// Add dynamic rendering option
+export const dynamic = "force-dynamic";
+
 async function OurSermons({ contactInfo }: { contactInfo: Contact }) {
   const sermons: SermonResponse = await getSermonsServer({
     page: 1,

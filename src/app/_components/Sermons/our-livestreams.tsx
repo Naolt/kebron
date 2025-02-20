@@ -1,14 +1,16 @@
 import { getLiveStreamServer } from "@/actions/action";
-import {
-  FadeInView,
-} from "@/components/animations/motion-wrapper";
+import { FadeInView } from "@/components/animations/motion-wrapper";
 import { Button } from "@/components/ui/button";
 import { Contact } from "@/models/contact";
 import Link from "next/link";
 import React from "react";
 import { LiveStreamResponse } from "@/types";
 import LivestreamList from "./livestream-list";
+// Add revalidation tag
+export const revalidate = 0; // Make the page dynamic
 
+// Add dynamic rendering option
+export const dynamic = "force-dynamic";
 const itemsPerPage = 6;
 
 async function OurLiveStream({ contactInfo }: { contactInfo: Contact }) {
@@ -16,8 +18,6 @@ async function OurLiveStream({ contactInfo }: { contactInfo: Contact }) {
     page: 1,
     limit: itemsPerPage,
   });
-
-
 
   return (
     <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">

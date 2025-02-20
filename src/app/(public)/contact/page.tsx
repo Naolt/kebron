@@ -7,6 +7,11 @@ import { getContactServer } from "@/actions/action";
 
 // Add tag for revalidation
 //export const dynamic = "force-dynamic";
+// Add revalidation tag
+export const revalidate = 0; // Make the page dynamic
+
+// Add dynamic rendering option
+export const dynamic = "force-dynamic";
 
 async function ContactUsPage() {
   const contact: Contact = await getContactServer();

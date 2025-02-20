@@ -13,6 +13,12 @@ import { getContactServer } from "@/actions/action";
 
 const FOOTER_LINKS = [...MAIN_LINKS, ...RESOURCE_LINKS];
 
+// Add revalidation tag
+export const revalidate = 0; // Make the page dynamic
+
+// Add dynamic rendering option
+export const dynamic = "force-dynamic";
+
 async function Footer() {
   const contactInfo: Contact = await getContactServer();
 

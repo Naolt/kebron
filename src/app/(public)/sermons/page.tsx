@@ -6,6 +6,12 @@ import { Contact } from "@/models/contact";
 import OurLiveStream from "../../_components/Sermons/our-livestreams";
 import { getContactServer } from "@/actions/action";
 
+// Add revalidation tag
+export const revalidate = 0; // Make the page dynamic
+
+// Add dynamic rendering option
+export const dynamic = "force-dynamic";
+
 async function SermonsPage() {
   const contactInfo: Contact = await getContactServer();
 
