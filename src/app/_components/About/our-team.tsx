@@ -61,7 +61,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
       "Coordinating our efforts to serve and support our local community.",
   },
   {
-    picture: "/teams/Luwam_Kasaye_Event_Organizer.jpg",
+    picture: "/teams/Luwam_Kasaye_Event_Organizer.webp",
     fullName: "Luwam Kasaye",
     role: "Event Organizer",
     description: "Ensuring smooth operations of our church's daily activities.",
