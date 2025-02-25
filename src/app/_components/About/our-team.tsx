@@ -23,7 +23,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
-    picture: "/teams/Liya_solomon_Preacher.jpg",
+    picture: "/teams/Liya_Solomon_Preacher.jpg",
     fullName: "Liya Solomon",
     role: "Preacher",
     description:
@@ -76,6 +76,12 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     picture: "/teams/Media_team.jpg",
     fullName: "Media Team",
     role: "Media Team",
+    description: "Passionate about guiding and mentoring our young members.",
+  },
+  {
+    picture: "/teams/Teddy_Abenezer.jpg",
+    fullName: "Teddy and Abenezer",
+    role: "Musicians",
     description: "Passionate about guiding and mentoring our young members.",
   },
 ];
