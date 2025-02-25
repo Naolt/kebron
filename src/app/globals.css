@@ -118,7 +118,9 @@ body {
     }
 }
 
-
+html {
+  scroll-behavior: smooth;
+}
 
 /* Semi-transparent modern scrollbar */
 ::-webkit-scrollbar {

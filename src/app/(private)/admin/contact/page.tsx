@@ -54,6 +54,7 @@ const formSchema = z.object({
     .url("Must be a valid URL")
     .optional()
     .or(z.literal("")),
+  tiktokUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -151,6 +152,7 @@ export default function ContactPage() {
           youtubeUrl: data.socialLinks.youtube,
           linkedinUrl: data.socialLinks.linkedin,
           twitterUrl: data.socialLinks.twitter,
+          tiktokUrl: data.socialLinks.tiktok,
         });
       } catch (error) {
         console.error("Error fetching contact data:", error);
@@ -172,6 +174,7 @@ export default function ContactPage() {
       youtubeUrl: "",
       linkedinUrl: "",
       twitterUrl: "",
+      tiktokUrl: "",
     },
     values: formData || undefined,
   });
@@ -216,6 +219,7 @@ export default function ContactPage() {
             youtube: data.youtubeUrl || "",
             linkedin: data.linkedinUrl || "",
             twitter: data.twitterUrl || "",
+            tiktok: data.tiktokUrl || "",
           },
         }),
       });
@@ -436,6 +440,22 @@ export default function ContactPage() {
                             <FormControl>
                               <Input
                                 placeholder="https://twitter.com/..."
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="tiktokUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>TikTok</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="https://tiktok.com/..."
                                 {...field}
                               />
                             </FormControl>

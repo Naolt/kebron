@@ -25,7 +25,7 @@ function Hero() {
       lang: "am",
     },
     {
-      image: "hero3.JPG",
+      image: "hero5.JPG",
       title: "Willkommen in der Kebron International Church",
       location: "Rüsselsheim / Deutschland",
       verse:

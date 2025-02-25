@@ -17,54 +17,66 @@ type TeamMemberType = {
 
 const TEAM_MEMBERS: TeamMemberType[] = [
   {
-    picture: "https://picsum.photos/200/200",
-    fullName: "John Doe",
-    role: "CEO",
+    picture: "/teams/Wondwossen_Tadesse_Pastor.jpg",
+    fullName: "Wondwossen Tadesse",
+    role: "Pastor",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
-    picture: "https://picsum.photos/200/200",
-    fullName: "Jane Smith",
-    role: "Lead Pastor",
+    picture: "/teams/Liya_solomon_Preacher.jpg",
+    fullName: "Liya Solomon",
+    role: "Preacher",
     description:
       "Dedicated to serving our community through faith and leadership.",
   },
   {
-    picture: "https://picsum.photos/200/200",
-    fullName: "Michael Johnson",
-    role: "Youth Minister",
-    description: "Passionate about guiding and mentoring our young members.",
-  },
-  {
-    picture: "https://picsum.photos/200/200",
-    fullName: "Sarah Williams",
-    role: "Music Director",
+    picture: "/teams/Robel_Preacher.jpg",
+    fullName: "Robel",
+    role: "Preacher",
     description: "Leading our worship through the power of music and song.",
   },
   {
-    picture: "https://picsum.photos/200/200",
-    fullName: "Robert Brown",
-    role: "Community Outreach",
+    picture: "/teams/Yoni_Preacher.jpg",
+    fullName: "Yonatan",
+    role: "Preacher",
+    description: "Providing pastoral care and support to our congregation.",
+  },
+  {
+    picture: "/teams/Yordanos_Yohannes_worship_leader.jpg",
+    fullName: "Yordanos Yohannes",
+    role: "Worship Leader",
+    description: "Providing pastoral care and support to our congregation.",
+  },
+  {
+    picture: "/teams/Efrata_Melaku_Holy_communion_organizer.jpg",
+    fullName: "Efrata Melaku",
+    role: "Holy Communion Organizer",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  },
+  {
+    picture: "/teams/Wudnesh_Adamu_Children_ministry_and_Teacher.jpg",
+    fullName: "Wudnesh Adamu",
+    role: "Children's Ministry and Teacher",
     description:
       "Coordinating our efforts to serve and support our local community.",
   },
   {
-    picture: "https://picsum.photos/200/200",
-    fullName: "Emily Davis",
-    role: "Children's Ministry",
-    description: "Creating engaging programs for our youngest church members.",
-  },
-  {
-    picture: "https://picsum.photos/200/200",
-    fullName: "David Wilson",
-    role: "Administrative Director",
+    picture: "/teams/Luwam_Kasaye_Event_Organizer.jpg",
+    fullName: "Luwam Kasaye",
+    role: "Event Organizer",
     description: "Ensuring smooth operations of our church's daily activities.",
   },
   {
-    picture: "https://picsum.photos/200/200",
-    fullName: "Lisa Anderson",
-    role: "Care Ministry",
-    description: "Providing pastoral care and support to our congregation.",
+    picture: "/teams/Sunday_Service_Opining_prayer_team.webp",
+    fullName: "Sunday Service Opening Prayer Team",
+    role: "Sunday Service Opening Prayer Team",
+    description: "Ensuring smooth operations of our church's daily activities.",
+  },
+  {
+    picture: "/teams/Media_team.jpg",
+    fullName: "Media Team",
+    role: "Media Team",
+    description: "Passionate about guiding and mentoring our young members.",
   },
 ];
 
@@ -87,8 +99,8 @@ function OurTeam() {
 
       {/* team members list */}
       <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mt-12 sm:mt-16">
-        {TEAM_MEMBERS.map((member) => (
-          <TeamMember key={member.fullName} member={member} />
+        {TEAM_MEMBERS.map((member, index) => (
+          <TeamMember key={index} member={member} />
         ))}
       </StaggerContainer>
 
@@ -124,7 +136,7 @@ function TeamMember({ member }: { member: TeamMemberType }) {
       </div>
       <div className="flex flex-col gap-2">
         <div>
-          <p className="font-semibold text-lg sm:text-xl text-center">
+          <p className="font-semibold text-lg sm:text-xl text-center max-w-[250px] mx-auto">
             {member.fullName}
           </p>
           <p className="text-sm sm:text-base text-center text-muted-foreground">

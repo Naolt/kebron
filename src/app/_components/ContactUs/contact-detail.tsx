@@ -12,27 +12,27 @@ import Link from "next/link";
 function ContactDetail({ contact }: { contact: Contact }) {
   const CONTACT_DETAIL = [
     {
-      icon: <Mail />,
+      icon: <Mail className="h-6 w-6" />,
       label: "Email",
       value: (
         <Link href={`mailto:${contact?.email}`} className="underline">
           {contact?.email}
         </Link>
       ),
-      description: "Reach as any time at",
+      description: "Reach us any time at",
     },
     {
-      icon: <Phone />,
+      icon: <Phone className="h-6 w-6" />,
       label: "Phone",
       value: (
         <Link href={`tel:${contact?.phoneNumber}`} className="underline">
           {contact?.phoneNumber}
         </Link>
       ),
-      description: "Reach as any time at",
+      description: "Reach us any time at",
     },
     {
-      icon: <Map />,
+      icon: <Map className="h-6 w-6" />,
       label: "Address",
       value: <></>,
       description: contact?.address,
@@ -40,9 +40,8 @@ function ContactDetail({ contact }: { contact: Contact }) {
   ];
 
   return (
-    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 flex flex-col gap-20">
+    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
       {/* header */}
-
       <FadeInView className="flex flex-col">
         <span className="font-semibold">Connect</span>
         <h1 className="mt-4">Contact Us</h1>
@@ -51,20 +50,35 @@ function ContactDetail({ contact }: { contact: Contact }) {
         </p>
       </FadeInView>
 
-      {/* contact detail */}
-      <div className="flex justify-between gap-8 flex-wrap">
-        <StaggerContainer className="flex flex-col gap-10">
+      {/* contact detail and map container */}
+      <div className="mt-16 lg:mt-20 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+        {/* contact details */}
+        <StaggerContainer className="flex flex-col gap-8 sm:gap-10">
           {CONTACT_DETAIL.map((item) => (
-            <StaggerItem key={item.label} className="flex flex-col gap-2">
-              {item.icon}
-              <span className="mt-2 font-bold text-xl">{item.label}</span>
-              <p>{item.description}</p>
-              {item.value}
+            <StaggerItem
+              key={item.label}
+              className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6"
+            >
+              {/* Icon container */}
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/5">
+                {React.cloneElement(item.icon, {
+                  className: "text-primary",
+                })}
+              </div>
+              {/* Content */}
+              <div className="flex flex-col gap-1">
+                <span className="font-semibold text-lg">{item.label}</span>
+                <p className="text-muted-foreground">{item.description}</p>
+                {item.value}
+              </div>
             </StaggerItem>
           ))}
         </StaggerContainer>
-        {/* map embed */}
-        <Location mapEmbedLink={contact?.mapEmbedLink} />
+
+        {/* map */}
+        <div className="w-full h-full min-h-[300px] sm:min-h-[400px] lg:min-h-0">
+          <Location mapEmbedLink={contact?.mapEmbedLink} />
+        </div>
       </div>
     </section>
   );

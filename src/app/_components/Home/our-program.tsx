@@ -13,7 +13,10 @@ import {
 
 function OurProgram() {
   return (
-    <section className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
+    <section
+      id="our-program"
+      className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28"
+    >
       {/* heading section */}
       <FadeInView>
         <div className="flex flex-col">
@@ -56,31 +59,27 @@ const PROGRAMS: {
 }[] = [
   {
     title: "Sunday Service",
-    description: `Sunday Worship ServiceTime: 9:00 AM – 11:00 AMJoin us for a powerful time of worship, prayer, and a message from the Word of God.`,
+    description: `Join us every Sunday from 3:00 PM to 6:30 PM for a powerful time of worship, prayer, and a message from the Word of God.`,
     image: "/home/preaching.webp",
   },
   {
-    title: "Youth Engagement Program",
-    description: `Our youth program is currently being planned. Stay tuned to our Facebook page for upcoming announcements.`,
-    image: "/home/youth.JPG",
-  },
-
-  {
-    title: "Children's Ministry",
-    description:
-      "Every Sunday during the main service, we offer engaging children's programs that teach Biblical truths through fun and interactive activities.",
+    title: "Sunday School",
+    description: `Our Sunday School program runs parallel to the main service from 3:00 PM to 6:30 PM, offering engaging Biblical teachings for children through fun and interactive activities.`,
     image: "/ministry/kids.jpg",
   },
   {
     title: "Virtual Prayer",
-    description:
-      "Join us every Friday from 6:00 PM to 7:00 PM as we gather together in prayer, lifting up personal needs, our church family, and global concerns to the Lord.",
+    description: `Join us every Friday from 9:00 PM to 11:00 PM as we gather together in prayer, lifting up personal needs, our church family, and global concerns to the Lord.`,
     image: "/home/prayer.JPG",
   },
   {
+    title: "Young Adults Program",
+    description: `Our Young Adults program is coming soon! Stay tuned to our announcements for more details about this exciting new ministry.`,
+    image: "/home/youth.JPG",
+  },
+  {
     title: "Outreach Programs",
-    description:
-      "Keep an eye on our Facebook Page for upcoming events, conferences, and community outreach programs.",
+    description: `We conduct quarterly outreach programs in major German cities including Frankfurt, Mainz, Rüsselsheim, Darmstadt, Duisburg, and Düsseldorf. Join us in spreading God's love throughout these communities.`,
     image: "/home/outreach.JPG",
   },
 ];

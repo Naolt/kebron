@@ -1,6 +1,8 @@
 import { FadeInView } from "@/components/animations/motion-wrapper";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 function OurStory() {
   return (
@@ -53,6 +55,9 @@ function OurStory() {
                 {` At Kebron, we welcome you with open arms—because here, you are
               family.`}
               </p>
+              <Button variant="outline">
+                <Link href="/our-pastor">Meet Our Pastor</Link>
+              </Button>
             </div>
           </div>
         </div>

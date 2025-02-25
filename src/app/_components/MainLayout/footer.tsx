@@ -58,23 +58,34 @@ async function Footer() {
           {/* social links */}
           <div className="flex gap-3 mt-2">
             {contactInfo?.socialLinks?.facebook && (
-              <Link href={contactInfo.socialLinks.facebook}>
+              <Link href={contactInfo.socialLinks.facebook} target="_blank">
                 <Facebook />
               </Link>
             )}
             {contactInfo?.socialLinks?.youtube && (
-              <Link href={contactInfo.socialLinks.youtube}>
+              <Link href={contactInfo.socialLinks.youtube} target="_blank">
                 <Youtube />
               </Link>
             )}
             {contactInfo?.socialLinks?.twitter && (
-              <Link href={contactInfo.socialLinks.twitter}>
+              <Link href={contactInfo.socialLinks.twitter} target="_blank">
                 <Twitter />
               </Link>
             )}
             {contactInfo?.socialLinks?.linkedin && (
-              <Link href={contactInfo.socialLinks.linkedin}>
+              <Link href={contactInfo.socialLinks.linkedin} target="_blank">
                 <Linkedin />
+              </Link>
+            )}
+            {/* tiktok */}
+            {contactInfo?.socialLinks?.tiktok && (
+              <Link href={contactInfo.socialLinks.tiktok} target="_blank">
+                <Image
+                  src={"/icons/tiktok.svg"}
+                  width={24}
+                  height={24}
+                  alt="tiktok"
+                />
               </Link>
             )}
           </div>

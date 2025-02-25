@@ -13,5 +13,4 @@ function AboutHero() {
     </div>
   );
 }
-
 export default AboutHero;

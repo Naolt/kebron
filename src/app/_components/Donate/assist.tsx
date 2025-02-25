@@ -1,3 +1,4 @@
+"use client";
 import {
   FadeInView,
   StaggerContainer,
@@ -5,6 +6,7 @@ import {
 } from "@/components/animations/motion-wrapper";
 import Image from "next/image";
 import React from "react";
+import { toast } from "sonner";
 
 function Assist() {
   return (
@@ -13,7 +15,7 @@ function Assist() {
         <span className="font-semibold">Engage</span>
         <h1 className="text-center">Ways to Give</h1>
         <p className="max-w-[800px] text-center mt-4">
-          {`Thank you for your generosity. Your giving transforms lives and advances God’s work!`}
+          {`Thank you for your generosity. Your giving transforms lives and advances God's work!`}
         </p>
       </div>
 
@@ -28,34 +30,56 @@ const CARD_DATA = [
     image: "/donate/online-giving.jpg",
     tagline: "Donate Today",
     title: "Online Giving",
-    description:
-      "Give securely and conveniently through our online giving platform. Your contributions make a real difference in our community.",
-
-    link: {
-      label: "Donate Now",
+    description: (
+      <div className="flex flex-col gap-2">
+        <p>
+          Give securely and conveniently through our online giving platform.
+          Your contributions make a real difference in our community.
+        </p>
+      </div>
+    ),
+    action: {
+      label: "Make a Donation",
       link: "/donate",
+      variant: "primary" as const,
     },
   },
   {
     image: "/donate/in-person-giving.jpg",
     tagline: "Give in Person",
     title: "In-Person Giving",
-    description:
-      "Visit our church during service times and make your donation directly to our offering box.",
-    link: {
-      label: "Donate Now",
-      link: "/donate",
+    description: (
+      <div className="flex flex-col gap-2">
+        <p>
+          Visit our church during service times and make your donation directly
+          to our offering box.
+        </p>
+      </div>
+    ),
+    action: {
+      label: "View Service Times",
+      link: "/#our-program",
+      variant: "secondary" as const,
     },
   },
   {
     image: "/donate/bank-transfer.jpg",
-    tagline: "Donate Today",
+    tagline: "Bank Details",
     title: "Bank Transfer",
-    description:
-      "Transfer funds directly from your bank account to our church’s designated account.",
-    link: {
-      label: "Donate Now",
-      link: "/donate",
+    description: (
+      <div className="flex flex-col gap-1">
+        <p>Bank: Kreissparkasse Gross-Gerau</p>
+        <p>IBAN: DE33 5085 2553 0117 5916 93</p>
+        <p>Account Holder: Wudnesh Adamu Shedo</p>
+      </div>
+    ),
+    action: {
+      label: "Copy Bank Details",
+      onClick: () => {
+        navigator.clipboard.writeText("DE33 5085 2553 0117 5916 93");
+        toast.success("Bank details copied to clipboard");
+      },
+      variant: "outline" as const,
     },
   },
 ];
@@ -66,28 +90,61 @@ function Cards() {
       {CARD_DATA.map((card, index) => (
         <StaggerItem
           key={index}
-          className="flex flex-col gap-4 border border-gray-900"
+          className="flex flex-col border bg-card text-card-foreground transition-all duration-300 "
         >
           {card.image && (
-            <Image
-              src={card.image}
-              alt={card.title}
-              width={400}
-              height={300}
-              className="w-full h-[200px] object-cover "
-            />
+            <div className="relative overflow-hidden">
+              <Image
+                src={card.image}
+                alt={card.title}
+                width={400}
+                height={300}
+                className="w-full h-[200px] object-cover transition-transform duration-300 hover:scale-105"
+              />
+            </div>
           )}
-          <div className="flex flex-col gap-4 p-8 h-full">
-            <span className="font-semibold">{card.tagline}</span>
-            <h3>{card.title}</h3>
-            <p>{card.description}</p>
-            <a
-              href={card.link.link}
-              className="flex items-center gap-2 mt-auto "
-            >
-              {card.link.label}
-              <span>→</span>
-            </a>
+          <div className="flex flex-col flex-1 p-6">
+            <div className="flex-1">
+              <div className="space-y-2">
+                <span className="text-sm font-medium text-primary">
+                  {card.tagline}
+                </span>
+                <h3 className="font-semibold text-xl">{card.title}</h3>
+                <div className="text-muted-foreground">{card.description}</div>
+              </div>
+            </div>
+
+            <div className="pt-6">
+              {"onClick" in card.action ? (
+                <button
+                  onClick={card.action.onClick}
+                  className={`w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2
+                    ${
+                      card.action.variant === "primary"
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                        : card.action.variant === "secondary"
+                        ? "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                        : "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                    }`}
+                >
+                  {card.action.label}
+                </button>
+              ) : (
+                <a
+                  href={card.action.link}
+                  className={`w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2
+                    ${
+                      card.action.variant === "primary"
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                        : card.action.variant === "secondary"
+                        ? "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                        : "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                    }`}
+                >
+                  {card.action.label}
+                </a>
+              )}
+            </div>
           </div>
         </StaggerItem>
       ))}

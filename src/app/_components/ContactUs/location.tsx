@@ -7,12 +7,12 @@ function Location({ mapEmbedLink }: { mapEmbedLink: string }) {
     <iframe
       src={extractSrcFromIframe(mapEmbedLink)}
       width="100%"
-      height="450"
-      style={{ border: 0 }}
+      height="100%"
+      style={{ border: 0, minHeight: "100%" }}
       allowFullScreen={true}
       loading="lazy"
       referrerPolicy="no-referrer-when-downgrade"
-      className="max-w-[832px] rounded-lg"
+      className="w-full h-full rounded-lg"
     ></iframe>
   );
 }

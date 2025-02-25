@@ -31,6 +31,7 @@ const contactSchema = new mongoose.Schema(
       youtube: String,
       linkedin: String,
       twitter: String,
+      tiktok: String,
     },
     publicId: String, // For Cloudinary image
   },

@@ -2,6 +2,8 @@ import Image from "next/image";
 import React from "react";
 import { FadeInView } from "@/components/animations/motion-wrapper";
 import { Contact } from "@/models/contact";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 function ContactPerson({ contact }: { contact: Contact }) {
   return (
@@ -27,6 +29,9 @@ function ContactPerson({ contact }: { contact: Contact }) {
               <br />
               Kebron International Church
             </p>
+            <Button variant="outline" className="w-fit">
+              <Link href="/our-pastor">Meet Our Pastor</Link>
+            </Button>
           </div>
         </div>
 

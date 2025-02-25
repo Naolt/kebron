@@ -38,7 +38,7 @@ function DonateHeroTwo() {
         {/* Image section */}
         <div className="w-full lg:w-1/2 max-w-[616px]">
           <Image
-            src={"/donate/community.jpg"}
+            src={"/donate/community1.jpg"}
             alt="Contact Us"
             width={1920}
             height={1080}

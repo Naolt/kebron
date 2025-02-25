@@ -4,7 +4,7 @@ import OurStory from "../../_components/About/our-story";
 import OurCoreValues from "../../_components/About/our-core-values";
 import OurTeam from "../../_components/About/our-team";
 
-function AboutPage() {
+export default function AboutPage() {
   return (
     <div className="w-full">
       <AboutHero />
@@ -14,5 +14,3 @@ function AboutPage() {
     </div>
   );
 }
-
-export default AboutPage;
