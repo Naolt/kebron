@@ -17,7 +17,7 @@ type TeamMemberType = {
 
 const TEAM_MEMBERS: TeamMemberType[] = [
   {
-    picture: "/teams/Wondwossen_Tadesse_Pastor.jpg",
+    picture: "/teams/Wond2.JPG",
     fullName: "Wondwossen Tadesse",
     role: "Pastor",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",

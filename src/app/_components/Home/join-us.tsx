@@ -47,7 +47,7 @@ const CARDS = [
   },
 
   {
-    image: "/home/hero3.JPG",
+    image: "/home/hero9.jpg",
     title: "Sermons & Worship",
     description:
       "Engage in spirit-filled worship and inspiring messages that bring biblical truth to life. Join us in person or watch online anytime.",
