@@ -165,7 +165,7 @@ function Footer() {
               rel="noopener noreferrer"
               className="hover:text-black transition-colors"
             >
-              AURORA HORIZON
+              Aurora Horizon Solutions
             </Link>
           </p>
         </div>

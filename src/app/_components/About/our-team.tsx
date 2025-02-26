@@ -31,7 +31,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
   },
   {
     picture: "/teams/Yoni_Preacher.jpg",
-    fullName: "Yonatan",
+    fullName: "Yoni",
     role: "Preacher",
     description: "Providing pastoral care and support to our congregation.",
   },
@@ -46,23 +46,24 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     fullName: "Yordanos Yohannes",
     role: "Worship Leader",
     description: "Providing pastoral care and support to our congregation.",
-  },{
+  },
+  {
     picture: "/teams/melody_worship_leader.jpg",
     fullName: "Melody",
     role: "Worship Leader",
-    description: "Passionate about guiding and mentoring our young members.", 
+    description: "Passionate about guiding and mentoring our young members.",
   },
   {
     picture: "/teams/zizi_worship_leader.jpg",
     fullName: "Zizi",
     role: "Worship Leader",
-    description: "Passionate about guiding and mentoring our young members.", 
+    description: "Passionate about guiding and mentoring our young members.",
   },
-   {
+  {
     picture: "/teams/worship_team.PNG",
     fullName: "Worship Team",
     role: "Worship Team",
-    description: "Passionate about guiding and mentoring our young members.", 
+    description: "Passionate about guiding and mentoring our young members.",
   },
   {
     picture: "/teams/Efrata_Melaku_Holy_communion_organizer.jpg",
@@ -85,8 +86,8 @@ const TEAM_MEMBERS: TeamMemberType[] = [
   },
   {
     picture: "/teams/Sunday_Service_Opining_prayer_team.webp",
-    fullName: "Sunday Service Opening Prayer Team",
-    role: "Sunday Service Opening Prayer Team",
+    fullName: "Prayer Team",
+    role: "Prayer Team",
     description: "Ensuring smooth operations of our church's daily activities.",
   },
   {
@@ -95,7 +96,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     role: "Media Team",
     description: "Passionate about guiding and mentoring our young members.",
   },
-    {
+  {
     picture: "/teams/Robel_Preacher.jpg",
     fullName: "Robel",
     role: "Media Team",
@@ -106,8 +107,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     fullName: "Teddy and Abenezer",
     role: "Musicians",
     description: "Passionate about guiding and mentoring our young members.",
-  }
- 
+  },
 ];
 
 function OurTeam() {

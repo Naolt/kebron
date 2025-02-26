@@ -27,7 +27,7 @@ export default function FooterLoading() {
 
         {/* Right */}
         <div className="flex flex-col-reverse">
-          <div className="grid grid-cols-2 gap-x-12">
+          <div className="grid grid-cols-2 gap-x-12 gap-y-4">
             {[1, 2, 3, 4, 5].map((i) => (
               <Skeleton key={i} className="h-4 w-24 py-2" />
             ))}
