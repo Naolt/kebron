@@ -73,8 +73,8 @@ export default function PastorStory({ contact }: { contact: Contact }) {
         </div>
 
         <div>
-          <h3 className="text-2xl font-bold">
-            A Journey of Faith in Germany 🇩🇪
+          <h3 className="text-2xl font-bold flex items-end gap-2">
+            A Journey of Faith in Germany <Image src={'/icons/germany.png'} alt="GN" width={24} height={24} />
           </h3>
           <div className="mt-4 space-y-4 text-muted-foreground">
             <p>

@@ -4,18 +4,19 @@ import {
   StaggerItem,
 } from "@/components/animations/motion-wrapper";
 import { Button } from "@/components/ui/button";
+import {  Globe2Icon, HandHelping } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const IMPACTS = [
   {
-    number: "20",
+    number: <div className="bg-gray-800 w-fit text-white p-2 rounded-full"><HandHelping size={24} /></div>,
     description:
       "Community Outreach: We are committed to serving those in need by providing food, clothing, and support to local families. Our outreach initiatives aim to meet practical needs while sharing the love of Christ.",
   },
   {
-    number: "10+",
+    number: <div className="bg-gray-800 w-fit text-white p-2 rounded-full"><Globe2Icon size={24} /></div>,
     description:
       "Global Missions: Our church is passionate about reaching the nations. We partner with missionaries and organizations worldwide to spread the message of Jesus Christ, bringing hope and support to communities in need.",
   },

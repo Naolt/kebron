@@ -30,14 +30,14 @@ const TEAM_MEMBERS: TeamMemberType[] = [
       "Dedicated to serving our community through faith and leadership.",
   },
   {
-    picture: "/teams/Robel_Preacher.jpg",
-    fullName: "Robel",
-    role: "Preacher",
-    description: "Leading our worship through the power of music and song.",
-  },
-  {
     picture: "/teams/Yoni_Preacher.jpg",
     fullName: "Yonatan",
+    role: "Preacher",
+    description: "Providing pastoral care and support to our congregation.",
+  },
+  {
+    picture: "/home/youth.JPG",
+    fullName: "Abenezer",
     role: "Preacher",
     description: "Providing pastoral care and support to our congregation.",
   },
@@ -46,6 +46,23 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     fullName: "Yordanos Yohannes",
     role: "Worship Leader",
     description: "Providing pastoral care and support to our congregation.",
+  },{
+    picture: "/teams/melody_worship_leader.jpg",
+    fullName: "Melody",
+    role: "Worship Leader",
+    description: "Passionate about guiding and mentoring our young members.", 
+  },
+  {
+    picture: "/teams/zizi_worship_leader.jpg",
+    fullName: "Zizi",
+    role: "Worship Leader",
+    description: "Passionate about guiding and mentoring our young members.", 
+  },
+   {
+    picture: "/teams/worship_team.PNG",
+    fullName: "Worship Team",
+    role: "Worship Team",
+    description: "Passionate about guiding and mentoring our young members.", 
   },
   {
     picture: "/teams/Efrata_Melaku_Holy_communion_organizer.jpg",
@@ -78,12 +95,19 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     role: "Media Team",
     description: "Passionate about guiding and mentoring our young members.",
   },
+    {
+    picture: "/teams/Robel_Preacher.jpg",
+    fullName: "Robel",
+    role: "Media Team",
+    description: "Leading our worship through the power of music and song.",
+  },
   {
     picture: "/teams/Teddy_Abenezer.jpg",
     fullName: "Teddy and Abenezer",
     role: "Musicians",
     description: "Passionate about guiding and mentoring our young members.",
-  },
+  }
+ 
 ];
 
 function OurTeam() {
