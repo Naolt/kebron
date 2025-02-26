@@ -80,14 +80,17 @@ function Footer() {
             <p className="text-sm font-semibold">Address:</p>
             <p className="text-sm">{contactInfo?.address}</p>
           </div>
-          <div className="flex flex-col">
+          <div>
+            <p className="text-sm font-semibold">Phone:</p>
             <Link
               href={`tel:${contactInfo?.phoneNumber}`}
               className="text-sm underline "
             >
               {contactInfo?.phoneNumber}
             </Link>
-
+          </div>
+          <div className="flex flex-col">
+            <p className="text-sm font-semibold">Email:</p>
             <Link
               href={`mailto:${contactInfo?.email}`}
               className="text-sm underline"
