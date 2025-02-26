@@ -1,6 +1,8 @@
+"use client";
+
 import { Contact } from "@/models/contact";
 import { Map, Mail, Phone } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Location from "./location";
 import {
   FadeInView,
@@ -8,8 +10,49 @@ import {
   StaggerItem,
 } from "@/components/animations/motion-wrapper";
 import Link from "next/link";
+import ContactLoading from "./loading";
 
-function ContactDetail({ contact }: { contact: Contact }) {
+async function getContact() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`,
+      {
+        next: {
+          tags: ["contact"],
+        },
+      }
+    );
+    if (!response.ok) throw new Error("Failed to fetch contact");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching contact:", error);
+    return null;
+  }
+}
+
+function ContactDetail() {
+  const [contact, setContact] = useState<Contact | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContact = async () => {
+      try {
+        setIsLoading(true);
+        const contact = await getContact();
+        setContact(contact);
+      } catch (error) {
+        console.error("Error fetching contact:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchContact();
+  }, []);
+
+  if (isLoading) {
+    return <ContactLoading />;
+  }
+
   const CONTACT_DETAIL = [
     {
       icon: <Mail className="h-6 w-6" />,
@@ -77,7 +120,7 @@ function ContactDetail({ contact }: { contact: Contact }) {
 
         {/* map */}
         <div className="w-full h-full min-h-[300px] sm:min-h-[400px] lg:min-h-0">
-          <Location mapEmbedLink={contact?.mapEmbedLink} />
+          <Location mapEmbedLink={contact?.mapEmbedLink || ""} />
         </div>
       </div>
     </section>

@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import {
   ContactIcon,
+  CreditCardIcon,
   EyeIcon,
   GalleryVerticalIcon,
   LogOut,
@@ -48,6 +49,11 @@ const data = {
       icon: <ContactIcon />,
       title: "Contact",
       url: "/admin/contact",
+    },
+    {
+      icon: <CreditCardIcon />,
+      title: "Donations",
+      url: "/admin/donations",
     },
   ],
 };

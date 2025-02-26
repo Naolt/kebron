@@ -1,15 +1,17 @@
+"use client";
+
 import { Separator } from "@/components/ui/separator";
 import { Facebook, Linkedin, Twitter, Youtube } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MAIN_LINKS, RESOURCE_LINKS } from "./header";
 import { Contact } from "@/models/contact";
 import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/animations/motion-wrapper";
-import { getContactServer } from "@/actions/action";
+import FooterLoading from "./footer-loading";
 
 const FOOTER_LINKS = [...MAIN_LINKS, ...RESOURCE_LINKS];
 
@@ -19,11 +21,50 @@ export const revalidate = 0; // Make the page dynamic
 // Add dynamic rendering option
 export const dynamic = "force-dynamic";
 
-async function Footer() {
-  const contactInfo: Contact = await getContactServer();
+async function getContact() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`,
+      {
+        next: {
+          tags: ["contact"],
+        },
+      }
+    );
+    if (!response.ok) throw new Error("Failed to fetch contact");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching contact:", error);
+    return null;
+  }
+}
+
+function Footer() {
+  const [contactInfo, setContactInfo] = useState<Contact | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    const fetchContact = async () => {
+      try {
+        setIsLoading(true);
+        const contact = await getContact();
+        setContactInfo(contact);
+      } catch (error) {
+        console.error("Error fetching contact:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchContact();
+  }, []);
+
+  if (isLoading) {
+    return <FooterLoading />;
+  }
 
   return (
-    <footer className=" px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 bg-[rgba(240,242,251,1)]">
+    <footer className="px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 bg-[rgba(240,242,251,1)]">
       <div className="max-w-screen-3xl mx-auto flex flex-wrap justify-between gap-6">
         {/* left */}
         <div className="flex flex-col gap-6">
@@ -111,9 +152,24 @@ async function Footer() {
         </div>
       </div>
       <Separator className="mt-20 mb-8" />
-      <p className="text-sm text-center">
-        © 2024 Our Church. All rights reserved.
-      </p>
+      <div className="">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-black/60">
+            © {currentYear} Kebron International Church. All rights reserved.
+          </p>
+          <p className="text-sm text-black/60">
+            Developed with ❤️ by{" "}
+            <Link
+              href="https://naolt.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-black transition-colors"
+            >
+              AURORA HORIZON
+            </Link>
+          </p>
+        </div>
+      </div>
     </footer>
   );
 }

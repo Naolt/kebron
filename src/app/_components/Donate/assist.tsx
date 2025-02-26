@@ -4,11 +4,113 @@ import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/animations/motion-wrapper";
+import { Donation } from "@/models/donation";
 import Image from "next/image";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
+import DonateLoading from "./loading";
+
+type CardData = {
+  image: string;
+  tagline: string;
+  title: string;
+  description: React.ReactNode;
+  action: {
+    label: string;
+    link?: string;
+    onClick?: () => void;
+    variant: "primary" | "secondary" | "outline";
+  };
+};
 
 function Assist() {
+  const [donationSettings, setDonationSettings] = useState<Donation | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = useState(true);
+
+  const CARD_DATA: CardData[] = [
+    {
+      image: "/donate/online-giving.jpg",
+      tagline: "Donate Today",
+      title: "Online Giving",
+      description: (
+        <div className="flex flex-col gap-2">
+          <p>
+            Give securely and conveniently through our online giving platform.
+            Your contributions make a real difference in our community.
+          </p>
+        </div>
+      ),
+      action: {
+        label: "Make a Donation",
+        link: donationSettings?.onlineGivingLink || "#",
+        variant: "primary" as const,
+      },
+    },
+    {
+      image: "/donate/in-person-giving.jpg",
+      tagline: "Give in Person",
+      title: "In-Person Giving",
+      description: (
+        <div className="flex flex-col gap-2">
+          <p>
+            Visit our church during service times and make your donation
+            directly to our offering box.
+          </p>
+        </div>
+      ),
+      action: {
+        label: "View Service Times",
+        link: "/#our-program",
+        variant: "secondary" as const,
+      },
+    },
+    {
+      image: "/donate/bank-transfer.jpg",
+      tagline: "Bank Details",
+      title: "Bank Transfer",
+      description: donationSettings?.bankDetails && (
+        <div className="flex flex-col gap-1">
+          <p>Bank: {donationSettings.bankDetails.bankName}</p>
+          <p>IBAN: {donationSettings.bankDetails.iban}</p>
+          <p>Account Holder: {donationSettings.bankDetails.accountHolder}</p>
+        </div>
+      ),
+      action: {
+        label: "Copy Bank Details",
+        onClick: () => {
+          navigator.clipboard.writeText(
+            donationSettings?.bankDetails?.iban || ""
+          );
+          toast.success("Bank details copied to clipboard");
+        },
+        variant: "outline" as const,
+      },
+    },
+  ];
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/donations/settings");
+        if (!response.ok) throw new Error("Failed to fetch settings");
+        const data = await response.json();
+        setDonationSettings(data);
+      } catch (error) {
+        console.error("Error fetching donation settings:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchSettings();
+  }, []);
+
+  if (isLoading) {
+    return <DonateLoading />;
+  }
+
   return (
     <FadeInView className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28">
       <div className="flex flex-col mx-auto items-center">
@@ -20,71 +122,12 @@ function Assist() {
       </div>
 
       {/* cards */}
-      <Cards />
+      <Cards CARD_DATA={CARD_DATA} />
     </FadeInView>
   );
 }
 
-const CARD_DATA = [
-  {
-    image: "/donate/online-giving.jpg",
-    tagline: "Donate Today",
-    title: "Online Giving",
-    description: (
-      <div className="flex flex-col gap-2">
-        <p>
-          Give securely and conveniently through our online giving platform.
-          Your contributions make a real difference in our community.
-        </p>
-      </div>
-    ),
-    action: {
-      label: "Make a Donation",
-      link: "/donate",
-      variant: "primary" as const,
-    },
-  },
-  {
-    image: "/donate/in-person-giving.jpg",
-    tagline: "Give in Person",
-    title: "In-Person Giving",
-    description: (
-      <div className="flex flex-col gap-2">
-        <p>
-          Visit our church during service times and make your donation directly
-          to our offering box.
-        </p>
-      </div>
-    ),
-    action: {
-      label: "View Service Times",
-      link: "/#our-program",
-      variant: "secondary" as const,
-    },
-  },
-  {
-    image: "/donate/bank-transfer.jpg",
-    tagline: "Bank Details",
-    title: "Bank Transfer",
-    description: (
-      <div className="flex flex-col gap-1">
-        <p>Bank: Kreissparkasse Gross-Gerau</p>
-        <p>IBAN: DE33 5085 2553 0117 5916 93</p>
-        <p>Account Holder: Wudnesh Adamu Shedo</p>
-      </div>
-    ),
-    action: {
-      label: "Copy Bank Details",
-      onClick: () => {
-        navigator.clipboard.writeText("DE33 5085 2553 0117 5916 93");
-        toast.success("Bank details copied to clipboard");
-      },
-      variant: "outline" as const,
-    },
-  },
-];
-
-function Cards() {
+function Cards({ CARD_DATA }: { CARD_DATA: CardData[] }) {
   return (
     <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
       {CARD_DATA.map((card, index) => (
