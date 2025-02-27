@@ -123,6 +123,12 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     role: "Musicians",
     description: "Passionate about guiding and mentoring our young members.",
   },
+  {
+    picture: "/teams/getahun_muscian.jpg",
+    fullName: "Getahun",
+    role: "Musician",
+    description: "Passionate about guiding and mentoring our young members.",
+  },
 ];
 
 function OurTeam() {
