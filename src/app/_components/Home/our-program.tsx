@@ -80,7 +80,7 @@ const PROGRAMS: {
   {
     title: "Outreach Programs",
     description: `We conduct quarterly outreach programs in major German cities including Frankfurt, Mainz, Rüsselsheim, Darmstadt, Duisburg, and Düsseldorf. Join us in spreading God's love throughout these communities.`,
-    image: "/home/outreach.JPG",
+    image: "/home/outreach2.jpg",
   },
 ];
 

@@ -50,7 +50,7 @@ const CARDS = [
   },
 
   {
-    image: "/home/outreach.JPG",
+    image: "/home/outreach2.jpg",
     title: "Outreach Programs",
     description:
       "As a church, we are dedicated to making a lasting impact by providing essential support, sharing God's love, and spreading the Gospel through outreach, evangelism, and missions across Germany and beyond.",

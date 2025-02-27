@@ -23,6 +23,20 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
   {
+    picture: "/teams/Wudnesh_Adamu_Children_ministry_and_Teacher.jpg",
+    fullName: "Wudnesh Adamu",
+    role: "Children's Ministry and Teacher",
+    description:
+      "Coordinating our efforts to serve and support our local community.",
+  },
+
+  {
+    picture: "/home/youth.JPG",
+    fullName: "Abenezer",
+    role: "Preacher",
+    description: "Providing pastoral care and support to our congregation.",
+  },
+  {
     picture: "/teams/Liya_Solomon_Preacher.jpg",
     fullName: "Liya Solomon",
     role: "Preacher",
@@ -35,12 +49,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     role: "Preacher",
     description: "Providing pastoral care and support to our congregation.",
   },
-  {
-    picture: "/home/youth.JPG",
-    fullName: "Abenezer",
-    role: "Preacher",
-    description: "Providing pastoral care and support to our congregation.",
-  },
+
   {
     picture: "/teams/Yordanos_Yohannes_worship_leader.jpg",
     fullName: "Yordanos Yohannes",
@@ -71,13 +80,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     role: "Holy Communion Organizer",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   },
-  {
-    picture: "/teams/Wudnesh_Adamu_Children_ministry_and_Teacher.jpg",
-    fullName: "Wudnesh Adamu",
-    role: "Children's Ministry and Teacher",
-    description:
-      "Coordinating our efforts to serve and support our local community.",
-  },
+
   {
     picture: "/teams/Luwam_Kasaye_Event_Organizer.webp",
     fullName: "Luwam Kasaye",
@@ -85,9 +88,21 @@ const TEAM_MEMBERS: TeamMemberType[] = [
     description: "Ensuring smooth operations of our church's daily activities.",
   },
   {
+    picture: "/teams/Rahel_and_Jossy_event_organizer_and_prayer_team.jpg",
+    fullName: "Rahel and Jossy",
+    role: "Event Organizer and Prayer Team",
+    description: "Ensuring smooth operations of our church's daily activities.",
+  },
+  {
     picture: "/teams/Sunday_Service_Opining_prayer_team.webp",
     fullName: "Prayer Team",
     role: "Prayer Team",
+    description: "Ensuring smooth operations of our church's daily activities.",
+  },
+  {
+    picture: "/teams/Sisay_and_Meselu_Nethinim_team.jpg",
+    fullName: "Sisay and Meselu",
+    role: "Nethinim Team",
     description: "Ensuring smooth operations of our church's daily activities.",
   },
   {

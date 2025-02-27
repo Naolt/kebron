@@ -18,18 +18,18 @@ function Hero() {
     {
       image: "hero4.JPG",
       title: "እንኳን ወደ ኬብሮን ዓለም አቀፍ ቤተክርስቲያን በደህና መጡ",
-      location: "ሮሳላሰይም / ጀርመን",
+      location: "ሮሰልሳይም / ጀርመን",
       verse:
         "ሐዋርያትም የጌታን የኢየሱስን ትንሣኤ በታላቅ ኃይል ይመሰክሩ ነበር፤ በሁላቸውም ላይ ታላቅ ጸጋ ነበረ።",
       reference: "የሐዋርያት ሥራ 4:33",
       lang: "am",
     },
     {
-      image: "hero5.JPG",
-      title: "Willkommen in der Kebron International Church",
+      image: "hero31.jpg",
+      title: "Herzlich willkommen in unserer Kirche Kebron International",
       location: "Rüsselsheim / Deutschland",
       verse:
-        "Mit großer Kraft legten die Apostel Zeugnis ab von der Auferstehung Jesu, des Herrn, und reiche Gnade ruhte auf ihnen allen.",
+        "Und mit großer Kraft legten die Apostel Zeugnis ab von der Auferstehung des Herrn Jesus, und große Gnade war auf ihnen allen.",
       reference: "Apostelgeschichte 4:33",
       lang: "de",
     },
@@ -94,7 +94,7 @@ function Hero() {
           >
             <h1
               className={cn(
-                "font-bold max-w-[600px] text-4xl lg:text-[64px] leading-tight",
+                "font-bold max-w-[800px] text-4xl lg:text-[64px] leading-tight",
                 SLIDES[currentIndex].lang === "am" && "font-ethiopian"
               )}
             >

@@ -10,6 +10,16 @@ import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import DonateLoading from "./loading";
 
+import { Button } from "@/components/ui/button";
+import { Copy } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 type CardData = {
   image: string;
   tagline: string;
@@ -70,22 +80,36 @@ function Assist() {
       image: "/donate/bank-transfer.jpg",
       tagline: "Bank Details",
       title: "Bank Transfer",
-      description: donationSettings?.bankDetails && (
-        <div className="flex flex-col gap-1">
-          <p>Bank: {donationSettings.bankDetails.bankName}</p>
-          <p>IBAN: {donationSettings.bankDetails.iban}</p>
-          <p>Account Holder: {donationSettings.bankDetails.accountHolder}</p>
+      description: donationSettings?.bankAccounts && (
+        <div className="space-y-4">
+          {/* Show primary account */}
+          {donationSettings.bankAccounts[0] && (
+            <div className="flex flex-col gap-1">
+              <p className="font-medium">
+                {donationSettings.bankAccounts[0].description}
+              </p>
+              <p>Bank: {donationSettings.bankAccounts[0].bankName}</p>
+              <p>IBAN: {donationSettings.bankAccounts[0].iban}</p>
+              <p>
+                Account Holder: {donationSettings.bankAccounts[0].accountHolder}
+              </p>
+            </div>
+          )}
         </div>
       ),
       action: {
-        label: "Copy Bank Details",
+        label: `View All Bank Accounts (${
+          donationSettings?.bankAccounts?.length || 0
+        })`,
         onClick: () => {
-          navigator.clipboard.writeText(
-            donationSettings?.bankDetails?.iban || ""
-          );
-          toast.success("Bank details copied to clipboard");
+          const dialogTrigger = document.querySelector(
+            "[data-bank-accounts-dialog-trigger]"
+          ) as HTMLButtonElement;
+          if (dialogTrigger) {
+            dialogTrigger.click();
+          }
         },
-        variant: "outline" as const,
+        variant: "primary" as const,
       },
     },
   ];
@@ -123,6 +147,58 @@ function Assist() {
 
       {/* cards */}
       <Cards CARD_DATA={CARD_DATA} />
+
+      {/* Show dialog for additional accounts if they exist */}
+      {donationSettings?.bankAccounts &&
+        donationSettings.bankAccounts.length > 0 && (
+          <div className="hidden">
+            <Dialog>
+              <DialogTrigger data-bank-accounts-dialog-trigger asChild>
+                <Button variant="outline" className="w-full">
+                  View Bank Accounts
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Bank Account Details</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-6 mt-4">
+                  {donationSettings.bankAccounts.map((account, index) => (
+                    <div key={index} className="flex flex-col gap-2">
+                      {index > 0 && <div className="border-t pt-4" />}
+                      <div className="flex justify-between items-start">
+                        <p className="font-medium text-lg">
+                          {account.description}
+                        </p>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8"
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              `${account.description}\nBank: ${account.bankName}\nIBAN: ${account.iban}\nAccount Holder: ${account.accountHolder}`
+                            );
+                            toast.success(
+                              `${account.description} details copied`
+                            );
+                          }}
+                        >
+                          <Copy className="h-4 w-4 mr-2" />
+                          Copy
+                        </Button>
+                      </div>
+                      <div className="space-y-1 text-muted-foreground">
+                        <p>Bank: {account.bankName}</p>
+                        <p>IBAN: {account.iban}</p>
+                        <p>Account Holder: {account.accountHolder}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        )}
     </FadeInView>
   );
 }

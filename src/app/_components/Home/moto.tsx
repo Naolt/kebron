@@ -12,9 +12,6 @@ function Moto() {
           in the house of the lord!”
         </h2>
       </div>
-      <p className="text-lg italic">
-        Embrace the spirit of community and faith.
-      </p>
     </section>
   );
 }

@@ -15,11 +15,11 @@ import FooterLoading from "./footer-loading";
 
 const FOOTER_LINKS = [...MAIN_LINKS, ...RESOURCE_LINKS];
 
-// Add revalidation tag
-export const revalidate = 0; // Make the page dynamic
+//// Add revalidation tag
+//export const revalidate = 0; // Make the page dynamic
 
-// Add dynamic rendering option
-export const dynamic = "force-dynamic";
+//// Add dynamic rendering option
+//export const dynamic = "force-dynamic";
 
 async function getContact() {
   try {

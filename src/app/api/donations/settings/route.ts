@@ -26,11 +26,19 @@ export async function POST(request: Request) {
       { isActive: true },
       {
         onlineGivingLink: data.onlineGivingLink,
-        bankDetails: {
-          bankName: data.bankDetails.bankName,
-          iban: data.bankDetails.iban,
-          accountHolder: data.bankDetails.accountHolder,
-        },
+        bankAccounts: data.bankAccounts.map(
+          (account: {
+            bankName: string;
+            iban: string;
+            accountHolder: string;
+            description: string;
+          }) => ({
+            bankName: account.bankName,
+            iban: account.iban,
+            accountHolder: account.accountHolder,
+            description: account.description,
+          })
+        ),
       },
       { upsert: true, new: true }
     );
