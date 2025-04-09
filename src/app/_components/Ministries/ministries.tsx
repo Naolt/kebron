@@ -36,7 +36,17 @@ const CARDS = [
       href: "/ministries",
     },
   },
-
+  {
+    image: "/ministry/worship.jpg",
+    title: "Prayer and Worship Ministry",
+    description:
+      "We are dedicated to providing a warm and welcoming environment for all our guests.",
+    icon: "🙏",
+    link: {
+      text: "Watch Now",
+      href: "/sermons",
+    },
+  },
   {
     image: "/ministry/kids.jpg",
     title: "Children's Ministry",
@@ -67,17 +77,6 @@ const CARDS = [
     description:
       "We are dedicated to providing a warm and welcoming environment for all our guests.",
     icon: "🎥",
-    link: {
-      text: "Watch Now",
-      href: "/sermons",
-    },
-  },
-  {
-    image: "/ministry/worship.jpg",
-    title: "Prayer and Worship Ministry",
-    description:
-      "We are dedicated to providing a warm and welcoming environment for all our guests.",
-    icon: "🙏",
     link: {
       text: "Watch Now",
       href: "/sermons",
