@@ -27,7 +27,7 @@ function Ministries() {
 const CARDS = [
   {
     image: "/home/live.JPG",
-    title: "Livestream Ministry",
+    title: "Preaching / Teaching Ministry",
     description:
       "Join us from anywhere in the world through our high-quality livestream services.",
     icon: "🎥",
@@ -58,6 +58,29 @@ const CARDS = [
     link: {
       text: "View Gallery",
       href: "/gallery",
+    },
+  },
+
+  {
+    image: "/ministry/usher.jpg",
+    title: "Media and Ushering Ministry",
+    description:
+      "We are dedicated to providing a warm and welcoming environment for all our guests.",
+    icon: "🎥",
+    link: {
+      text: "Watch Now",
+      href: "/sermons",
+    },
+  },
+  {
+    image: "/ministry/worship.jpg",
+    title: "Prayer and Worship Ministry",
+    description:
+      "We are dedicated to providing a warm and welcoming environment for all our guests.",
+    icon: "🙏",
+    link: {
+      text: "Watch Now",
+      href: "/sermons",
     },
   },
 ];

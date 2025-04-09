@@ -70,7 +70,7 @@ const PROGRAMS: {
   {
     title: "Virtual Prayer",
     description: `Join us every Friday from 9:00 PM to 11:00 PM as we gather together in prayer, lifting up personal needs, our church family, and global concerns to the Lord.`,
-    image: "/home/prayer.JPG",
+    image: "/home/IMG_2284.JPG",
   },
   {
     title: "Young Adults Program",

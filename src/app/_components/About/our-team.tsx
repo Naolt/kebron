@@ -32,7 +32,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
 
   {
     picture: "/home/youth.JPG",
-    fullName: "Abenezer",
+    fullName: "Abenezer Getachew",
     role: "Preacher",
     description: "Providing pastoral care and support to our congregation.",
   },
@@ -45,7 +45,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
   },
   {
     picture: "/teams/Yoni_Preacher.jpg",
-    fullName: "Yoni",
+    fullName: "Yonatan (Yoni)",
     role: "Preacher",
     description: "Providing pastoral care and support to our congregation.",
   },
@@ -58,13 +58,13 @@ const TEAM_MEMBERS: TeamMemberType[] = [
   },
   {
     picture: "/teams/melody_worship_leader.jpg",
-    fullName: "Melody",
+    fullName: "Melody Tesfaye",
     role: "Worship Leader",
     description: "Passionate about guiding and mentoring our young members.",
   },
   {
     picture: "/teams/zizi_worship_leader.jpg",
-    fullName: "Zizi",
+    fullName: "Zizi Tadesse",
     role: "Worship Leader",
     description: "Passionate about guiding and mentoring our young members.",
   },
@@ -89,7 +89,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
   },
   {
     picture: "/teams/Rahel_and_Jossy_event_organizer_and_prayer_team.jpg",
-    fullName: "Rahel and Jossy",
+    fullName: "Rahel and Yosef",
     role: "Event Organizer and Prayer Team",
     description: "Ensuring smooth operations of our church's daily activities.",
   },
@@ -113,7 +113,7 @@ const TEAM_MEMBERS: TeamMemberType[] = [
   },
   {
     picture: "/teams/Robel_Preacher.jpg",
-    fullName: "Robel",
+    fullName: "Robel Tadesse Bati",
     role: "Media Team",
     description: "Leading our worship through the power of music and song.",
   },
