@@ -54,6 +54,37 @@ const ETHOS = {
       icon: "HeartIcon",
     },
   ],
+  german: [
+    {
+      title: "Unsere Mission",
+      description:
+        `Die Mission der internationalen Kirche Kebron in Rüsselsheim ist es, die Mitglieder
+(Gläubigen) durch das Wort Gottes auszurüsten; indem wir beten und ermutigen, damit sie
+mit der Kraft des Heiligen Geistes erfüllt werden, und indem sie in aufrichtiger brüderlicher
+Liebe Gemeinschaft haben, ihnen zu helfen, Jesus Christus ähnlich zu werden.`,
+      icon: "FlagIcon",
+    },
+    {
+      title: "Unsere Vision",
+      description:
+        `Die Vision der internationalen Kirche Kebron in Rüsselsheim ist es, zu sehen, dass die
+Gemeindemitglieder (Gläubigen) durch geistliche, wahre und bedeutungsvolle
+Gemeinschaft, indem ihr Leben durch die Kraft des Heiligen Geistes und durch das Wort
+des Herrn verändert wird, und indem sie das gute Evangelium predigen, mit der ihnen
+gegebenen Gnade fleißig dienen.`,
+      icon: "EyeIcon",
+    },
+    {
+      title: "Unsere Werte",
+      description:
+        `In der Kebron Internationalen Kirche werden wir von drei grundlegenden Hauptwerten
+geleitet: das Wort Gottes als unsere Grundlage und unsere Anleitung (Hebräer 4:12), der
+Heilige Geist als unser Lehrer und die Quelle unserer Kraft (Johannes 14:26), sowie Einheit
+und brüderliche Liebe als unser Ruf, durch den wir die wahre Liebe Christi zeigen (1. Petrus
+1:22).`,
+      icon: "HeartIcon",
+    },
+  ],
 };
 
 const container = {
@@ -85,7 +116,7 @@ function EthosCard({
   return (
     <motion.div
       variants={item}
-      className="flex flex-col gap-4 p-6 rounded-lg hover:bg-black/5 transition-colors"
+      className="flex flex-col gap-4 p-6 rounded-lg hover:bg-black/5 transition-colors h-full"
     >
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-full bg-primary/10">
@@ -103,43 +134,30 @@ function EthosCard({
 function OurEthos() {
   return (
     <div className="max-w-screen-3xl mx-auto px-4 sm:px-8 lg:px-16 py-12 sm:py-16 lg:py-28 bg-white">
-      <div className="grid md:grid-cols-2 gap-12">
-        {/* Amharic Section */}
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="space-y-6"
-        >
-          {ETHOS.amharic.map((ethos, index) => (
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        className="flex flex-col gap-6"
+      >
+        {ETHOS.german.map((_, index) => (
+          <div key={index} className="grid md:grid-cols-2 gap-12">
+            {/* German Card */}
             <EthosCard
-              key={index}
-              title={ethos.title}
-              description={ethos.description}
-              icon={ethos.icon as "FlagIcon" | "EyeIcon" | "HeartIcon"}
+              title={ETHOS.german[index].title}
+              description={ETHOS.german[index].description}
+              icon={ETHOS.german[index].icon as "FlagIcon" | "EyeIcon" | "HeartIcon"}
             />
-          ))}
-        </motion.div>
-
-        {/* English Section */}
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="space-y-6"
-        >
-          {ETHOS.english.map((ethos, index) => (
+            {/* English Card */}
             <EthosCard
-              key={index}
-              title={ethos.title}
-              description={ethos.description}
-              icon={ethos.icon as "FlagIcon" | "EyeIcon" | "HeartIcon"}
+              title={ETHOS.english[index].title}
+              description={ETHOS.english[index].description}
+              icon={ETHOS.english[index].icon as "FlagIcon" | "EyeIcon" | "HeartIcon"}
             />
-          ))}
-        </motion.div>
-      </div>
+          </div>
+        ))}
+      </motion.div>
     </div>
   );
 }
