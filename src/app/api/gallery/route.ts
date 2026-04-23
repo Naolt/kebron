@@ -4,13 +4,6 @@ import { Gallery } from "@/models/gallery";
 import { v2 as cloudinary } from "cloudinary";
 import { revalidateTag } from "next/cache";
 
-// Remove unused config since we're not handling files anymore
-export const config = {
-  api: {
-    responseLimit: false,
-  },
-};
-
 // Remove unused cloudinary config and CloudinaryResponse type
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -42,7 +35,7 @@ export async function POST(req: Request) {
       publicId,
     });
 
-    revalidateTag("gallery");
+    revalidateTag("gallery", "max");
     return NextResponse.json(galleryItem);
   } catch (error) {
     console.error("Error in POST /api/gallery:", error);
@@ -117,7 +110,7 @@ export async function DELETE(req: Request) {
     // Delete from MongoDB
     await Gallery.findByIdAndDelete(id);
 
-    revalidateTag("gallery");
+    revalidateTag("gallery", "max");
     return NextResponse.json({ message: "Gallery item deleted successfully" });
   } catch (error) {
     console.error("Error in DELETE /api/gallery:", error);

@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       )
     );
 
-    revalidateTag("gallery");
+    revalidateTag("gallery", "max");
     return NextResponse.json({ success: true, items: galleryItems });
   } catch (error) {
     console.error("Error in POST /api/gallery/bulk-upload:", error);

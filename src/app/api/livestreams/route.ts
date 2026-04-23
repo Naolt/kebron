@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       embedUrl: data.get("embedUrl"),
     });
 
-    revalidateTag("livestreams");
+    revalidateTag("livestreams", "max");
     return NextResponse.json(livestream);
   } catch (error) {
     console.error("Error creating livestream:", error);
@@ -69,7 +69,7 @@ export async function DELETE(request: Request) {
       );
     }
 
-    revalidateTag("livestreams");
+    revalidateTag("livestreams", "max");
     return NextResponse.json({ message: "Livestream deleted successfully" });
   } catch (error) {
     console.error("Error deleting livestream:", error);

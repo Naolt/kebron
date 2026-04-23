@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       { upsert: true, new: true }
     );
 
-    revalidateTag("donations");
+    revalidateTag("donations", "max");
     return NextResponse.json(settings);
   } catch (error) {
     console.error("Error in POST /api/donations/settings:", error);

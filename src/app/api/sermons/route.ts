@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       videoId: data.get("videoId"),
       embedUrl: data.get("embedUrl"),
     });
-    revalidateTag("sermons");
+    revalidateTag("sermons", "max");
     return NextResponse.json(sermon);
   } catch (error) {
     console.error("Error creating sermon:", error);
@@ -63,7 +63,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: "Sermon not found" }, { status: 404 });
     }
 
-    revalidateTag("sermons");
+    revalidateTag("sermons", "max");
 
     return NextResponse.json({ message: "Sermon deleted successfully" });
   } catch (error) {

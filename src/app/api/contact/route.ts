@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     );
 
     // Revalidate both contact pages
-    revalidateTag("contact");
+    revalidateTag("contact", "max");
     revalidatePath("/contact");
     revalidatePath("/admin/contact");
 

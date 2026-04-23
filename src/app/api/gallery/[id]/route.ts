@@ -48,7 +48,7 @@ export async function PATCH(
       { new: true }
     );
 
-    revalidateTag("gallery");
+    revalidateTag("gallery", "max");
     return NextResponse.json(updatedGalleryItem);
   } catch (error) {
     console.error("Error updating gallery item:", error);
@@ -85,7 +85,7 @@ export async function DELETE(
     // Delete from MongoDB
     await Gallery.findByIdAndDelete(id);
 
-    revalidateTag("gallery");
+    revalidateTag("gallery", "max");
     return NextResponse.json({ message: "Gallery item deleted successfully" });
   } catch (error) {
     console.error("Error deleting gallery item:", error);
