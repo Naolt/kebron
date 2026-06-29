@@ -12,7 +12,7 @@ import DonateLoading from "./loading";
 import PayPalDonation from "./paypal-donation";
 
 import { Button } from "@/components/ui/button";
-import { Copy } from "lucide-react";
+import { Copy, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -39,6 +39,7 @@ function Assist() {
     null
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [showPayPalDialog, setShowPayPalDialog] = useState(false);
 
   const CARD_DATA: CardData[] = [
     {
@@ -55,7 +56,7 @@ function Assist() {
       ),
       action: {
         label: "Make a Donation",
-        link: donationSettings?.onlineGivingLink || "#",
+        onClick: () => setShowPayPalDialog(true),
         variant: "primary" as const,
       },
     },
@@ -149,12 +150,19 @@ function Assist() {
       {/* cards */}
       <Cards CARD_DATA={CARD_DATA} />
 
-      {/* PayPal Donation Section */}
-      {donationSettings?.paypalEmail && (
-        <div className="mt-16 max-w-2xl mx-auto">
-          <PayPalDonation email={donationSettings.paypalEmail} />
-        </div>
-      )}
+      {/* PayPal Dialog */}
+      <Dialog open={showPayPalDialog} onOpenChange={setShowPayPalDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">PayPal Donation</DialogTitle>
+          </DialogHeader>
+          <div className="mt-4">
+            {donationSettings?.paypalEmail && (
+              <PayPalDonation email={donationSettings.paypalEmail} />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Show dialog for additional accounts if they exist */}
       {donationSettings?.bankAccounts &&
