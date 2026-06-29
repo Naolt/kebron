@@ -466,18 +466,21 @@ export default function ContactPage() {
                         )}
                       />
                       {/* render the map embed link if it exists extracting the src from the iframe */}
-                      {form.watch("mapEmbedLink") && (
-                        <iframe
-                          src={extractSrcFromIframe(form.watch("mapEmbedLink"))}
-                          width="100%"
-                          height="450"
-                          style={{ border: 0 }}
-                          allowFullScreen={true}
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                          className="max-w-[832px] rounded-lg"
-                        ></iframe>
-                      )}
+                      {(() => {
+                        const mapLink = form.watch("mapEmbedLink");
+                        return mapLink ? (
+                          <iframe
+                            src={extractSrcFromIframe(mapLink)}
+                            width="100%"
+                            height="450"
+                            style={{ border: 0 }}
+                            allowFullScreen={true}
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            className="max-w-[832px] rounded-lg"
+                          ></iframe>
+                        ) : null;
+                      })()}
                     </div>
                   </div>
                 </div>
