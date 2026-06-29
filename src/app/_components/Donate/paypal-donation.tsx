@@ -100,10 +100,6 @@ export default function PayPalDonation({ email }: { email: string }) {
           Send via PayPal
         </Button>
 
-        {/* Note */}
-        <p className="text-xs text-gray-600 text-center italic">
-          This is a temporary payment method. We'll add more options soon.
-        </p>
       </CardContent>
     </Card>
   );
