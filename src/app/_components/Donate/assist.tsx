@@ -160,7 +160,7 @@ function Assist() {
             {donationSettings?.paypalEmail && (
               <PayPalDonation
                 email={donationSettings.paypalEmail}
-                donationLink={donationSettings?.onlineGivingLink}
+                donationLink={donationSettings?.onlineGivingLink || undefined}
               />
             )}
           </div>
