@@ -24,12 +24,7 @@ const FOOTER_LINKS = [...MAIN_LINKS, ...RESOURCE_LINKS];
 async function getContact() {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`,
-      {
-        next: {
-          tags: ["contact"],
-        },
-      }
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`
     );
     if (!response.ok) throw new Error("Failed to fetch contact");
     return response.json();

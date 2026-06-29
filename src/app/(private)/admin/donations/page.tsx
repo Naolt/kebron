@@ -26,10 +26,10 @@ const bankAccountSchema = z.object({
 });
 
 const formSchema = z.object({
-  onlineGivingLink: z.string().url("Please enter a valid URL"),
+  onlineGivingLink: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
   bankAccounts: z
     .array(bankAccountSchema)
-    .min(1, "At least one bank account is required"),
+    .min(0, "").optional(),
 });
 
 export default function DonationsPage() {

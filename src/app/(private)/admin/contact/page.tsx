@@ -27,13 +27,15 @@ const formSchema = z.object({
   contactPersonName: z.string().min(2, "Name must be at least 2 characters"),
   contactPersonImage: z.instanceof(File).optional(),
   contactPersonImageUrl: z.string().optional(),
-  phoneNumber: z.string().min(10, "Please enter a valid phone number"),
-  email: z.string().email("Please enter a valid email address"),
-  address: z.string().min(10, "Address must be at least 10 characters"),
+  phoneNumber: z.string().min(10, "Please enter a valid phone number").optional().or(z.literal("")),
+  email: z.string().email("Please enter a valid email address").optional().or(z.literal("")),
+  address: z.string().min(10, "Address must be at least 10 characters").optional().or(z.literal("")),
   mapEmbedLink: z
     .string()
     .min(10, "Please enter a valid Google Maps embed link")
-    .includes("<iframe", { message: "Must be an iframe embed code" }),
+    .includes("<iframe", { message: "Must be an iframe embed code" })
+    .optional()
+    .or(z.literal("")),
   facebookUrl: z
     .string()
     .url("Must be a valid URL")
@@ -148,11 +150,11 @@ export default function ContactPage() {
           email: data.email,
           address: data.address,
           mapEmbedLink: data.mapEmbedLink,
-          facebookUrl: data.socialLinks.facebook,
-          youtubeUrl: data.socialLinks.youtube,
-          linkedinUrl: data.socialLinks.linkedin,
-          twitterUrl: data.socialLinks.twitter,
-          tiktokUrl: data.socialLinks.tiktok,
+          facebookUrl: data.socialLinks?.facebook || "",
+          youtubeUrl: data.socialLinks?.youtube || "",
+          linkedinUrl: data.socialLinks?.linkedin || "",
+          twitterUrl: data.socialLinks?.twitter || "",
+          tiktokUrl: data.socialLinks?.tiktok || "",
         });
       } catch (error) {
         console.error("Error fetching contact data:", error);
