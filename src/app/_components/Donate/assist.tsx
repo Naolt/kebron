@@ -158,7 +158,10 @@ function Assist() {
           </DialogHeader>
           <div className="mt-4">
             {donationSettings?.paypalEmail && (
-              <PayPalDonation email={donationSettings.paypalEmail} />
+              <PayPalDonation
+                email={donationSettings.paypalEmail}
+                donationLink={donationSettings?.onlineGivingLink}
+              />
             )}
           </div>
         </DialogContent>
