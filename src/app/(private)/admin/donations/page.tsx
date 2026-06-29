@@ -27,6 +27,7 @@ const bankAccountSchema = z.object({
 
 const formSchema = z.object({
   onlineGivingLink: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
+  paypalEmail: z.string().email("Please enter a valid email").optional().or(z.literal("")),
   bankAccounts: z
     .array(bankAccountSchema)
     .min(0, "").optional(),
@@ -40,6 +41,7 @@ export default function DonationsPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       onlineGivingLink: "",
+      paypalEmail: "",
       bankAccounts: [],
     },
   });
@@ -128,6 +130,20 @@ export default function DonationsPage() {
                     <FormLabel>Online Giving Link</FormLabel>
                     <FormControl>
                       <Input placeholder="https://..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="paypalEmail"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>PayPal Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="email@example.com" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

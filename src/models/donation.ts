@@ -10,6 +10,7 @@ const bankAccountSchema = new mongoose.Schema({
 const donationSchema = new mongoose.Schema(
   {
     onlineGivingLink: String,
+    paypalEmail: String,
     bankAccounts: [bankAccountSchema], // Array of bank accounts
     isActive: {
       type: Boolean,

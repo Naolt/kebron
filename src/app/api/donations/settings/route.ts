@@ -26,6 +26,7 @@ export async function POST(request: Request) {
       { isActive: true },
       {
         onlineGivingLink: data.onlineGivingLink,
+        paypalEmail: data.paypalEmail,
         bankAccounts: data.bankAccounts.map(
           (account: {
             bankName: string;
