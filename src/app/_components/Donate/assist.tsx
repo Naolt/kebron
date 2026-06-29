@@ -9,6 +9,7 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import DonateLoading from "./loading";
+import PayPalDonation from "./paypal-donation";
 
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
@@ -147,6 +148,13 @@ function Assist() {
 
       {/* cards */}
       <Cards CARD_DATA={CARD_DATA} />
+
+      {/* PayPal Donation Section */}
+      {donationSettings?.paypalEmail && (
+        <div className="mt-16 max-w-2xl mx-auto">
+          <PayPalDonation email={donationSettings.paypalEmail} />
+        </div>
+      )}
 
       {/* Show dialog for additional accounts if they exist */}
       {donationSettings?.bankAccounts &&
